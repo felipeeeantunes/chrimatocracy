@@ -2,3 +2,4 @@ raw_data/*
 .vscode/*
 *.txt
 .dropbox
+*.csv
