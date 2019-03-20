@@ -11,7 +11,7 @@ def assignmentArray_to_lists(assignment_array):
 from matplotlib import pyplot, patches
 from PIL import Image
 import numpy as np
-def draw_adjacency_matrix(adj, node_order=None, partitions=[], colors=[]):
+def draw_adjacency_matrix(adj, node_order=None, partitions=[], colors=[], output_file = ''):
     """
     - G is a netorkx graph
     - node_order (optional) is a list of nodes, where each node in G
@@ -47,3 +47,4 @@ def draw_adjacency_matrix(adj, node_order=None, partitions=[], colors=[]):
                                           edgecolor='#' + color,
                                           linewidth="1.5"))
             current_idx += len(module)
+    fig.savefig(output_file)

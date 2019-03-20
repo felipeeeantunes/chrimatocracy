@@ -2,9 +2,14 @@
 # # Exploring Brazil Plutocracy Network
 
 #%%
+
+from pathlib import Path
 import sys
 import os
-sys.path.append('../assets')
+parent_dir = Path().cwd()
+print((Path(parent_dir) / 'assets/'))
+sys.path.append(str(Path(parent_dir) / 'assets/'))
+
 import benford as bf
 import generative_model
 from adj_matrix import draw_adjacency_matrix, assignmentArray_to_lists
@@ -23,10 +28,10 @@ from collections import defaultdict
 
 
 #%%
-raw_data_path = '../raw_data/2014/'
-data_path     = '../data/'
-table_path    = '../tables/'
-figure_path   = '../figures/'
+raw_data_path = Path(parent_dir) / 'raw_data/2014/'
+data_path     = Path(parent_dir) / 'data/'
+table_path    = Path(parent_dir) / 'tables/'
+figure_path   = Path(parent_dir) / 'figures/'
 
 directories = [table_path, figure_path]
 
@@ -37,6 +42,17 @@ for directory in directories:
 
 #%%
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+mpl.use("pgf")
+pgf_with_pdflatex = {
+    "pgf.texsystem": "pdflatex",
+    "pgf.preamble": [
+         r"\usepackage[utf8x]{inputenc}",
+         r"\usepackage[T1]{fontenc}",
+         r"\usepackage{cmbright}",
+         ]
+}
+mpl.rcParams.update(pgf_with_pdflatex)
 #get_ipython().run_line_magic('matplotlib', 'inline')
 
 from IPython.display import set_matplotlib_formats
@@ -151,7 +167,7 @@ sns.set(style='whitegrid',rc=rc)
 #  'doador': 'id_donator_effective_cpf_cnpj'}
 
 #%%
-deputados_estaduais_corruptos_brasil = pd.read_csv(data_path + 'deputados_estaduais_corruptos_brasil.csv')
+deputados_estaduais_corruptos_brasil = pd.read_csv(data_path / 'deputados_estaduais_corruptos_brasil.csv')
 
 
 
@@ -206,8 +222,8 @@ tab_sector[tab_sector['Number of Candidates'] > 0.01*n_candidatos]
 
 #%%
 print("Donation Statistics by Economic Sector:\n", tab_sector[tab_sector['Number of Candidates'] > 0.01*n_candidatos])
-with open(table_path + 'deputado_estadual_statistics_by_sector__brasil.tex', 'w') as tf:
-     tf.write(tab_sector[tab_sector['Number of Candidates'] > 0.01*n_candidatos].to_latex())
+with open(table_path / 'deputado_estadual_statistics_by_sector__brasil.tex', 'w') as tf:
+     tf.write(tab_sector[tab_sector['Number of Candidates'] > 0.01*n_candidatos].to_latex(index=False))
 
 
 #%%
@@ -229,7 +245,6 @@ print('Corresponding to',  round(tab_sector['Total (R$)'][:3].sum()/total_donati
 g_companies        = deputados_estaduais_corruptos_brasil.groupby('cat_original_donator_name2').agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
 tab_companies      = g_companies.sort_values(by='num_donation_ammount', ascending=False).reset_index()
 
-
 #%%
 tab_companies["Total Ammont"] = tab_companies['num_donation_ammount'].apply(lambda x: x[0])
 tab_companies["Mean Ammount"] = tab_companies['num_donation_ammount'].apply(lambda x: x[1])
@@ -242,9 +257,9 @@ tab_companies.columns = ['Company Name', 'Number of Candidates', 'Number of Dona
 
 
 #%%
-print("Donation Statistics by Company\n",tab_companies[tab_companies['Number of Candidates'] > 0.01*n_candidatos].set_index('Company Name').head())
-with open(table_path + 'deputado_estadual_statistics_by_company__brasil.tex', 'w') as tf:
-     tf.write(tab_companies[tab_companies['Number of Candidates'] > 0.01*n_candidatos].set_index('Company Name').to_latex())
+print("Donation Statistics by Company\n",tab_companies[tab_companies['Number of Candidates'] > 0.01*n_candidatos])
+with open(table_path / 'deputado_estadual_statistics_by_company__brasil.tex', 'w') as tf:
+     tf.write(tab_companies[tab_companies['Number of Candidates'] > 0.01*n_candidatos].to_latex(index=False))
 
 
 #%%
@@ -285,16 +300,16 @@ tab_parties["Total Ammont"] = tab_parties['num_donation_ammount'].apply(lambda x
 tab_parties["Mean Ammount"] = tab_parties['num_donation_ammount'].apply(lambda x: x[1])
 tab_parties["Std  Ammount "]  = tab_parties['num_donation_ammount'].apply(lambda x: x[2])
 tab_parties.drop('num_donation_ammount', axis=1, inplace= True)
-
+tab_parties.reset_index()
 
 #%%
 tab_parties.columns = ['Party', 'Number of Companies', 'Number of Donations', 'Total (R$)','Mean (R$)', 'Standard Deviation (R$)' ]
 
 
 #%%
-print("Donation Statistics by Party\n",tab_parties.set_index('Party').head())
-with open(table_path + 'deputado_estadual_statistics_by_party__brasil.tex', 'w') as tf:
-     tf.write(tab_parties.set_index('Party').to_latex())
+print("Donation Statistics by Party\n",tab_parties)
+with open(table_path / 'deputado_estadual_statistics_by_party__brasil.tex', 'w') as tf:
+     tf.write(tab_parties.to_latex(index=False))
 
 
 #%%
@@ -333,11 +348,11 @@ tab_candidates.drop('num_donation_ammount', axis=1, inplace= True)
 
 
 #%%
-tab_candidates.columns = ['Candidate Name', 'Number of Companies', 'Number of Donations', 'Total (R$)','Mean (R$)', 'Standard Deviation (R$)' ]
+tab_candidates.columns = ['Candidate CPF', 'Number of Companies', 'Number of Donations', 'Total (R$)','Mean (R$)', 'Standard Deviation (R$)' ]
 
-print("Donation Statistics by Candidate\n",tab_candidates.set_index('Candidate Name').head())
-with open(table_path + 'deputado_estadual_statistics_by_candidate__brasil.tex', 'w') as tf:
-     tf.write(tab_candidates.to_latex())
+print("Donation Statistics by Candidate\n",tab_candidates)
+with open(table_path / 'deputado_estadual_statistics_by_candidate__brasil.tex', 'w') as tf:
+     tf.write(tab_candidates.to_latex(index=False))
 
 #%% [markdown]
 # # Parties donations' Network 
@@ -370,7 +385,7 @@ for donator in deputados_estaduais_corruptos_sp.id_donator_effective_cpf_cnpj.un
     cpf_pairs = list(itertools.combinations(rec,2))
     for cpf1, cpf2 in cpf_pairs:
         adj_sp.loc[cpf1, cpf2] += 1.0 
-adj_sp.to_csv(data_path + 'deputados_estaduais_corruptos_sp__adj_matrix.csv')       
+adj_sp.to_csv(data_path / 'deputados_estaduais_corruptos_sp__adj_matrix.csv')       
 
 #%%
 import igraph
@@ -465,7 +480,7 @@ for i in range(len(louvain_comms)):
     #cores.append('blue')
 
 #%%
-draw_adjacency_matrix(adj_sp, nodes_list, louvain_comms , colors=cores)
+draw_adjacency_matrix(adj_sp, nodes_list, louvain_comms , colors=cores, output_file = figure_path / 'deputados_estaduais_corrupts_sp__adj_matrix.pgf')
 
 #%% [markdown]
 # # Benford Law
@@ -495,7 +510,7 @@ benford_lv
 
 #%%
 deputados_estaduais_corruptos_sp.loc[:,"lv_community"] = deputados_estaduais_corruptos_sp.loc[:,"id_candidate_cpf"].map(louvain_community_dict)
-deputados_estaduais_corruptos_sp[["id_candidate_cpf","lv_community"]].to_csv(data_path + 'deputados_estaduais_corruptos_sp__communities.csv')
+deputados_estaduais_corruptos_sp[["id_candidate_cpf","lv_community"]].to_csv(data_path / 'deputados_estaduais_corruptos_sp__communities.csv')
 
 
 #%%
@@ -541,11 +556,11 @@ comunity_receita = deputados_estaduais_corruptos_sp.groupby('lv_community').agg(
 
 #%%
 benford_lv = bf.benford_digits_table(deputados_estaduais_corruptos_sp, 'lv_community')
-benford_lv.to_csv(data_path + 'deputados_estaduais_corruptos_sp__benford_law.csv')
+benford_lv.to_csv(data_path / 'deputados_estaduais_corruptos_sp__benford_law.csv')
 benford_lv_200 = benford_lv[benford_lv['N'] >= 200]
 print("Lei de Benford aplicada as doações:\n",benford_lv_200)
-with open(table_path + 'deputados_estaduais_corruptos_sp__benford_law__gt_200.tex', 'w') as tf:
-     tf.write(benford_lv_200.to_latex())
+with open(table_path / 'deputados_estaduais_corruptos_sp__benford_law__gt_200.tex', 'w') as tf:
+     tf.write(benford_lv_200.reset_index().rename(columns={'index':'Community'}).to_latex(index=False))
 
 
 #%% [markdown]
@@ -554,14 +569,14 @@ with open(table_path + 'deputados_estaduais_corruptos_sp__benford_law__gt_200.te
 # For each one of the n communities found, each containing m candidates, we fit a generative model with the data of each donation made whithin a given community to a given candidate. The amount of donation i in community j = {1, ..., n} to a candidade k, is determined by a random variable having the distribution generate by our artificial model.
 
 #%%
-""" df = deputados_estaduais_corruptos_sp[['lv_community','id_candidate_cpf','num_donation_ammount']].copy()
+df = deputados_estaduais_corruptos_sp[['lv_community','id_candidate_cpf','num_donation_ammount']].copy()
 n_donations = deputados_estaduais_corruptos_sp.groupby(['lv_community','id_candidate_cpf']).agg({'num_donation_ammount': lambda x: sum(x)})
 comus = list(n_donations.index.get_level_values('lv_community').unique())
 
 
 
 #%%
-with open(data_path + 'deputados_estaduais_corruptos_sp__gm_leiden_parameters.csv','w') as f1:
+with open(data_path / 'deputados_estaduais_corruptos_sp__gm_leiden_parameters.csv','w') as f1:
     writer=csv.writer(f1, delimiter=',',lineterminator='\n') 
     header = ['com', 'xmin', 'xmax', 'gamma', 'eta0']
     writer.writerow(header)
@@ -586,27 +601,27 @@ with open(data_path + 'deputados_estaduais_corruptos_sp__gm_leiden_parameters.cs
             for _idx in idx:
                 df.loc[_idx, 'num_donation_ammount'] = generative_model.drand_distr(gamma, eta0, csim=np.log(xmax), delt=np.log(0.005))
 
- """
+ 
 #%%
-""" df.to_csv(data_path + 'deputados_estaduais_corruptos_sp__gm_leiden_input.csv', index=False) """
-df = pd.read_csv(data_path + 'deputados_estaduais_corruptos_sp__gm_leiden_input.csv')
+df.to_csv(data_path / 'deputados_estaduais_corruptos_sp__gm_leiden_input.csv', index=False)
+df = pd.read_csv(data_path / 'deputados_estaduais_corruptos_sp__gm_leiden_input.csv')
 #%%
-parameters = pd.read_csv(data_path + 'deputados_estaduais_corruptos_sp__gm_leiden_parameters.csv')
+parameters = pd.read_csv(data_path / 'deputados_estaduais_corruptos_sp__gm_leiden_parameters.csv')
 parameters_200 = parameters.loc[benford_lv_200.index]
 print('Model Parameters', parameters_200)
-with open(table_path + 'deputados_estaduais_corruptos_sp__benford_law__gt_200__gm_parameters.tex', 'w') as tf:
-     tf.write(parameters_200.to_latex())
+with open(table_path / 'deputados_estaduais_corruptos_sp__benford_law__gt_200__gm_parameters.tex', 'w') as tf:
+     tf.write(parameters_200.reset_index().rename(columns={'index':'Community'}).to_latex(index=False))
 #%%
 benford_lv_gen = bf.benford_digits_table(df, 'lv_community')
 benford_lv_gen_200  = benford_lv_gen.loc[benford_lv_200.index]
 print('Benford Law Results expected by the model', benford_lv_gen_200)
-with open(table_path + 'deputados_estaduais_corruptos_sp__benford_law__gt_200__gm.tex', 'w') as tf:
-     tf.write(benford_lv_gen_200.to_latex())
+with open(table_path / 'deputados_estaduais_corruptos_sp__benford_law__gt_200__gm.tex', 'w') as tf:
+     tf.write(benford_lv_gen_200.reset_index().rename(columns={'index':'Community'}).to_latex(index=False))
 
 
 #%%
 # We can ask for ALL THE AXES and put them into axes
-fig, axes = plt.subplots(nrows=6, ncols=3, sharex=True, sharey=True, figsize=(18,32))
+fig, axes = plt.subplots(nrows=4, ncols=3, sharex=True, sharey=True, figsize=(18,32))
 axes_list = [item for sublist in axes for item in sublist] 
 
 for com in benford_lv_200.index:
@@ -649,7 +664,7 @@ for ax in axes_list:
 plt.tight_layout()
 plt.subplots_adjust(hspace=0.3)
 
-plt.savefig(figure_path + 'cdf_leiden_community_sp.png')
+plt.savefig(figure_path / 'deputados_estaduais_corruptos_sp__community_leiden_cdf.pgf')
 plt.show()
 
 
@@ -674,8 +689,8 @@ benf_out.loc[benf_divergence]
 # ### Comparing with CNEP and CEIS data.
 # - http://www.portaltransparencia.gov.br/download-de-dados/cnep
 # - http://www.portaltransparencia.gov.br/download-de-dados/ceis
-CNEP = pd.read_csv(data_path + '20190301_CNEP.csv')
-CEIS = pd.read_csv(data_path + '20190301_CEIS.csv')
+CNEP = pd.read_csv(data_path / '20190301_CNEP.csv')
+CEIS = pd.read_csv(data_path / '20190301_CEIS.csv')
 
 #%%
 cnpjs_sujos = CNEP['CPF OU CNPJ DO SANCIONADO'].append(
@@ -743,13 +758,13 @@ benford_lv = benford_lv.join(parameters)
 
 #%%
 print('Benford Law Results with dirty measure:', benford_lv)
-benford_lv.to_csv(data_path + 'deputados_estaduais_corruptos_sp__benford_law_dirty_donations.csv')
-with open(table_path + 'deputados_estaduais_corruptos_sp__benford_law_dirty_donations.tex', 'w') as tf:
-     tf.write(benford_lv.to_latex())
+benford_lv.to_csv(data_path / 'deputados_estaduais_corruptos_sp__benford_law_dirty_donations.csv')
+with open(table_path / 'deputados_estaduais_corruptos_sp__benford_law_dirty_donations.tex', 'w') as tf:
+     tf.write(benford_lv.reset_index().rename(columns={'index':'Community'}).to_latex(index=False))
 
 
 #%%
 print('Benford Law Results with dirty measure gt 200:', benford_lv[benford_lv_200.index])
-benford_lv.to_csv(data_path + 'deputados_estaduais_corruptos_sp__benford_law_dirty_donations.csv')
-with open(table_path + 'deputados_estaduais_corruptos_sp__benford_law_dirty_donations__gt_200.tex', 'w') as tf:
-     tf.write(benford_lv[benford_lv_200.index].to_latex())
+benford_lv.to_csv(data_path / 'deputados_estaduais_corruptos_sp__benford_law_dirty_donations__gt_200.csv')
+with open(table_path / 'deputados_estaduais_corruptos_sp__benford_law_dirty_donations__gt_200.tex', 'w') as tf:
+     tf.write( benford_lv[benford_lv_200.index].reset_index().rename(columns={'index':'Community'}).to_latex(index=False))

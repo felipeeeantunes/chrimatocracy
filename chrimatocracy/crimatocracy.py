@@ -1,24 +1,40 @@
-
-
 import sys
-sys.path.append('../assets')
+
+from pathlib import Path
+
+parent_dir = Path().cwd()
+print((Path(parent_dir) / 'assets/'))
+sys.path.append(str(Path(parent_dir) / 'assets/'))
 import benford as bf
 
 import pandas as pd
 
 import matplotlib.pyplot as plt
 from matplotlib import ticker
+import matplotlib as mpl
+mpl.use("pgf")
+pgf_with_pdflatex = {
+    "pgf.texsystem": "pdflatex",
+    "pgf.preamble": [
+         r"\usepackage[utf8x]{inputenc}",
+         r"\usepackage[T1]{fontenc}",
+         r"\usepackage{cmbright}",
+         ]
+}
+mpl.rcParams.update(pgf_with_pdflatex)
+
+
 
 import statsmodels.api as sm
 import numpy as np
 
-data_path     = '../data/'
-table_path    = '../tables/'
-figure_path   = '../figures/'
+data_path     = Path(parent_dir) / 'data/'
+table_path    = Path(parent_dir) / 'tables/'
+figure_path   = Path(parent_dir) / 'figures/'
 
 
-deputados_estaduais_corruptos_brasil = pd.read_csv(data_path + 'deputados_estaduais_corruptos_brasil.csv')
-votos_deputados_estaduais_deferidos  = pd.red_csv(data_path + 'votos_deputados_estaduais_deferidos.csv')
+deputados_estaduais_corruptos_brasil = pd.read_csv(data_path / 'deputados_estaduais_corruptos_brasil.csv')
+votos_deputados_estaduais_deferidos  = pd.red_csv(data_path / 'votos_deputados_estaduais_deferidos.csv')
 list_doador = deputados_estaduais_corruptos_brasil[u"id_candidate_cpf"].unique()
 none_donation = votos_deputados_estaduais_deferidos[votos_deputados_estaduais_deferidos['CPF_CANDIDATO'].isin(list_doador)==False]
 
@@ -47,12 +63,12 @@ merged_receitas = merged_receitas.append(none_donation)
 
 #%%
 g_merged_receitas = merged_receitas.groupby(['cat_election_state','id_candidate_cpf','SIGLA_UF_votes', 'NOME_CANDIDATO_votes',"COMPOSICAO_LEGENDA_votes","DESC_SIT_CAND_TOT"]).agg({"TOTAL_VOTOS":lambda x: sum(x)/len(x), 'num_donation_ammount':'sum'}).reset_index()
-g_merged_receitas.to_csv(data_path + "grouped_donations_brazil__dep_estadual.csv")
+g_merged_receitas.to_csv(data_path / "grouped_donations_brazil__dep_estadual.csv")
 
 del g_merged_receitas
 gc.collect()
 
-g_merged_receitas = pd.read_csv(data_path + "grouped_donations_brazil__dep_estadual.csv")
+g_merged_receitas = pd.read_csv(data_path / "grouped_donations_brazil__dep_estadual.csv")
 
 #%%
 sns.countplot(x='DESC_SIT_CAND_TOT', data=g_merged_receitas, color = "#1DACD6")
@@ -60,7 +76,7 @@ plt.xlabel("Situação")
 plt.ylabel("")
 plt.grid(False)
 plt.tight_layout()
-plt.savefig(figure_path + 'situacao_brazil__dep_estadual.png')
+plt.savefig(figure_path / 'situacao_brazil__dep_estadual.pgf')
 #%%
 
 #%% [markdown]
@@ -94,7 +110,7 @@ plt.ylabel("Probabilidade")
 plt.grid(False)
 plt.legend()
 plt.tight_layout()
-plt.savefig(figure_path + "benford_distribution_brazil__dep_estadual.png")
+plt.savefig(figure_path / "benford_distribution_brazil__dep_estadual.pgf")
 plt.show()
 
 #%% [markdown]

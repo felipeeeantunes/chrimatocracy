@@ -6,8 +6,11 @@
 import sys
 import gc
 import os
+from pathlib import Path
 
-sys.path.append('../assets')
+parent_dir = Path().cwd()
+print((Path(parent_dir) / 'assets/'))
+sys.path.append(str(Path(parent_dir) / 'assets/'))
 import benford as bf
 
 import pandas as pd
@@ -17,10 +20,10 @@ import numpy as np
 pd.options.display.float_format = '{:.2f}'.format
 
 #%%
-raw_data_path = '../raw_data/2014/'
-data_path     = '../data/'
-table_path    = '../tables/'
-figure_path   = '../figures/'
+raw_data_path = Path(parent_dir) / 'raw_data/2014/'
+data_path     = Path(parent_dir) / 'data/'
+table_path    = Path(parent_dir) / 'tables/'
+figure_path   = Path(parent_dir) / 'figures/'
 
 directories = [table_path, figure_path]
 
@@ -31,6 +34,17 @@ for directory in directories:
 
 #%%
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+mpl.use("pgf")
+pgf_with_pdflatex = {
+    "pgf.texsystem": "pdflatex",
+    "pgf.preamble": [
+         r"\usepackage[utf8x]{inputenc}",
+         r"\usepackage[T1]{fontenc}",
+         r"\usepackage{cmbright}",
+         ]
+}
+mpl.rcParams.update(pgf_with_pdflatex)
 #get_ipython().run_line_magic('matplotlib', 'inline')
 
 rc={'savefig.dpi': 75, 'figure.autolayout': False, 'figure.figsize': [12, 8], 'axes.labelsize': 18,   'axes.titlesize': 18, 'font.size': 18, 'lines.linewidth': 2.0, 'lines.markersize': 8, 'legend.fontsize': 16,   'xtick.labelsize': 16, 'ytick.labelsize': 16}
@@ -45,9 +59,9 @@ data_types = {
     'id_donator_effective_cpf_cnpj':str
     }
 
-comites_brasil    = pd.read_csv(data_path + "receitas_comites_2014_brasil_english.csv", dtype = data_types)
-partidos_brasil   = pd.read_csv(data_path + "receitas_partidos_2014_brasil_english.csv", dtype = data_types)
-corruptos_brasil  = pd.read_csv(data_path + "receitas_candidatos_2014_brasil_english.csv", dtype = data_types)
+comites_brasil    = pd.read_csv(data_path / "receitas_comites_2014_brasil_english.csv", dtype = data_types)
+partidos_brasil   = pd.read_csv(data_path / "receitas_partidos_2014_brasil_english.csv", dtype = data_types)
+corruptos_brasil  = pd.read_csv(data_path / "receitas_candidatos_2014_brasil_english.csv", dtype = data_types)
 
 #%% [markdown]
 # #### Partidos
@@ -155,7 +169,7 @@ print("Valor: R$",'%.1e' % unknow_com['num_donation_ammount'].sum())
 
 #%%
 deputados_estaduais_corruptos_brasil = corruptos_brasil[(corruptos_brasil['cat_political_office'] == "Deputado Estadual")]
-deputados_estaduais_corruptos_brasil.to_csv(data_path + 'deputados_estaduais_corruptos_brasil.csv', index=False)
+deputados_estaduais_corruptos_brasil.to_csv(data_path / 'deputados_estaduais_corruptos_brasil.csv', index=False)
 
 print("Cargos filtrados:", deputados_estaduais_corruptos_brasil['cat_political_office'].unique())
 
@@ -226,9 +240,9 @@ print("Valor: R$",'%.1e' % unknow['num_donation_ammount'].sum())
 #%%
 stats_donations = pd.DataFrame(deputados_estaduais_corruptos_brasil['num_donation_ammount'].describe()).T.append(pd.DataFrame(deputados_estaduais_corruptos_brasil[deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].str.len() == 14]['num_donation_ammount'].describe()).T.append(pd.DataFrame(deputados_estaduais_corruptos_brasil[deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].str.len() == 11]['num_donation_ammount'].describe()).T))
 stats_donations.index = ['Todos','CNPJ','CPF']
-stats_donations.columns = ['N', 'Média', 'DP', 'Min', '25%', "50%", '75%', 'Max']
+stats_donations.columns = ['N', 'Mean', 'Std', 'Min', '25%', "50%", '75%', 'Max']
 print("Estatistica das Doações:\n", stats_donations)
-with open(table_path + 'deputado_estadual_donation_statistics__brasil_.tex', 'w') as tf:
+with open(table_path / 'deputado_estadual_donation_statistics__brasil_.tex', 'w') as tf:
      tf.write(stats_donations.to_latex())
 
 
@@ -251,7 +265,7 @@ plt.title("Todos")
 #plt.legend()
 plt.grid(False)
 plt.tight_layout()
-plt.savefig(figure_path + 'cdf_brazil_donations__dep_estadual_cpf_cnpj.png')
+plt.savefig(figure_path / 'cdf_brazil_donations__dep_estadual_cpf_cnpj.pgf')
 
 
 #%%
@@ -270,7 +284,7 @@ plt.title("Pessoa Jurídica")
 #plt.legend()
 plt.grid(False)
 plt.tight_layout()
-plt.savefig(figure_path + 'cdf_brazil_donations___dep_estadual_cnpj.png')
+plt.savefig(figure_path / 'cdf_brazil_donations___dep_estadual_cnpj.pgf')
 
 
 #%%
@@ -289,7 +303,7 @@ plt.title("Pessoa Física")
 #plt.legend()
 plt.grid(False)
 plt.tight_layout()
-plt.savefig(figure_path + 'cdf_brazil_donations___dep_estadual_cpf.png')
+plt.savefig(figure_path / 'cdf_brazil_donations___dep_estadual_cpf.pgf')
 
 #%% [markdown]
 # Somamos os valores provenientes de um mesmo doador para um dado candidato (mais de uma doação ou repasse de doações oriundas desse doador)
@@ -298,7 +312,7 @@ plt.savefig(figure_path + 'cdf_brazil_donations___dep_estadual_cpf.png')
 g_deputados_estaduais_corruptos_brasil = deputados_estaduais_corruptos_brasil.groupby([u'id_candidate_cpf', 'id_donator_effective_cpf_cnpj','cat_party', 'cat_political_office', 'cat_election_state']).agg({'num_donation_ammount': 'sum'})
 g_deputados_estaduais_corruptos_brasil = pd.DataFrame(g_deputados_estaduais_corruptos_brasil)
 g_deputados_estaduais_corruptos_brasil = g_deputados_estaduais_corruptos_brasil.reset_index()
-g_deputados_estaduais_corruptos_brasil.to_csv(data_path + 'total_agrupado_deputados_estaduais_corruptos_brasil.csv', index=False)
+g_deputados_estaduais_corruptos_brasil.to_csv(data_path / 'total_agrupado_deputados_estaduais_corruptos_brasil.csv', index=False)
 
 #%%
 print("Número de empresas que doaram, direta ou indiretamente, para candidatos",g_deputados_estaduais_corruptos_brasil[g_deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].str.len()==14]['num_donation_ammount'].count())
@@ -318,7 +332,7 @@ plt.yscale('log')
 plt.xticks(rotation=90)
 plt.grid(False)
 plt.tight_layout()
-plt.savefig(figure_path + "boxplot_donations__dep_estadual_by_party.pdf")
+plt.savefig(figure_path / "boxplot_donations__dep_estadual_by_party.pgf")
 
 #%% [markdown]
 # ##  Informações sobre a votação e o perfil dos candidatos
@@ -326,18 +340,18 @@ plt.savefig(figure_path + "boxplot_donations__dep_estadual_by_party.pdf")
 # A tabela de candidatos possui informações sobre o perfil dos candidatos,tais como raça, escolaridade, estado civil,
 # além das informações relacionadas às eleições.  Além disso, para associarmos a lista de votação à lista de doações, precisamos da informação sobre o CPF, que só consta na tabela de candidatos. Esse mapeamento somente pode ser feito através da sequencial, constante tanto na tabela de candidatos quando na de votos. 
 
-candidatos_brasil = pd.read_csv(data_path + 'consulta_cand_2014_full.csv')
+candidatos_brasil = pd.read_csv(data_path / 'consulta_cand_2014_full.csv')
 #%% [markdown]
 # Filtramos candidatos para os cargos estudos, cuja candidatura foi deferida
 
 #%%
-candidatos_deputado_estadual_indeferidos = pd.read_csv(data_path + 'candidatos_deputado_estadual_indeferidos.csv')
+candidatos_deputado_estadual_indeferidos = pd.read_csv(data_path / 'candidatos_deputado_estadual_indeferidos.csv')
 print("Cargos:", candidatos_deputado_estadual_indeferidos["DESCRICAO_CARGO"].unique())
 print("Número de canidatos indeferidos",candidatos_deputado_estadual_indeferidos["SEQUENCIAL_CANDIDATO"].nunique())     
 
 
 #%%
-candidatos_deputado_estadual_deferidos = pd.read_csv(data_path + 'candidatos_deputado_estadual_deferidos.csv')
+candidatos_deputado_estadual_deferidos = pd.read_csv(data_path / 'candidatos_deputado_estadual_deferidos.csv')
 print("Cargos:", candidatos_deputado_estadual_deferidos["DESCRICAO_CARGO"].unique())
 print("Número de candidatos deferidos",candidatos_deputado_estadual_deferidos["SEQUENCIAL_CANDIDATO"].nunique())     
 
@@ -351,16 +365,16 @@ print("Número de candidatos na lista:",len(list_cand))
 
 #%% [markdown]
 # A tabela de votos possui informação sobre os dados apurados da votação, no primeiro e segundo turno, em cada munício, além de informações eleitorias.
-votos_brasil = pd.read_csv(data_path + 'votacao_candidato_munzona_2014_full.csv')
+votos_brasil = pd.read_csv(data_path / 'votacao_candidato_munzona_2014_full.csv')
 
 #%%
-votos_deputados_estaduais_indeferidos = pd.read_csv(data_path + 'votos_deputados_estaduais_indeferidos.csv')
+votos_deputados_estaduais_indeferidos = pd.read_csv(data_path / 'votos_deputados_estaduais_indeferidos.csv')
 print("Cargos:", votos_deputados_estaduais_indeferidos["DESCRICAO_CARGO"].unique())
 print("Número de candidatos indeferidos",votos_deputados_estaduais_indeferidos["SQ_CANDIDATO"].nunique())                       
 
 
 #%%
-votos_deputados_estaduais_deferidos = pd.read_csv(data_path + 'votos_deputados_estaduais_deferidos.csv')
+votos_deputados_estaduais_deferidos = pd.read_csv(data_path / 'votos_deputados_estaduais_deferidos.csv')
 print("Cargos:", votos_deputados_estaduais_deferidos["DESCRICAO_CARGO"].unique())
 print("Número de candidatos deferidos",votos_deputados_estaduais_deferidos["SQ_CANDIDATO"].nunique()) 
 
@@ -373,7 +387,7 @@ print("Número de candidatos deferidos",votos_deputados_estaduais_deferidos["SQ_
 # Vamos user uma tabela contendo informações do canditato, com o número de votos por munícipio somados.
 
 #%%
-votacao_candidato_deputado_estadual = pd.read_csv(data_path + "votacao_candidato_deputado_estadual_deferidos_soma_municipios.csv")
+votacao_candidato_deputado_estadual = pd.read_csv(data_path / "votacao_candidato_deputado_estadual_deferidos_soma_municipios.csv")
 
 #%% [markdown]
 # Aqui é interessante comparar alguns números com os obtidos por outra fonte de informação, obtida em 
@@ -381,7 +395,7 @@ votacao_candidato_deputado_estadual = pd.read_csv(data_path + "votacao_candidato
 # 
 
 #%%
-votacao_candidato_deputado_estadual_tse = pd.read_csv(raw_data_path + '/tse_votacao/resultado_dep_estadual.csv', encoding="ISO-8859-1", sep=';', na_values = '#NULO', usecols  = ["Candidato", "Votação", "Situação"])
+votacao_candidato_deputado_estadual_tse = pd.read_csv(raw_data_path / 'tse_votacao/resultado_dep_estadual.csv', encoding="ISO-8859-1", sep=';', na_values = '#NULO', usecols  = ["Candidato", "Votação", "Situação"])
 print("Número de candidatos:",votacao_candidato_deputado_estadual_tse["Candidato"].nunique()) 
 print("Número de candidatos eleitos:",  votacao_candidato_deputado_estadual_tse["Situação"][votacao_candidato_deputado_estadual_tse["Situação"].isin(["Eleito por QP", "Eleito por média"])].count())
 

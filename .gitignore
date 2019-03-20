@@ -1,5 +1,8 @@
 raw_data/*
-.vscode/*
+.vscode
 *.txt
 .dropbox
 *.csv
+__pycache__*
+*.tex
+desktop.ini
