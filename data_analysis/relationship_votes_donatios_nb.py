@@ -75,21 +75,21 @@ print("Número de partidos que receberam doações:", partidos_brasil['cat_party
 
 
 #%%
-diretas_part_pj = partidos_brasil[(partidos_brasil[u'id_original_donator_cpf_cnpj'].isnull()) & (partidos_brasil[u'id_donator_cpf_cnpj'].str.len() == 14)]
+diretas_part_pj = partidos_brasil[(partidos_brasil[u'id_original_donator_cpf_cnpj'].isnull()) & (partidos_brasil[u'id_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 14)]
 
 print("Número de doações diretas de empresas a partidos:",diretas_part_pj['cat_party'].count())
 print("Valor: R$",'%.1e' % diretas_part_pj['num_donation_ammount'].sum())
 
 
 #%%
-diretas_part_pf = partidos_brasil[(partidos_brasil[u'id_original_donator_cpf_cnpj'].isnull()) & (partidos_brasil[u'id_donator_cpf_cnpj'].str.len() == 11)]
+diretas_part_pf = partidos_brasil[(partidos_brasil[u'id_original_donator_cpf_cnpj'].isnull()) & (partidos_brasil[u'id_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 11)]
 
 print("Número de doações diretas de indivíduos a partidos:",diretas_part_pf['cat_party'].count())
 print("Valor: R$",'%.1e' % diretas_part_pf['num_donation_ammount'].sum())
 
 
 #%%
-indiretas_part_pj = partidos_brasil[(partidos_brasil[u'id_original_donator_cpf_cnpj'].str.len() == 14) & (partidos_brasil[u'id_donator_cpf_cnpj'].str.len() == 14)]
+indiretas_part_pj = partidos_brasil[(partidos_brasil[u'id_original_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 14) & (partidos_brasil[u'id_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 14)]
 
 
 print("Número de doações indiretas provenientes de empresas a partidos:",indiretas_part_pj['cat_party'].count())
@@ -97,7 +97,7 @@ print("Valor: R$",'%.1e' % indiretas_part_pj['num_donation_ammount'].sum())
 
 
 #%%
-indiretas_part_pf = partidos_brasil[(partidos_brasil[u'id_original_donator_cpf_cnpj'].str.len() == 11) & (partidos_brasil[u'id_donator_cpf_cnpj'].str.len() == 14)]
+indiretas_part_pf = partidos_brasil[(partidos_brasil[u'id_original_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 11) & (partidos_brasil[u'id_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 14)]
 
 print("Número de doações indiretas provenientes de individuos a partidos:",indiretas_part_pf['cat_party'].count())
 print("Valor: R$",'%.1e' % indiretas_part_pf['num_donation_ammount'].sum())
@@ -126,22 +126,22 @@ print("Número de comites que receberam doações:",comites_brasil['id_commitee_
 
 
 #%%
-diretas_com_pj = comites_brasil[(comites_brasil[u'id_original_donator_cpf_cnpj'].isnull()) & (comites_brasil[u'id_donator_cpf_cnpj'].str.len() == 14)]
+diretas_com_pj = comites_brasil[(comites_brasil[u'id_original_donator_cpf_cnpj'].isnull()) & (comites_brasil[u'id_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 14)]
 
 print("Número de doações diretas de empresas a comites:",diretas_com_pj['id_commitee_seq'].count())
 print("Valor: R$",'%.1e' % diretas_com_pj['num_donation_ammount'].sum())
 
 
 #%%
-diretas_com_pf = comites_brasil[(comites_brasil[u'id_original_donator_cpf_cnpj'].isnull()) & (comites_brasil[u'id_donator_cpf_cnpj'].str.len() == 11)]
+diretas_com_pf = comites_brasil[(comites_brasil[u'id_original_donator_cpf_cnpj'].isnull()) & (comites_brasil[u'id_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 11)]
 
 print("Número de doações diretas de indivíduos a comites:",diretas_com_pf['id_commitee_seq'].count())
 print("Valor: R$",'%.1e' % diretas_com_pf['num_donation_ammount'].sum())
 
 
 #%%
-indiretas_com_pj = comites_brasil[(comites_brasil[u'id_original_donator_cpf_cnpj'].str.len() == 14) 
-                                  & (comites_brasil[u'id_donator_cpf_cnpj'].str.len() == 14)]
+indiretas_com_pj = comites_brasil[(comites_brasil[u'id_original_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 14) 
+                                  & (comites_brasil[u'id_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 14)]
 
 
 print("Número de doações indiretas provenientes de empresas a comites:",indiretas_com_pj['id_commitee_seq'].count())
@@ -149,8 +149,8 @@ print("Valor: R$",'%.1e' % indiretas_com_pj['num_donation_ammount'].sum())
 
 
 #%%
-indiretas_com_pf = comites_brasil[(comites_brasil[u'id_original_donator_cpf_cnpj'].str.len() == 11) 
-                                  & (comites_brasil[u'id_donator_cpf_cnpj'].str.len() == 14)]
+indiretas_com_pf = comites_brasil[(comites_brasil[u'id_original_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 11) 
+                                  & (comites_brasil[u'id_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 14)]
 
 print("Número de doações indiretas provenientes de individuos a comites:",indiretas_com_pf['id_commitee_seq'].count())
 print("Valor: R$",'%.1e' % indiretas_com_pf['num_donation_ammount'].sum())
@@ -184,7 +184,7 @@ print("Número de candidatos que receberam doações:",deputados_estaduais_corru
 
 #%%
 diretas_pj = deputados_estaduais_corruptos_brasil[(deputados_estaduais_corruptos_brasil[u'id_original_donator_cpf_cnpj'].isnull()) 
-                           & (deputados_estaduais_corruptos_brasil[u'id_donator_cpf_cnpj'].str.len() == 14)]
+                           & (deputados_estaduais_corruptos_brasil[u'id_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 14)]
 
 print("Número de doações diretas de empresas:",diretas_pj["id_candidate_cpf"].count())
 print("Valor: R$",'%.1e' % diretas_pj['num_donation_ammount'].sum())
@@ -192,23 +192,23 @@ print("Valor: R$",'%.1e' % diretas_pj['num_donation_ammount'].sum())
 
 #%%
 diretas_pf = deputados_estaduais_corruptos_brasil[(deputados_estaduais_corruptos_brasil[u'id_original_donator_cpf_cnpj'].isnull()) 
-                           & (deputados_estaduais_corruptos_brasil[u'id_donator_cpf_cnpj'].str.len() == 11)]
+                           & (deputados_estaduais_corruptos_brasil[u'id_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 11)]
 
 print("Número de doações diretas de indivíduos:",diretas_pf["id_candidate_cpf"].count())
 print("Valor: R$",'%.1e' % diretas_pf['num_donation_ammount'].sum())
 
 
 #%%
-indiretas_pj = deputados_estaduais_corruptos_brasil[(deputados_estaduais_corruptos_brasil[u'id_original_donator_cpf_cnpj'].str.len() == 14) 
-                             & (deputados_estaduais_corruptos_brasil[u'id_donator_cpf_cnpj'].str.len() == 14)]
+indiretas_pj = deputados_estaduais_corruptos_brasil[(deputados_estaduais_corruptos_brasil[u'id_original_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 14) 
+                             & (deputados_estaduais_corruptos_brasil[u'id_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 14)]
 
 print("Número de doações indiretas provenientes de empresas:",indiretas_pj["id_candidate_cpf"].count())
 print("Valor: R$",'%.1e' % indiretas_pj['num_donation_ammount'].sum())
 
 
 #%%
-indiretas_pf = deputados_estaduais_corruptos_brasil[(deputados_estaduais_corruptos_brasil[u'id_original_donator_cpf_cnpj'].str.len() == 11) 
-                             & (deputados_estaduais_corruptos_brasil[u'id_donator_cpf_cnpj'].str.len() == 14)]
+indiretas_pf = deputados_estaduais_corruptos_brasil[(deputados_estaduais_corruptos_brasil[u'id_original_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 11) 
+                             & (deputados_estaduais_corruptos_brasil[u'id_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 14)]
 
 print("Número de doações indiretas provenientes de individuos:",indiretas_pf["id_candidate_cpf"].count())
 print("Valor: R$",'%.1e' % indiretas_pf['num_donation_ammount'].sum())
@@ -216,7 +216,7 @@ print("Valor: R$",'%.1e' % indiretas_pf['num_donation_ammount'].sum())
 
 #%%
 indiretas_teste = deputados_estaduais_corruptos_brasil[(deputados_estaduais_corruptos_brasil[u'id_original_donator_cpf_cnpj'].isnull() == False) 
-                                & (deputados_estaduais_corruptos_brasil[u'id_donator_cpf_cnpj'].str.len() == 11)]
+                                & (deputados_estaduais_corruptos_brasil[u'id_donator_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 11)]
 
 
 print("Número de doações com intermediário sendo uma pessoa física",indiretas_teste["id_candidate_cpf"].count())
@@ -238,7 +238,7 @@ print("Valor: R$",'%.1e' % unknow['num_donation_ammount'].sum())
 # Estatística básica das doações
 
 #%%
-stats_donations = pd.DataFrame(deputados_estaduais_corruptos_brasil['num_donation_ammount'].describe()).T.append(pd.DataFrame(deputados_estaduais_corruptos_brasil[deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].str.len() == 14]['num_donation_ammount'].describe()).T.append(pd.DataFrame(deputados_estaduais_corruptos_brasil[deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].str.len() == 11]['num_donation_ammount'].describe()).T))
+stats_donations = pd.DataFrame(deputados_estaduais_corruptos_brasil['num_donation_ammount'].describe()).T.append(pd.DataFrame(deputados_estaduais_corruptos_brasil[deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 14]['num_donation_ammount'].describe()).T.append(pd.DataFrame(deputados_estaduais_corruptos_brasil[deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 11]['num_donation_ammount'].describe()).T))
 stats_donations.index = ['Todos','CNPJ','CPF']
 stats_donations.columns = ['N', 'Mean', 'Std', 'Min', '25%', "50%", '75%', 'Max']
 print("Estatistica das Doações:\n", stats_donations)
@@ -273,7 +273,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # method 1
-H2,X2 = np.histogram( np.log10(deputados_estaduais_corruptos_brasil[deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].str.len() == 14]['num_donation_ammount']),  density=True )
+H2,X2 = np.histogram( np.log10(deputados_estaduais_corruptos_brasil[deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 14]['num_donation_ammount']),  density=True )
 dx2 = X2[1] - X2[0]
 F2 = np.cumsum(H2)*dx2
 plt.plot(X2[1:], F2, c='#1DACD6', linestyle='-')
@@ -292,7 +292,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # method 1
-H2,X2 = np.histogram( np.log10(deputados_estaduais_corruptos_brasil[deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].str.len() == 11]['num_donation_ammount']), density=True )
+H2,X2 = np.histogram( np.log10(deputados_estaduais_corruptos_brasil[deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].astype(str).apply(lambda x: len(x)) == 11]['num_donation_ammount']), density=True )
 dx2 = X2[1] - X2[0]
 F2 = np.cumsum(H2)*dx2
 plt.plot(X2[1:], F2, c='#1DACD6', linestyle='-')
@@ -315,13 +315,13 @@ g_deputados_estaduais_corruptos_brasil = g_deputados_estaduais_corruptos_brasil.
 g_deputados_estaduais_corruptos_brasil.to_csv(data_path / 'total_agrupado_deputados_estaduais_corruptos_brasil.csv', index=False)
 
 #%%
-print("Número de empresas que doaram, direta ou indiretamente, para candidatos",g_deputados_estaduais_corruptos_brasil[g_deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].str.len()==14]['num_donation_ammount'].count())
-print("Valor: R$",'%.1e' % g_deputados_estaduais_corruptos_brasil[g_deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].str.len()==14]['num_donation_ammount'].sum())
+print("Número de empresas que doaram, direta ou indiretamente, para candidatos",g_deputados_estaduais_corruptos_brasil[g_deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].astype(str).apply(lambda x: len(x))==14]['num_donation_ammount'].count())
+print("Valor: R$",'%.1e' % g_deputados_estaduais_corruptos_brasil[g_deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].astype(str).apply(lambda x: len(x))==14]['num_donation_ammount'].sum())
 
 
 #%%
-print("Número de indivíduos que doaram, direta ou indiretamente, para candidatos",g_deputados_estaduais_corruptos_brasil[g_deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].str.len()==11]['num_donation_ammount'].count())
-print("Valor: R$",'%.1e' % g_deputados_estaduais_corruptos_brasil[g_deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].str.len()==11]['num_donation_ammount'].sum())
+print("Número de indivíduos que doaram, direta ou indiretamente, para candidatos",g_deputados_estaduais_corruptos_brasil[g_deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].astype(str).apply(lambda x: len(x))==11]['num_donation_ammount'].count())
+print("Valor: R$",'%.1e' % g_deputados_estaduais_corruptos_brasil[g_deputados_estaduais_corruptos_brasil[ 'id_donator_effective_cpf_cnpj'].astype(str).apply(lambda x: len(x))==11]['num_donation_ammount'].sum())
 
 #%% [markdown]
 # Box-plot do valor das doações em escala logaritmica, feitas para candidatos, agregadas por partido. Os valores abragem aproximadamente 7 escalas de grandeza mas possuem valores médios similares.

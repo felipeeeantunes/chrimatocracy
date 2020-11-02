@@ -291,7 +291,7 @@ top_3_companies = ['JBS S/A',
 
 #%%
 donator_top3_companies = deputados_estaduais_corruptos_brasil[deputados_estaduais_corruptos_brasil['cat_original_donator_name2'].isin(top_3_companies)]
-g_parties       = donator_top3_companies.groupby('cat_party').agg({'cat_original_donator_name2': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
+g_parties        = donator_top3_companies.groupby('cat_party').agg({'cat_original_donator_name2': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
 tab_parties      = g_parties.sort_values(by='num_donation_ammount', ascending=False).reset_index()
 
 
@@ -398,9 +398,14 @@ G_SP.es['weight'] = A[A.nonzero()]
 G_SP.vs['label'] = adj_sp.index  # or a.index/a.columns
 
 part_sp = louvain.find_partition(G_SP, louvain.ModularityVertexPartition, weights='weight')
-print('Partitions Summary:', part_sp.summary())
-print('Quality: ', part_sp.quality())
-print('Modularity: ', part_sp.modularity)
+p_summary = part_sp.summary()
+p_quality = part_sp.quality()
+p_modularity = part_sp.modularity
+g_n_vertices =  G_SP.vcount()
+g_n_edges    =  G_SP.ecount()
+g_avg_degree = np.mean(G_SP.degree())
+
+
 G_SP.vs['community'] = part_sp.membership
 #%%
 #Simple check
@@ -408,10 +413,22 @@ df_from_g = pd.DataFrame(G_SP.get_adjacency(attribute='weight').data,
                          columns=G_SP.vs['label'], index=G_SP.vs['label'])
 (df_from_g == adj_sp).all().all() 
 #%%
-print('Number of vertices (nodes):', G_SP.vcount())
-print('Number of edges:', G_SP.ecount())
-print('Average Degree:', np.mean(G_SP.degree()))
+print('Partitions Summary:', p_summary)
+print('Quality: ', p_quality)
+print('Modularity: ', p_modularity)
+print('Number of vertices (nodes):', g_n_vertices)
+print('Number of edges:', g_n_edges)
+print('Average Degree:', g_avg_degree)
 
+pd.DataFrame.from_dict({'Partitions Summary': [p_summary], 
+              'Quality': [p_quality],
+              'Modularity':[p_modularity]}
+              ).to_csv(data_path / 'deputados_estaduais_corruptos_sp__partition_summary.csv')
+
+pd.DataFrame.from_dict({'Number of vertices (nodes)':[g_n_vertices], 
+              'Number of edges':[g_n_edges],
+              'Average Degree': [g_avg_degree]}
+              ).to_csv(data_path / 'deputados_estaduais_corruptos_sp__network_summary.csv')
 
 #%% [markdown]
 # ## Community Detection
@@ -578,7 +595,7 @@ comus = list(n_donations.index.get_level_values('lv_community').unique())
 #%%
 with open(data_path / 'deputados_estaduais_corruptos_sp__gm_leiden_parameters.csv','w') as f1:
     writer=csv.writer(f1, delimiter=',',lineterminator='\n') 
-    header = ['com', 'xmin', 'xmax', 'gamma', 'eta0']
+    header = ['xmin', 'xmax', 'gamma', 'eta0']
     writer.writerow(header)
     for comu in comus:
         cpfs = list(df.loc[df.lv_community == comu, 'id_candidate_cpf'].unique())
@@ -588,7 +605,7 @@ with open(data_path / 'deputados_estaduais_corruptos_sp__gm_leiden_parameters.cs
         result = generative_model.maxLKHD_distr(X.values, gamma=1., csi0=1, csim=np.log(xmax), delt=np.log(0.005))
         gamma = result[0]
         eta0 = result[1]
-        row = [comu, xmin, xmax, gamma, eta0]
+        row = [xmin, xmax, gamma, eta0]
         writer.writerow(row)
         print('Comunidade: ',comu)
         print('---------------------')
@@ -751,6 +768,11 @@ benford_lv = benford_lv.join(comunidades_total_sujo)
 comunidades_total_doacoes = deputados_estaduais_corruptos_sp.groupby('lv_community').agg({'num_donation_ammount':sum})
 comunidades_total_doacoes.columns = ['Total Amount']
 benford_lv = benford_lv.join(comunidades_total_doacoes)
+#%%
+#Soma das doacoes na comunidade:
+comunidades_numero_candidatos = deputados_estaduais_corruptos_sp.groupby('lv_community').agg({'num_donation_ammount':count})
+comunidades_numero_candidatos.columns = ['Number of Candidates']
+benford_lv = benford_lv.join(comunidades_numero_candidatos)
 
 #%%
 #Parametros da comunidade:
