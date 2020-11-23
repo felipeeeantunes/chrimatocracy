@@ -167,216 +167,214 @@ sns.set(style='whitegrid',rc=rc)
 #  'doador': 'id_donator_effective_cpf_cnpj'}
 
 #%%
-deputados_estaduais_corruptos_brasil = pd.read_csv(data_path / 'deputados_estaduais_corruptos_brasil.csv')
+for role in roles:
+    candidatos = pd.read_csv(data_path / f'brazil_2014_{role}_donations_candidates.csv')
 
+    #%%
+    n_candidatos    = candidatos['id_candidate_cpf'].nunique()
+    n_doacoes       = candidatos.shape[0]
+    tot_doacoes     = candidatos['num_donation_ammount'].sum()
+    g_canditato     = candidatos.groupby('id_candidate_cpf').agg({'id_election': lambda x: len(x),'num_donation_ammount': lambda x: x.sum()  })
+    g_especie       = candidatos.groupby('cat_donation_method').agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount': sum  })
+    g_setor         = candidatos.groupby('cat_original_donator_economic_sector').agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
+    g_uf            = candidatos.groupby('cat_election_state').agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount': sum  })
+    g_partido       = candidatos.groupby('cat_party').agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount': sum  })
+    g_setor_uf      = candidatos.groupby(['cat_original_donator_economic_sector','cat_election_state']).agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
+    g_setor_partido = candidatos.groupby(['cat_party','cat_original_donator_economic_sector']).agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount': sum  })
 
 
 
-#%%
-n_candidatos    = deputados_estaduais_corruptos_brasil['id_candidate_cpf'].nunique()
-n_doacoes       = deputados_estaduais_corruptos_brasil.shape[0]
-tot_doacoes     = deputados_estaduais_corruptos_brasil['num_donation_ammount'].sum()
-g_canditato     = deputados_estaduais_corruptos_brasil.groupby('id_candidate_cpf').agg({'id_election': lambda x: len(x),'num_donation_ammount': lambda x: x.sum()  })
-g_especie       = deputados_estaduais_corruptos_brasil.groupby('cat_donation_method').agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount': sum  })
-g_setor         = deputados_estaduais_corruptos_brasil.groupby('cat_original_donator_economic_sector').agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
-g_uf            = deputados_estaduais_corruptos_brasil.groupby('cat_election_state').agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount': sum  })
-g_partido       = deputados_estaduais_corruptos_brasil.groupby('cat_party').agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount': sum  })
-g_setor_uf      = deputados_estaduais_corruptos_brasil.groupby(['cat_original_donator_economic_sector','cat_election_state']).agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
-g_setor_partido = deputados_estaduais_corruptos_brasil.groupby(['cat_party','cat_original_donator_economic_sector']).agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount': sum  })
+    #%% [markdown]
+    # The donations cover unniformily seven orders of magnitude
+    #%% [markdown]
+    # ## How different economic sectors donate? 
 
+    #%%
+    g_sector         = candidatos.groupby('cat_original_donator_economic_sector').agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
+    tab_sector       = g_sector.sort_values(by='num_donation_ammount', ascending=False).reset_index()
 
 
-#%% [markdown]
-# The donations cover unniformily seven orders of magnitude
-#%% [markdown]
-# ## How different economic sectors donate? 
+    #%%
+    tab_sector
 
-#%%
-g_sector         = deputados_estaduais_corruptos_brasil.groupby('cat_original_donator_economic_sector').agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
-tab_sector       = g_sector.sort_values(by='num_donation_ammount', ascending=False).reset_index()
 
+    #%%
+    tab_sector["Total Ammont"] = tab_sector['num_donation_ammount'].apply(lambda x: x[0])
+    tab_sector["Mean Ammount"] = tab_sector['num_donation_ammount'].apply(lambda x: x[1])
+    tab_sector["Std  Ammount "]  = tab_sector['num_donation_ammount'].apply(lambda x: x[2])
+    tab_sector.drop('num_donation_ammount', axis=1, inplace= True)
 
-#%%
-tab_sector
 
+    #%%
+    tab_sector.columns = ['Economic Sector', 'Number of Candidates', 'Number of Donations', 'Total (R$)','Mean (R$)', 'Standard Deviation (R$)' ]
 
-#%%
-tab_sector["Total Ammont"] = tab_sector['num_donation_ammount'].apply(lambda x: x[0])
-tab_sector["Mean Ammount"] = tab_sector['num_donation_ammount'].apply(lambda x: x[1])
-tab_sector["Std  Ammount "]  = tab_sector['num_donation_ammount'].apply(lambda x: x[2])
-tab_sector.drop('num_donation_ammount', axis=1, inplace= True)
 
+    #%%
+    n_donations     = tab_sector['Number of Donations'].sum()
+    total_donations = tab_sector['Total (R$)'].sum()
 
-#%%
-tab_sector.columns = ['Economic Sector', 'Number of Candidates', 'Number of Donations', 'Total (R$)','Mean (R$)', 'Standard Deviation (R$)' ]
 
+    #%%
+    tab_sector[tab_sector['Number of Candidates'] > 0.01*n_candidatos]
 
-#%%
-n_donations     = tab_sector['Number of Donations'].sum()
-total_donations = tab_sector['Total (R$)'].sum()
 
+    #%%
+    print("Donation Statistics by Economic Sector:\n", tab_sector[tab_sector['Number of Candidates'] > 0.01*n_candidatos])
+    with open(table_path / f'brazil_2014_{role}_statistics_by_sector.tex', 'w') as tf:
+        tf.write(tab_sector[tab_sector['Number of Candidates'] > 0.01*n_candidatos].to_latex(index=False))
 
-#%%
-tab_sector[tab_sector['Number of Candidates'] > 0.01*n_candidatos]
 
+    #%%
+    print('The 3 economic sectors that most donated to candidates are:')
+    [print(i) for i in tab_sector['Economic Sector'][:3].values]
 
-#%%
-print("Donation Statistics by Economic Sector:\n", tab_sector[tab_sector['Number of Candidates'] > 0.01*n_candidatos])
-with open(table_path / 'deputado_estadual_statistics_by_sector__brasil.tex', 'w') as tf:
-     tf.write(tab_sector[tab_sector['Number of Candidates'] > 0.01*n_candidatos].to_latex(index=False))
 
+    #%%
+    print('Alone, they are reponsable from', round(tab_sector['Number of Donations'][:3].sum()/n_donations*100,1), '% of all donations.')
 
-#%%
-print('The 3 economic sectors that most donated to candidates are:')
-[print(i) for i in tab_sector['Economic Sector'][:3].values]
 
+    #%%
+    print('Corresponding to',  round(tab_sector['Total (R$)'][:3].sum()/total_donations*100,1), '% the total ammount donated.')
 
-#%%
-print('Alone, they are reponsable from', round(tab_sector['Number of Donations'][:3].sum()/n_donations*100,1), '% of all donations.')
+    #%% [markdown]
+    # ## How much the companies donated?
 
+    #%%
+    g_companies        = candidatos.groupby('cat_original_donator_name2').agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
+    tab_companies      = g_companies.sort_values(by='num_donation_ammount', ascending=False).reset_index()
 
-#%%
-print('Corresponding to',  round(tab_sector['Total (R$)'][:3].sum()/total_donations*100,1), '% the total ammount donated.')
+    #%%
+    tab_companies["Total Ammont"] = tab_companies['num_donation_ammount'].apply(lambda x: x[0])
+    tab_companies["Mean Ammount"] = tab_companies['num_donation_ammount'].apply(lambda x: x[1])
+    tab_companies["Std  Ammount "]  = tab_companies['num_donation_ammount'].apply(lambda x: x[2])
+    tab_companies.drop('num_donation_ammount', axis=1, inplace= True)
 
-#%% [markdown]
-# ## How much the companies donated?
 
-#%%
-g_companies        = deputados_estaduais_corruptos_brasil.groupby('cat_original_donator_name2').agg({'id_candidate_cpf': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
-tab_companies      = g_companies.sort_values(by='num_donation_ammount', ascending=False).reset_index()
+    #%%
+    tab_companies.columns = ['Company Name', 'Number of Candidates', 'Number of Donations', 'Total (R$)','Mean (R$)', 'Standard Deviation (R$)' ]
 
-#%%
-tab_companies["Total Ammont"] = tab_companies['num_donation_ammount'].apply(lambda x: x[0])
-tab_companies["Mean Ammount"] = tab_companies['num_donation_ammount'].apply(lambda x: x[1])
-tab_companies["Std  Ammount "]  = tab_companies['num_donation_ammount'].apply(lambda x: x[2])
-tab_companies.drop('num_donation_ammount', axis=1, inplace= True)
 
+    #%%
+    print("Donation Statistics by Company\n",tab_companies[tab_companies['Number of Candidates'] > 0.01*n_candidatos])
+    with open(table_path / f'brazil_2014_{role}_statistics_by_company.tex', 'w') as tf:
+        tf.write(tab_companies[tab_companies['Number of Candidates'] > 0.01*n_candidatos].to_latex(index=False))
 
-#%%
-tab_companies.columns = ['Company Name', 'Number of Candidates', 'Number of Donations', 'Total (R$)','Mean (R$)', 'Standard Deviation (R$)' ]
 
+    #%%
+    print('The 3 companies that most donated to candidates are:')
+    [print(i) for i in tab_companies['Company Name'][:3].values]
 
-#%%
-print("Donation Statistics by Company\n",tab_companies[tab_companies['Number of Candidates'] > 0.01*n_candidatos])
-with open(table_path / 'deputado_estadual_statistics_by_company__brasil.tex', 'w') as tf:
-     tf.write(tab_companies[tab_companies['Number of Candidates'] > 0.01*n_candidatos].to_latex(index=False))
 
+    #%%
+    print('Alone, they are reponsable for', round(tab_companies['Number of Donations'][:3].sum()/n_donations*100,1), '% of all donations.')
 
-#%%
-print('The 3 companies that most donated to candidates are:')
-[print(i) for i in tab_companies['Company Name'][:3].values]
 
+    #%%
+    print('Corresponding to',  round(tab_companies['Total (R$)'][:3].sum()/total_donations*100,1), '% the total ammount donated.')
 
-#%%
-print('Alone, they are reponsable for', round(tab_companies['Number of Donations'][:3].sum()/n_donations*100,1), '% of all donations.')
 
+    #%%
+    n_companies = len(tab_companies)
 
-#%%
-print('Corresponding to',  round(tab_companies['Total (R$)'][:3].sum()/total_donations*100,1), '% the total ammount donated.')
 
+    #%%
+    print('This 3 companies correspond to',  round(3/n_companies*100,3), '% the companies who donated.')
 
-#%%
-n_companies = len(tab_companies)
 
+    #%%
+    top_3_companies = ['JBS S/A',
+                        'CONSTRUTORA QUEIROZ GALVAO S A',
+                        'U T C ENGENHARIA S/A']
 
-#%%
-print('This 3 companies correspond to',  round(3/n_companies*100,3), '% the companies who donated.')
 
+    #%%
+    donator_top3_companies = candidatos[candidatos['cat_original_donator_name2'].isin(top_3_companies)]
+    g_parties        = donator_top3_companies.groupby('cat_party').agg({'cat_original_donator_name2': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
+    tab_parties      = g_parties.sort_values(by='num_donation_ammount', ascending=False).reset_index()
 
-#%%
-top_3_companies = ['JBS S/A',
-                    'CONSTRUTORA QUEIROZ GALVAO S A',
-                    'U T C ENGENHARIA S/A']
 
+    #%%
+    tab_parties["Total Ammont"] = tab_parties['num_donation_ammount'].apply(lambda x: x[0])
+    tab_parties["Mean Ammount"] = tab_parties['num_donation_ammount'].apply(lambda x: x[1])
+    tab_parties["Std  Ammount "]  = tab_parties['num_donation_ammount'].apply(lambda x: x[2])
+    tab_parties.drop('num_donation_ammount', axis=1, inplace= True)
+    tab_parties.reset_index()
 
-#%%
-donator_top3_companies = deputados_estaduais_corruptos_brasil[deputados_estaduais_corruptos_brasil['cat_original_donator_name2'].isin(top_3_companies)]
-g_parties        = donator_top3_companies.groupby('cat_party').agg({'cat_original_donator_name2': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
-tab_parties      = g_parties.sort_values(by='num_donation_ammount', ascending=False).reset_index()
+    #%%
+    tab_parties.columns = ['Party', 'Number of Companies', 'Number of Donations', 'Total (R$)','Mean (R$)', 'Standard Deviation (R$)' ]
 
 
-#%%
-tab_parties["Total Ammont"] = tab_parties['num_donation_ammount'].apply(lambda x: x[0])
-tab_parties["Mean Ammount"] = tab_parties['num_donation_ammount'].apply(lambda x: x[1])
-tab_parties["Std  Ammount "]  = tab_parties['num_donation_ammount'].apply(lambda x: x[2])
-tab_parties.drop('num_donation_ammount', axis=1, inplace= True)
-tab_parties.reset_index()
+    #%%
+    print("Donation Statistics by Party\n",tab_parties)
+    with open(table_path / f'brazil_2014_{role}_statistics_by_party.tex', 'w') as tf:
+        tf.write(tab_parties.to_latex(index=False))
 
-#%%
-tab_parties.columns = ['Party', 'Number of Companies', 'Number of Donations', 'Total (R$)','Mean (R$)', 'Standard Deviation (R$)' ]
 
+    #%%
+    print('The 3 parties most benefited from top 3 companies:')
+    [print(i) for i in tab_parties['Party'][:3].values]
 
-#%%
-print("Donation Statistics by Party\n",tab_parties)
-with open(table_path / 'deputado_estadual_statistics_by_party__brasil.tex', 'w') as tf:
-     tf.write(tab_parties.to_latex(index=False))
 
+    #%%
+    n_donations = tab_parties['Number of Donations'].sum()
+    total_donations = tab_parties['Total (R$)'].sum()
 
-#%%
-print('The 3 parties most benefited from top 3 companies:')
-[print(i) for i in tab_parties['Party'][:3].values]
 
+    #%%
+    print('Alone, they are reponsable for', round(tab_parties['Number of Donations'][:3].sum()/n_donations*100,2), '% of all donations.')
 
-#%%
-n_donations = tab_parties['Number of Donations'].sum()
-total_donations = tab_parties['Total (R$)'].sum()
 
+    #%%
+    print('Corresponding to',  round(tab_parties['Total (R$)'][:3].sum()/total_donations*100,2), '% the total ammount donated.')
 
-#%%
-print('Alone, they are reponsable for', round(tab_parties['Number of Donations'][:3].sum()/n_donations*100,2), '% of all donations.')
 
+    #%% [markdown]
+    # -----
+    #%% [markdown]
+    # ## How many donation each candidate received?
 
-#%%
-print('Corresponding to',  round(tab_parties['Total (R$)'][:3].sum()/total_donations*100,2), '% the total ammount donated.')
+    #%%
+    g_candidates       = candidatos.groupby('id_candidate_cpf').agg({'cat_original_donator_name2': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
+    tab_candidates      = g_candidates.sort_values(by='num_donation_ammount', ascending=False).reset_index()
 
 
-#%% [markdown]
-# -----
-#%% [markdown]
-# ## How many donation each candidate received?
+    #%%
+    tab_candidates["Total Ammont"] = tab_candidates['num_donation_ammount'].apply(lambda x: x[0])
+    tab_candidates["Mean Ammount"] = tab_candidates['num_donation_ammount'].apply(lambda x: x[1])
+    tab_candidates["Std  Ammount "]  = tab_candidates['num_donation_ammount'].apply(lambda x: x[2])
+    tab_candidates.drop('num_donation_ammount', axis=1, inplace= True)
 
-#%%
-g_candidates       = deputados_estaduais_corruptos_brasil.groupby('id_candidate_cpf').agg({'cat_original_donator_name2': lambda x: x.nunique(),'id_election': lambda x: len(x),'num_donation_ammount':lambda x: [x.sum(), x.mean(), x.std()] })
-tab_candidates      = g_candidates.sort_values(by='num_donation_ammount', ascending=False).reset_index()
 
+    #%%
+    tab_candidates.columns = ['Candidate CPF', 'Number of Companies', 'Number of Donations', 'Total (R$)','Mean (R$)', 'Standard Deviation (R$)' ]
 
-#%%
-tab_candidates["Total Ammont"] = tab_candidates['num_donation_ammount'].apply(lambda x: x[0])
-tab_candidates["Mean Ammount"] = tab_candidates['num_donation_ammount'].apply(lambda x: x[1])
-tab_candidates["Std  Ammount "]  = tab_candidates['num_donation_ammount'].apply(lambda x: x[2])
-tab_candidates.drop('num_donation_ammount', axis=1, inplace= True)
+    print("Donation Statistics by Candidate\n",tab_candidates)
+    with open(table_path / f'brazil_2014_{role}_statistics_by_candidate.tex', 'w') as tf:
+        tf.write(tab_candidates.to_latex(index=False))
 
-
-#%%
-tab_candidates.columns = ['Candidate CPF', 'Number of Companies', 'Number of Donations', 'Total (R$)','Mean (R$)', 'Standard Deviation (R$)' ]
-
-print("Donation Statistics by Candidate\n",tab_candidates)
-with open(table_path / 'deputado_estadual_statistics_by_candidate__brasil.tex', 'w') as tf:
-     tf.write(tab_candidates.to_latex(index=False))
-
-#%% [markdown]
-# # Parties donations' Network 
-# 
-#%% [markdown]
-# Adapting the approaches of \cite{Bursztyn2015a} and \cite{Zhang2008a}, the data was employed to create two networks: 
-# 
-# 
-# - A (bipartite) directed one where a legal entity is connected by an edge to each candidate it sponsored or cosponsored. This is encoded using a bipartite adjacency matrix $M$, with entries $M_{ij}$ equal to $1$ if legal entity $j$ donated to candidate $i$ and $0$ otherwise. 
-# 
-# - A second (unipartite), undirected one, projected from the first, with adjacency matrices $A_{ij} = \sum_k M_{ik} M^T_{kj}$ in which nodes are candidates and the weighted edges connecting them indicate how many times they received money together from the same legal entity $k$.ipynb_checkpoints/
-#%% [markdown]
-# The donnation network forms a bipartite network, a donor is connected by an edge to candidate it sponsored or cosponsored. This is encoded using a bipartite adjacency matrix M, with entries Mij equal to 1 if legal entity i (co-)sponsored candidate j and 0 if not.
-# We can analyze the cosponsorship networks using one-mode (“unipartite”) projections with adjacency matrices Aij, in which nodes are candidates and the weighted edges connecting them indicate how many times they shared donations from the same donors.
-#%% [markdown]
-# We generated the transactions network using the Python's library NetworkX\cite{NetworkX} and drew it using the interactive visualization and exploration platform Gephi\cite{Gephi}. 
-# To draw the graph we employed force-directed placement methods. We began giving more space to the graph and avoiding a randomized start using Fruchterman Reingold's algorithm \cite{Fruchterman}. After the system reached mechanical equilibrium, we applied Force Atlas 2 \cite{ForceAtlas2} to produce an aesthetically pleasant and intuitive graph.
-# To get a visual information about the importance of each node, its sizes was chosen to reflect the number of votes the corresponding candidate received. Finally, in order to detect patterns in donations we chose colors corresponding to communities extracted employing the Louvain Method for community detection \cite{Louvian}. 
+    #%% [markdown]
+    # # Parties donations' Network 
+    # 
+    #%% [markdown]
+    # Adapting the approaches of \cite{Bursztyn2015a} and \cite{Zhang2008a}, the data was employed to create two networks: 
+    # 
+    # 
+    # - A (bipartite) directed one where a legal entity is connected by an edge to each candidate it sponsored or cosponsored. This is encoded using a bipartite adjacency matrix $M$, with entries $M_{ij}$ equal to $1$ if legal entity $j$ donated to candidate $i$ and $0$ otherwise. 
+    # 
+    # - A second (unipartite), undirected one, projected from the first, with adjacency matrices $A_{ij} = \sum_k M_{ik} M^T_{kj}$ in which nodes are candidates and the weighted edges connecting them indicate how many times they received money together from the same legal entity $k$.ipynb_checkpoints/
+    #%% [markdown]
+    # The donnation network forms a bipartite network, a donor is connected by an edge to candidate it sponsored or cosponsored. This is encoded using a bipartite adjacency matrix M, with entries Mij equal to 1 if legal entity i (co-)sponsored candidate j and 0 if not.
+    # We can analyze the cosponsorship networks using one-mode (“unipartite”) projections with adjacency matrices Aij, in which nodes are candidates and the weighted edges connecting them indicate how many times they shared donations from the same donors.
+    #%% [markdown]
+    # We generated the transactions network using the Python's library NetworkX\cite{NetworkX} and drew it using the interactive visualization and exploration platform Gephi\cite{Gephi}. 
+    # To draw the graph we employed force-directed placement methods. We began giving more space to the graph and avoiding a randomized start using Fruchterman Reingold's algorithm \cite{Fruchterman}. After the system reached mechanical equilibrium, we applied Force Atlas 2 \cite{ForceAtlas2} to produce an aesthetically pleasant and intuitive graph.
+    # To get a visual information about the importance of each node, its sizes was chosen to reflect the number of votes the corresponding candidate received. Finally, in order to detect patterns in donations we chose colors corresponding to communities extracted employing the Louvain Method for community detection \cite{Louvian}. 
 #%% [markdown]
 # ### Sao Paulo
 
 #%%
-deputados_estaduais_corruptos_sp = deputados_estaduais_corruptos_brasil[(deputados_estaduais_corruptos_brasil['id_donator_effective_cpf_cnpj'].isnull() == False)  
-                                 & (deputados_estaduais_corruptos_brasil['cat_election_state'] == "SP") ]
+deputados_estaduais_corruptos_sp = candidatos[(candidatos['id_donator_effective_cpf_cnpj'].isnull() == False)  
+                                 & (candidatos['cat_election_state'] == "SP") ]
 
 #%%
 adj_sp = pd.DataFrame(0, index=deputados_estaduais_corruptos_sp.id_candidate_cpf.unique(), columns=deputados_estaduais_corruptos_sp.id_candidate_cpf.unique())
@@ -509,7 +507,7 @@ draw_adjacency_matrix(adj_sp, nodes_list, louvain_comms , colors=cores, output_f
 # The null hypothesis is that the data follow the Benford distribution. The test statistic follows a $\chi^2$ distribution, so the null hypothesis is rejected if $\chi^2 > \chi^2_{\alpha,8}$ where $\alpha$ is the level of significance \cite{TamCho2007}.
 
 #%%
-benford_lv = bf.benford_digits_table(deputados_estaduais_corruptos_brasil, 'cat_party')
+benford_lv = bf.benford_digits_table(candidatos, 'cat_party')
 benford_lv
 
 #%% [markdown]
