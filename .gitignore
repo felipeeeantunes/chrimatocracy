@@ -1,4 +1,4 @@
-raw_data/*
+*.csv
 .vscode
 *.txt
 .dropbox
@@ -6,3 +6,4 @@ raw_data/*
 __pycache__*
 *.tex
 desktop.ini
+*.zip
