@@ -7,3 +7,5 @@ __pycache__*
 *.tex
 desktop.ini
 *.zip
+*.ini
+*.log

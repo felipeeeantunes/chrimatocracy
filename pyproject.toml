@@ -1,0 +1,52 @@
+[tool.poetry]
+name = "chrimatocracy"
+version = "0.1.0"
+description = "Data Science applied to the government sector"
+authors = ["Felipe Antunes <felipe.antunes@me.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.10, < 3.12"
+matplotlib = "^3.5.3"
+igraph = "0.9.11"
+leidenalg = "0.8.10" 
+numpy = "1.23.1"
+pandas = "1.4.3"
+seaborn = "0.11.2"
+unicodecsv = "0.14.1"
+unidecode = "1.3.4"
+statsmodels = "0.13.2"
+scipy = "^1.9.0"
+black = "^22.6.0"
+isort = "^5.10.1"
+pylint = "^2.14.5"
+
+
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.interrogate]
+ignore-init-method = true
+ignore-init-module = false
+ignore-magic = false
+ignore-semiprivate = false
+ignore-private = false
+ignore-property-decorators = false
+ignore-module = false
+fail-under = 100
+exclude = ["setup.py", "docs", "build"]
+ignore-regex = ["^get$", "^mock_.*", ".*BaseClass.*"]
+verbose = 2
+quiet = false
+whitelist-regex = []
+color = true
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+skip_glob =  ["data/*"]
