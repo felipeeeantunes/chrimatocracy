@@ -1,0 +1,151 @@
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%% General numbers  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}
+\caption{Números das doações da campanha eleitoral brasileira de 2014 para todos os cargos.}
+\label{tab:numbers}
+\begin{center}
+\tiny
+{\input{tables/2014/brazil_2014_donations_numbers_by_role}}
+\end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Federal Deputy Stats %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}
+\caption{Estatística das doações da campanha eleitoral brasileira de 2014 para o cargo de Deputado Federal.}
+\label{tab:numbers}
+\begin{center}
+\tiny
+{\input{tables/2014/brazil_2014_federal_deputy_donations_statistics}}
+\end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% State Deputy Stats %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}
+\caption{Estatística das doações da campanha eleitoral brasileira de 2014 para o cargo de Deputado Estadual.}
+\label{tab:numbers}
+\begin{center}
+\tiny
+{\input{tables/2014/brazil_2014_state_deputy_donations_statistics}}
+\end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Governor Stats %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}
+\caption{Estatística das doações da campanha eleitoral brasileira de 2014 para o cargo de Governador.}
+\label{tab:numbers}
+\begin{center}
+\tiny
+{\input{tables/2014/brazil_2014_governor_donations_statistics}}
+\end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Senator Stats %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}
+\caption{Estatística das doações da campanha eleitoral brasileira de 2014 para o cargo de Senador.}
+\label{tab:numbers}
+\begin{center}
+\tiny
+{\input{tables/2014/brazil_2014_senator_donations_statistics}}
+\end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% President Stats %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}
+\caption{Estatística das doações da campanha eleitoral brasileira de 2014 para o cargo de Presidente.}
+\label{tab:numbers}
+\begin{center}
+\tiny
+{\input{tables/2014/brazil_2014_president_donations_statistics}}
+\end{center}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Federal Deputy Logistic %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[H]
+\caption{Coeficientes $\beta_1$ e $\beta_0$ da regressão logística para as doações de campanha para Deputado Federal. São apresentados o o valor do coeficiente da variável independente (Valor em $R\$$) com sua significância estatística representada pelo p-valor associado ao z-score e o p-valor. Além disso apresentamos o resultado do teste de Log-Likehood (LLR p) para distribuição, assim como o odds ratio correspondente à uma doação de $R\$100.000,00$. A coluna $N$ corresponde ao número de candidatos e $n$ ao número de vagas disputadas.}\label{tab:betaEstadual}
+\begin{center}
+\tiny
+\begin{adjustbox}{width=1.1\textwidth, center}
+\input{tables/2014/brazil_2014_federal_deputy_donations_logistic_regression}
+\end{adjustbox}
+\end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% State Deputy Logistic %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[H]
+\caption{Coeficientes $\beta_1$ e $\beta_0$ da regressão logística para as doações de campanha para Deputado Estadual. São apresentados o valor do coeficiente da variável independente (Valor em $R\$$) com sua significância estatística representada pelo p-valor associado ao z-score e o p-valor. Além disso apresentamos o resultado do teste de Log-Likehood (LLR p) para distribuição, assim como o odds ratio correspondente à uma doação de $R\$100.000,00$. A coluna $N$ corresponde ao número de candidatos e $n$ ao número de vagas disputadas.}\label{tab:betaEstadual}
+\begin{center}
+\tiny
+\begin{adjustbox}{width=1.1\textwidth, center}
+\input{tables/2014/brazil_2014_state_deputy_donations_logistic_regression}
+\end{adjustbox}
+\end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Federal Deputy Logistic by state %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[H]
+\caption{Coeficientes $\beta_1$ e $\beta_0$ da regressão logística para as doações de campanha para Deputado Federal. Para cada unidade federal (UF) mostramos o valor do coeficiente da variável independente (Valor em $R\$$) com sua significância estatística representada pelo p-valor associado ao z-score e o p-valor. Além disso apresentamos o resultado do teste de Log-Likehood (LLR p) para distribuição, assim como o odds ratio correspondente à uma doação de $R\$100.000,00$. A coluna $N$ corresponde ao número de candidatos e $n$ ao número de vagas disputadas.}\label{tab:betaFederalEstado}
+\begin{center}
+\tiny
+\begin{adjustbox}{width=1.1\textwidth, center}
+\input{tables/2014/brazil_2014_federal_deputy_donations_logistic_regression_by_state}
+\end{adjustbox}
+\end{center}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% State Deputy Logistic by state %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[H]
+\caption{Coeficientes $\beta_1$ e $\beta_0$ da regressão logística para as doações de campanha para Deputado Estadual. Para cada unidade federal (UF) mostramos o valor do coeficiente da variável independente (Valor em $R\$$) com sua significância estatística representada pelo p-valor associado ao z-score e o p-valor. Além disso apresentamos o resultado do teste de Log-Likehood (LLR p) para distribuição, assim como o odds ratio correspondente à uma doação de $R\$100.000,00$. A coluna $N$ corresponde ao número de candidatos e $n$ ao número de vagas disputadas.}\label{tab:betaEstadualEstado}
+\begin{center}
+\tiny
+\begin{adjustbox}{width=1.1\textwidth, center}
+\input{tables/2014/brazil_2014_state_deputy_donations_logistic_regression_by_state}
+\end{adjustbox}
+\end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% State Deputy Comm. Overview %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[H]
+\caption{Visão geral das comunidades detectadas. O número de doadores ($N$) é apresentado em conjunto com a soma dos votos dos candidatos da comunidade, o valor total das doações recebidas pelos mesmos, o número de membros e de candidatos eleitos, assim como a lista de partidos favorecidos.}
+\begin{center}
+\tiny
+\begin{adjustbox}{width=1.1\textwidth, center}
+\input{tables/2014/brazil_2014_state_deputy_SP_network_summary}
+\end{adjustbox}
+\end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% State Deputy Benford Law by Comm. %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}
+\caption{Frequência do primeiro dígito das doações declaradas na campanha para Deputado Estadual em São Paulo em 2014. Os resultados referência a distribuição de N doações realizadas em uma dada comunidade determinada através da maximização da modularidade da rede complexa estudada.  A aderência à Lei de Benford é medida por teste $\chi^2$, cujo valor crítico, para o número de graus de liberdade em questão, é $20.09$ e sua significância é dada pelo $p-valor$. São exibidas apenas comunidades com mais de 100 doações.}
+\begin{center}
+\tiny
+\begin{adjustbox}{width=1.1\textwidth, center}
+\input{tables/2014/brazil_2014_state_deputy_lv_community_benford_law_SP_gt_100}
+\end{adjustbox}
+\end{center}
+\end{table}

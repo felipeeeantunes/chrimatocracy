@@ -1,11 +1,11 @@
-*.csv
+
+data/**/*.csv
 .vscode
 *.txt
 .dropbox
-*.csv
 __pycache__*
-*.tex
 desktop.ini
 *.zip
 *.ini
 *.log
+dist/*
