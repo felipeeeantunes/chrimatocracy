@@ -1,11 +1,13 @@
 
-data/**/*.csv
-.vscode
-*.txt
-.dropbox
 __pycache__*
-desktop.ini
+
+data/**/*.csv
+data/**/*.txt
+dist/*
+
+.vscode
+.dropbox
+
 *.zip
 *.ini
 *.log
-dist/*
