@@ -46,10 +46,8 @@ if __name__ == "__main__":
     for directory in directories:
         if not os.path.exists(directory):
             os.makedirs(directory)
-
-    # [], "senator", "federal_deputy", "state_deputy", "district_deputy", "president"]
-    roles = ["federal_deputy"]
-    # roles = ["president"]
+    
+    roles = ["federal_deputy"] # [], "senator", "federal_deputy", "state_deputy", "district_deputy", "president"]
 
     for role in roles:
         print(f"Generating Chrimatocracy Analysis table for {role}.\n")
@@ -67,5 +65,5 @@ if __name__ == "__main__":
 
         chrimatocracy.load_donations()
         chrimatocracy.benford_plot()
-        # chrimatocracy.lr_table()
+        chrimatocracy.lr_table()
         chrimatocracy.generative_model()

@@ -2,14 +2,14 @@ import csv
 import logging
 from pathlib import Path
 from shutil import ExecError
-
+import os
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-
-from chrimatocracy.utils import benford as bf
+import subprocess
+import jinja2
 
 mpl.use("pgf")
 pgf_with_pdflatex = {
@@ -48,17 +48,37 @@ class GenerativeModel:
         data_path: Path,
         table_path: Path,
         figure_path: Path,
-        community_column_name: str,
         logger=logging.Logger,
     ):
 
         self.year = year
         self.role = role
-        self.community_column_name = community_column_name
         self.data_path = data_path
         self.figure_path = figure_path
         self.table_path = table_path
         self.logger = logger
+
+        self.templates_dir = Path(__file__).parent.parent.resolve() / "templates"
+        
+        csv_path = Path(table_path) / "csv"
+        if not os.path.exists(csv_path):
+            os.makedirs(csv_path)
+
+        tex_path = Path(table_path) / "tex"
+        if not os.path.exists(tex_path):
+            os.makedirs(tex_path)
+
+        pdf_path = Path(table_path) / "pdf"
+        if not os.path.exists(pdf_path):
+            os.makedirs(pdf_path)
+
+        figs_tex_path = Path(figure_path) / "tex"
+        if not os.path.exists(figs_tex_path):
+            os.makedirs(figs_tex_path)
+
+        figs_pdf_path = Path(figure_path) / "pdf"
+        if not os.path.exists(figs_pdf_path):
+            os.makedirs(figs_pdf_path)
 
     @staticmethod
     def Fun(X, gamma, eta0):
@@ -166,26 +186,25 @@ class GenerativeModel:
             nlkhd, ngrad = self.lkhd_distr(nums, ngamma, ncsi0, ncsim, delt)
         return gamma, csi0, csim
 
-    def fit(self, data, name="generative_model"):
+    def fit(self, df, group_column_name, name):
+        
+        df_gen = df[[group_column_name, "id_candidate_cpf", "num_donation_ammount"]].copy()
 
-        self.df = data[[self.community_column_name, "id_candidate_cpf", "num_donation_ammount"]].copy()
-        self.df.to_csv(
-            self.data_path / f"brazil_{self.year}_{self.role}_{self.community_column_name}_{name}__input.csv",
-            index=False,
-        )
-        self.community_column_name_list = data[self.community_column_name].unique()
-        self.df_gen = self.df.copy()
+        df_gen.to_csv(
+                self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_input.csv",
+                index=False,
+            )
 
         with open(
-            self.data_path / f"brazil_{self.year}_{self.role}_{self.community_column_name}_{name}__parameters.csv", "w"
+            self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_parameters.csv", "w"
         ) as f1:
             writer = csv.writer(f1, delimiter=",", lineterminator="\n")
             header = ["group", "xmin", "xmax", "gamma", "eta0"]
             writer.writerow(header)
 
-            for g in self.community_column_name_list:
-                cpfs = list(self.df_gen.loc[self.df_gen[self.community_column_name] == g, "id_candidate_cpf"].unique())
-                X = self.df_gen.loc[self.df_gen[self.community_column_name] == g, "num_donation_ammount"]
+            for g in df_gen[group_column_name].unique():
+                cpfs = list(df_gen.loc[df_gen[group_column_name] == g, "id_candidate_cpf"].unique())
+                X = df_gen.loc[df_gen[group_column_name] == g, "num_donation_ammount"]
                 xmin = min(X.values)
                 xmax = max(X.values)
                 result = self.maxLKHD_distr(X.values, gamma=1.0, csi0=1, csim=np.log(xmax), delt=np.log(0.005))
@@ -205,45 +224,96 @@ class GenerativeModel:
                             """
                 )
                 for cpf in cpfs:
-                    idx = self.df_gen.loc[
-                        (self.df_gen[self.community_column_name] == g) & (self.df_gen["id_candidate_cpf"] == cpf),
+                    idx = df_gen.loc[
+                        (df_gen[group_column_name] == g) & (df_gen["id_candidate_cpf"] == cpf),
                         "num_donation_ammount",
                     ].index
                     for _idx in idx:
-                        self.df_gen.loc[_idx, "num_donation_ammount"] = self.drand_distr(
+                        df_gen.loc[_idx, "num_donation_ammount"] = self.drand_distr(
                             gamma, eta0, csim=np.log(xmax), delt=np.log(0.005)
                         )
 
-            self.df_gen.to_csv(
-                self.data_path / f"brazil_{self.year}_{self.role}_{self.community_column_name}_{name}__output.csv",
+            df_gen.to_csv(
+                self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_output.csv",
                 index=False,
             )
 
-        return self.df_gen
+        return df_gen
 
-    def write_latex_tables(self, name="generative_model"):
+    def write_latex_tables(self, name):
 
-        # df         = pd.read_csv(self.data_path / f'brazil_{self.year}_{self.role}_{self.community_column_name}_{name}__input.csv')
-        # df_gen     = pd.read_csv(self.data_path / f'brazil_{self.year}_{self.role}_{self.community_column_name}_{name}__output.csv')
+        # df         = pd.read_csv(self.data_path / f'brazil_{self.year}_{self.role}_{name}__input.csv')
+        # df_gen     = pd.read_csv(self.data_path / f'brazil_{self.year}_{self.role}_{name}__output.csv')
         parameters = pd.read_csv(
-            self.data_path / f"brazil_{self.year}_{self.role}_{self.community_column_name}_{name}__parameters.csv"
+            self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_parameters.csv"
         )
 
         self.logger.info(f"Model Parameters: {parameters}")
         with open(
-            self.table_path / f"brazil_{self.year}_{self.role}_{self.community_column_name}_{name}__parameters.tex", "w"
+            self.table_path / "tex" / f"brazil_{self.year}_{self.role}_{name}__fit_parameters.tex", "w"
         ) as tf:
             tf.write(parameters.reset_index().rename(columns={"index": "Group"}).to_latex(index=False))
 
-    def save_figures(self, group_list=None, show=False, name="generative_model"):
+    compile
+
+    def compile_latex_tables(self):
+        template_dir = (self.templates_dir / "tex").as_posix()
+        self.logger.debug(f"Latex Template dir: {template_dir}")
+        file_dir     = (self.table_path / "tex").as_posix()
+        self.logger.debug(f"Latex Files dir: {file_dir}")
+        output_path = (self.table_path / "pdf").as_posix()
+        self.logger.debug(f"Output to PDF Files dir: {output_path}")
+
+        latex_jinja_env = jinja2.Environment(
+            block_start_string = '\BLOCK{',
+            block_end_string = '}',
+            variable_start_string = '\VAR{',
+            variable_end_string = '}',
+            comment_start_string = '\#{',
+            comment_end_string = '}',
+            line_statement_prefix = '%-',
+            line_comment_prefix = '%#',
+            trim_blocks = True,
+            autoescape = False,
+            loader = jinja2.FileSystemLoader(template_dir)
+        )
+
+        template = latex_jinja_env.get_template("tables.sty")
+
+        # giving file extension
+        ext = ('.tex') 
+        files_list = []
+        # iterating over all files
+        for files in os.listdir(file_dir):
+            if files.endswith(ext):
+                files_list.append(files)  # printing file name of desired extension
+            else:
+                continue
+
+        # template = latex_jinja_env.get_template((file_dir / 'template.jinja').as_posix())
+        for file in files_list:
+            tex_file_path = (self.table_path / "tex" / f'{file}').as_posix()
+            tmp_tex_file_path = (self.table_path / "tex" / f'{file}'.replace('tex','tmp')).as_posix()
+            document = template.render(place= tex_file_path)
+            with open(tmp_tex_file_path,'w') as output:
+                output.write(document)
+            x = subprocess.call(f'pdflatex -output-directory={output_path} {tmp_tex_file_path}')
+            if x != 0:
+                print('Exit-code not 0 for ' + file + ', check Code!')
+            
+        os.system(f"del {(self.table_path / 'pdf' / '*.log')}")
+        os.system(f"del {(self.table_path / 'pdf' / '*.aux')}")
+        os.system(f"del {(self.table_path / 'tex' / '*.tmp')}")
+
+    def save_figures(self, group_column_name, name, group_list=None, show=False):
 
         df = pd.read_csv(
-            self.data_path / f"brazil_{self.year}_{self.role}_{self.community_column_name}_{name}__input.csv"
+            self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_input.csv"
         )
         df_gen = pd.read_csv(
-            self.data_path / f"brazil_{self.year}_{self.role}_{self.community_column_name}_{name}__output.csv"
+            self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_output.csv"
         )
-        group_list = group_list[:28] if group_list is not None else df[self.community_column_name].unique()[:28]
+        group_list = group_list[:28] if group_list is not None else df[group_column_name].unique()[:28]
         _, axes = plt.subplots(
             nrows=7, ncols=4, sharex=True, sharey=True, figsize=(24, 32), gridspec_kw={"hspace": 0.05, "wspace": 0.05}
         )
@@ -252,7 +322,7 @@ class GenerativeModel:
         for g in group_list:
             ax = axes_list.pop(0)
             H2, X2 = np.histogram(
-                np.log(df.loc[df[self.community_column_name] == g, "num_donation_ammount"]), density=True
+                np.log(df.loc[df[group_column_name] == g, "num_donation_ammount"]), density=True
             )
             dx2 = X2[1] - X2[0]
             F2 = np.cumsum(H2) * dx2
@@ -260,7 +330,7 @@ class GenerativeModel:
             ax.fill_between(X2[1:], F2, alpha=0.2)
 
             H2, X2 = np.histogram(
-                np.log(df_gen.loc[df_gen[self.community_column_name] == g, "num_donation_ammount"]), density=True
+                np.log(df_gen.loc[df_gen[group_column_name] == g, "num_donation_ammount"]), density=True
             )
             dx2 = X2[1] - X2[0]
             F2 = np.cumsum(H2) * dx2
@@ -290,8 +360,57 @@ class GenerativeModel:
         # plt.tight_layout()
         # plt.subplots_adjust(hspace=0.1, vspace=0.0)
 
-        plt.savefig(self.figure_path / f"brazil_{self.year}_{self.role}_{self.community_column_name}_{name}__cdf.pgf")
-        self.logger.info(f"Figure 'brazil_{self.year}_{self.role}_{self.community_column_name}_{name}__cdf.pgf' saved.")
+        plt.savefig(self.figure_path / "tex" / f"brazil_{self.year}_{self.role}_{name}__cdf.pgf")
+        self.logger.info(f"Figure 'brazil_{self.year}_{self.role}_{name}__cdf.pgf' saved.")
 
         if show == True:
             plt.show()
+
+    def compile_latex_figures(self):
+        template_dir = (self.templates_dir / "tex").as_posix()
+        self.logger.debug(f"Latex Template dir: {template_dir}")
+        file_dir     = (self.figure_path / "tex").as_posix()
+        self.logger.debug(f"Latex Files dir: {file_dir}")
+        output_path = (self.figure_path / "pdf").as_posix()
+        self.logger.debug(f"Output to PDF Files dir: {output_path}")
+
+        latex_jinja_env = jinja2.Environment(
+            block_start_string = '\BLOCK{',
+            block_end_string = '}',
+            variable_start_string = '\VAR{',
+            variable_end_string = '}',
+            comment_start_string = '\#{',
+            comment_end_string = '}',
+            line_statement_prefix = '%-',
+            line_comment_prefix = '%#',
+            trim_blocks = True,
+            autoescape = False,
+            loader = jinja2.FileSystemLoader(template_dir)
+        )
+
+        template = latex_jinja_env.get_template("figures.sty")
+
+        # giving file extension
+        ext = ('.pgf') 
+        files_list = []
+        # iterating over all files
+        for files in os.listdir(file_dir):
+            if files.endswith(ext):
+                files_list.append(files)  # printing file name of desired extension
+            else:
+                continue
+
+        # template = latex_jinja_env.get_template((file_dir / 'template.jinja').as_posix())
+        for file in files_list:
+            tex_file_path = (self.figure_path / "tex" / f'{file}').as_posix()
+            tmp_tex_file_path = (self.figure_path / "tex" / f'{file}'.replace('tex','tmp')).as_posix()
+            document = template.render(place= tex_file_path)
+            with open(tmp_tex_file_path,'w') as output:
+                output.write(document)
+            x = subprocess.call(f'pdflatex -output-directory={output_path} {tmp_tex_file_path}')
+            if x != 0:
+                print('Exit-code not 0 for ' + file + ', check Code!')
+            
+        os.system(f"del {(self.figure_path / 'pdf' / '*.log')}")
+        os.system(f"del {(self.figure_path / 'pdf' / '*.aux')}")
+        os.system(f"del {(self.figure_path / 'tex' / '*.tmp')}")
