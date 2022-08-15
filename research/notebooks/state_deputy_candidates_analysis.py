@@ -4,6 +4,7 @@
 
 import gc
 import os
+
 #%%
 import sys
 from pathlib import Path
@@ -32,11 +33,12 @@ for directory in directories:
 
 
 import matplotlib as mpl
+
 #%%
 import matplotlib.pyplot as plt
-
 from matplotlib.backends.backend_pgf import FigureCanvasPgf
-mpl.backend_bases.register_backend('pdf', FigureCanvasPgf)
+
+mpl.backend_bases.register_backend("pdf", FigureCanvasPgf)
 
 pgf_with_pdflatex = {
     "pgf.texsystem": "pdflatex",

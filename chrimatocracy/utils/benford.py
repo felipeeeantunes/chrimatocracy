@@ -72,5 +72,5 @@ def benford_digits_table(donations, by):
     df_repass_legal = (
         df.drop(["prob"], axis=1).dropna().sort_index(axis=1).sort_values(by=["d"], ascending=False).reset_index()
     )
-   
+
     return df_repass_legal

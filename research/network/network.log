@@ -6834,3 +6834,3108 @@
 2022-08-14 20:52:43,480 - Chrimatocracy - DEBUG - Latex Template dir: C:/Users/flant/Dropbox/ufrgs/phd/Barbosa-Gammerman/Work/chrimatocracy/templates/tex
 2022-08-14 20:52:43,481 - Chrimatocracy - DEBUG - Latex Files dir: C:/Users/flant/Dropbox/ufrgs/phd/Barbosa-Gammerman/Work/research/network/figures/tex
 2022-08-14 20:52:43,481 - Chrimatocracy - DEBUG - Output to PDF Files dir: C:/Users/flant/Dropbox/ufrgs/phd/Barbosa-Gammerman/Work/research/network/figures/pdf
+2022-08-14 20:54:33,421 - Chrimatocracy - INFO - Chrimatocracy Network:
+
+                 year=2014
+
+                 data_path=C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\data\prepared\2014
+
+                 table_path=C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tables
+
+                 figure_path=C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\figures
+
+                 
+2022-08-14 20:54:33,424 - Chrimatocracy - INFO - Generating Network Analysis table for state_deputy.
+
+2022-08-14 20:54:33,425 - Chrimatocracy - INFO - Loading donations to candidates DataFrame from prepared data...
+2022-08-14 20:54:35,091 - Chrimatocracy - INFO - Donations to candidates DataFrame loaded.
+2022-08-14 20:54:38,247 - Chrimatocracy - INFO - Adjacency matrix saved: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_state_deputy_SP__adj_matrix.csv
+2022-08-14 20:54:38,261 - Chrimatocracy - INFO - Creating Graph from Adjacency Matrix...
+2022-08-14 20:54:38,377 - Chrimatocracy - INFO - Graph created. Network summary:
+2022-08-14 20:54:38,378 - Chrimatocracy - INFO - Number of vertices (nodes): 1735
+2022-08-14 20:54:38,378 - Chrimatocracy - INFO - Number of edges: 182
+2022-08-14 20:54:38,378 - Chrimatocracy - INFO - Average Degree: 0.20979827089337175
+2022-08-14 20:54:38,380 - Chrimatocracy - INFO - Saved in CSV format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_state_deputy_SP__nextwork_summary.csv
+2022-08-14 20:54:38,385 - Chrimatocracy - INFO - Summary in TeX format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablestex/brazil_2014_state_deputy_SP__nextwork_summary.csv
+2022-08-14 20:54:38,385 - Chrimatocracy - INFO - Running community detection algorithm...
+2022-08-14 20:54:38,391 - Chrimatocracy - INFO - Communities identified.
+2022-08-14 20:54:38,392 - Chrimatocracy - INFO - Quality:  0.3954534476512497
+2022-08-14 20:54:38,392 - Chrimatocracy - INFO - Modularity:  0.39545344765124957
+2022-08-14 20:54:38,392 - Chrimatocracy - INFO - Partitions Summary: Clustering with 1735 elements and 1698 clusters
+2022-08-14 20:54:38,394 - Chrimatocracy - INFO - Saved in CSV format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_state_deputy_SP__partition_summary.csv
+2022-08-14 20:54:38,398 - Chrimatocracy - INFO - Saved in TeX format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablestex/brazil_2014_state_deputy_SP__partition_summary.tex
+2022-08-14 20:54:38,399 - Chrimatocracy - INFO - Adding communities to 'donations to candidates' DataFrame...
+2022-08-14 20:54:38,402 - Chrimatocracy - INFO - Candidates with communities identified saved at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_state_deputy_SP__communities.csv
+2022-08-14 20:54:39,021 - Chrimatocracy - INFO - Adding communities information to the Adjacency Matrix...
+2022-08-14 20:54:39,025 - Chrimatocracy - INFO - Drawing Adjacency Matrix figure...
+2022-08-14 20:54:42,133 - Chrimatocracy - INFO - Figure saved at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablestex/brazil_2014_state_deputy_SP__adj_matrix.pgf
+2022-08-14 20:54:42,134 - Chrimatocracy - INFO - Generating Benford Law table...
+2022-08-14 20:54:42,973 - Chrimatocracy - INFO - Saved in CSV format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_state_deputy_SP__benford_law_lv_community_gt_100.csv
+2022-08-14 20:54:42,991 - Chrimatocracy - INFO - Saved in TeX format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablestex/brazil_2014_state_deputy_SP__benford_law_lv_community_gt_100.tex
+2022-08-14 20:54:43,141 - Chrimatocracy - INFO - Number of dirty companies: 9969
+2022-08-14 20:54:43,164 - Chrimatocracy - INFO - Number cpfs/cnpjs dirty donations: 86
+2022-08-14 20:54:43,165 - Chrimatocracy - INFO - Number of cpfs/cnpjs dirty donnors: 34
+2022-08-14 20:54:43,356 - Chrimatocracy - INFO - Saved in CSV format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_state_deputy_SP__benford_law_lv_community_gt_100_dirty_stats.csv
+2022-08-14 20:54:43,378 - Chrimatocracy - INFO - Saved in TeX format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablestex/brazil_2014_state_deputy_SP__benford_law_lv_community_gt_100_dirty_stats.tex
+2022-08-14 20:54:43,901 - Chrimatocracy - INFO - '
+                            Grupo: 10
+
+                            ---------------------
+
+                            xmin: 0.9
+
+                            xmax: 187500.0
+
+                            Gamma: 12.680792491989953
+
+                            Eta_0: 12.401013701008043
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:44,031 - Chrimatocracy - INFO - '
+                            Grupo: 11
+
+                            ---------------------
+
+                            xmin: 20.0
+
+                            xmax: 300000.0
+
+                            Gamma: 10.590544369243815
+
+                            Eta_0: 12.659193642383343
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:45,176 - Chrimatocracy - INFO - '
+                            Grupo: 15
+
+                            ---------------------
+
+                            xmin: 5.93
+
+                            xmax: 300000.0
+
+                            Gamma: 22.602263212726935
+
+                            Eta_0: 11.638364119204553
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:45,346 - Chrimatocracy - INFO - '
+                            Grupo: 16
+
+                            ---------------------
+
+                            xmin: 33.75
+
+                            xmax: 125000.0
+
+                            Gamma: 10.533944457804695
+
+                            Eta_0: 11.391097520168733
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:45,507 - Chrimatocracy - INFO - '
+                            Grupo: 18
+
+                            ---------------------
+
+                            xmin: 62.5
+
+                            xmax: 300000.0
+
+                            Gamma: 12.472517625310772
+
+                            Eta_0: 12.531735636629884
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:45,584 - Chrimatocracy - INFO - '
+                            Grupo: 19
+
+                            ---------------------
+
+                            xmin: 1.13
+
+                            xmax: 300000.0
+
+                            Gamma: 9.455219900491441
+
+                            Eta_0: 13.080158671996205
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:46,948 - Chrimatocracy - INFO - '
+                            Grupo: 29
+
+                            ---------------------
+
+                            xmin: 30.0
+
+                            xmax: 118750.0
+
+                            Gamma: 19.089729744377426
+
+                            Eta_0: 12.389344919945437
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:48,613 - Chrimatocracy - INFO - '
+                            Grupo: 63
+
+                            ---------------------
+
+                            xmin: 265.47
+
+                            xmax: 20000.0
+
+                            Gamma: 25.611003865700763
+
+                            Eta_0: 11.963067353891159
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:48,734 - Chrimatocracy - INFO - '
+                            Grupo: 83
+
+                            ---------------------
+
+                            xmin: 30.61
+
+                            xmax: 80000.0
+
+                            Gamma: 11.501181808646141
+
+                            Eta_0: 12.889743970004513
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:48,962 - Chrimatocracy - INFO - '
+                            Grupo: 93
+
+                            ---------------------
+
+                            xmin: 10.0
+
+                            xmax: 150000.0
+
+                            Gamma: 14.248727161463776
+
+                            Eta_0: 13.13999517011994
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:49,118 - Chrimatocracy - INFO - '
+                            Grupo: 94
+
+                            ---------------------
+
+                            xmin: 27.5
+
+                            xmax: 300000.0
+
+                            Gamma: 11.868614880205314
+
+                            Eta_0: 12.611236171837781
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:49,847 - Chrimatocracy - INFO - '
+                            Grupo: 95
+
+                            ---------------------
+
+                            xmin: 5.93
+
+                            xmax: 100000.0
+
+                            Gamma: 16.481411834743437
+
+                            Eta_0: 12.804432569978662
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:50,278 - Chrimatocracy - INFO - '
+                            Grupo: 96
+
+                            ---------------------
+
+                            xmin: 5.93
+
+                            xmax: 30000.0
+
+                            Gamma: 18.932316014422316
+
+                            Eta_0: 12.235563113141593
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:50,711 - Chrimatocracy - INFO - '
+                            Grupo: 98
+
+                            ---------------------
+
+                            xmin: 0.82
+
+                            xmax: 190000.0
+
+                            Gamma: 13.660658149620089
+
+                            Eta_0: 12.15793444247626
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:50,865 - Chrimatocracy - INFO - '
+                            Grupo: 99
+
+                            ---------------------
+
+                            xmin: 28.7
+
+                            xmax: 300000.0
+
+                            Gamma: 11.569455170294079
+
+                            Eta_0: 13.511629917879114
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:51,330 - Chrimatocracy - INFO - '
+                            Grupo: 5
+
+                            ---------------------
+
+                            xmin: 10.0
+
+                            xmax: 313500.0
+
+                            Gamma: 12.652951872658688
+
+                            Eta_0: 12.664940216708338
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:51,528 - Chrimatocracy - INFO - '
+                            Grupo: 103
+
+                            ---------------------
+
+                            xmin: 11.85
+
+                            xmax: 75808.9
+
+                            Gamma: 13.994641528180567
+
+                            Eta_0: 13.726380445129687
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:51,647 - Chrimatocracy - INFO - '
+                            Grupo: 104
+
+                            ---------------------
+
+                            xmin: 50.0
+
+                            xmax: 250000.0
+
+                            Gamma: 12.745085227198292
+
+                            Eta_0: 13.868271476717435
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:51,770 - Chrimatocracy - INFO - '
+                            Grupo: 107
+
+                            ---------------------
+
+                            xmin: 1.15
+
+                            xmax: 150000.0
+
+                            Gamma: 18.747128013066288
+
+                            Eta_0: 11.956697928230952
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:52,021 - Chrimatocracy - INFO - '
+                            Grupo: 124
+
+                            ---------------------
+
+                            xmin: 9.0
+
+                            xmax: 100000.0
+
+                            Gamma: 11.094318698447369
+
+                            Eta_0: 12.38797145319517
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:52,158 - Chrimatocracy - INFO - '
+                            Grupo: 130
+
+                            ---------------------
+
+                            xmin: 8.45
+
+                            xmax: 250000.0
+
+                            Gamma: 9.947098363437306
+
+                            Eta_0: 12.953282451862215
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:52,275 - Chrimatocracy - INFO - '
+                            Grupo: 134
+
+                            ---------------------
+
+                            xmin: 18.75
+
+                            xmax: 200000.0
+
+                            Gamma: 12.450714378014117
+
+                            Eta_0: 12.904769381303892
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:52,368 - Chrimatocracy - INFO - '
+                            Grupo: 149
+
+                            ---------------------
+
+                            xmin: 32.5
+
+                            xmax: 250000.0
+
+                            Gamma: 7.596665595002284
+
+                            Eta_0: 12.047792547825004
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:52,448 - Chrimatocracy - INFO - '
+                            Grupo: 150
+
+                            ---------------------
+
+                            xmin: 12.0
+
+                            xmax: 150000.0
+
+                            Gamma: 9.777348273263724
+
+                            Eta_0: 12.495448489805554
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:52,542 - Chrimatocracy - INFO - '
+                            Grupo: 153
+
+                            ---------------------
+
+                            xmin: 37.5
+
+                            xmax: 76000.0
+
+                            Gamma: 10.211103642927705
+
+                            Eta_0: 13.163538824145338
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:52,751 - Chrimatocracy - INFO - '
+                            Grupo: 154
+
+                            ---------------------
+
+                            xmin: 1.0
+
+                            xmax: 450000.0
+
+                            Gamma: 17.155976446004825
+
+                            Eta_0: 12.262680511098903
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:52,834 - Chrimatocracy - INFO - '
+                            Grupo: 155
+
+                            ---------------------
+
+                            xmin: 10.0
+
+                            xmax: 200000.0
+
+                            Gamma: 9.089794571172726
+
+                            Eta_0: 13.11159128761929
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:52,916 - Chrimatocracy - INFO - '
+                            Grupo: 156
+
+                            ---------------------
+
+                            xmin: 10.0
+
+                            xmax: 190000.0
+
+                            Gamma: 6.5907995829698365
+
+                            Eta_0: 11.429724805838292
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:53,085 - Chrimatocracy - INFO - '
+                            Grupo: 158
+
+                            ---------------------
+
+                            xmin: 105.0
+
+                            xmax: 50000.0
+
+                            Gamma: 14.208935971708536
+
+                            Eta_0: 12.374296647408219
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:53,271 - Chrimatocracy - INFO - '
+                            Grupo: 1
+
+                            ---------------------
+
+                            xmin: 0.99
+
+                            xmax: 5000.0
+
+                            Gamma: 9.738281629983106
+
+                            Eta_0: 9.795277638099243
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:53,354 - Chrimatocracy - INFO - '
+                            Grupo: 163
+
+                            ---------------------
+
+                            xmin: 4.62
+
+                            xmax: 130000.0
+
+                            Gamma: 6.657601072731542
+
+                            Eta_0: 11.85566665195697
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:53,599 - Chrimatocracy - INFO - '
+                            Grupo: 4
+
+                            ---------------------
+
+                            xmin: 15.46
+
+                            xmax: 228000.0
+
+                            Gamma: 9.446598462091538
+
+                            Eta_0: 11.809489825193522
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:53,687 - Chrimatocracy - INFO - '
+                            Grupo: 170
+
+                            ---------------------
+
+                            xmin: 10.0
+
+                            xmax: 50000.0
+
+                            Gamma: 7.602633766444017
+
+                            Eta_0: 11.194663556119652
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:53,752 - Chrimatocracy - INFO - '
+                            Grupo: 172
+
+                            ---------------------
+
+                            xmin: 20.0
+
+                            xmax: 100000.0
+
+                            Gamma: 8.7524039324197
+
+                            Eta_0: 12.769674146729335
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:55,352 - Chrimatocracy - INFO - '
+                            Grupo: 178
+
+                            ---------------------
+
+                            xmin: 25.0
+
+                            xmax: 300000.0
+
+                            Gamma: 25.043512110915763
+
+                            Eta_0: 11.52409088265682
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:55,515 - Chrimatocracy - INFO - '
+                            Grupo: 181
+
+                            ---------------------
+
+                            xmin: 37.4
+
+                            xmax: 200000.0
+
+                            Gamma: 13.003190688805804
+
+                            Eta_0: 13.000970013147567
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:55,577 - Chrimatocracy - INFO - '
+                            Grupo: 182
+
+                            ---------------------
+
+                            xmin: 0.07
+
+                            xmax: 142500.0
+
+                            Gamma: 7.785308840936314
+
+                            Eta_0: 12.557986253746463
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:55,661 - Chrimatocracy - INFO - '
+                            Grupo: 183
+
+                            ---------------------
+
+                            xmin: 15.0
+
+                            xmax: 70000.0
+
+                            Gamma: 9.479648598442038
+
+                            Eta_0: 12.929086521400109
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:55,788 - Chrimatocracy - INFO - '
+                            Grupo: 184
+
+                            ---------------------
+
+                            xmin: 7.0
+
+                            xmax: 100000.0
+
+                            Gamma: 11.244867354613236
+
+                            Eta_0: 12.155446946090636
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:58,124 - Chrimatocracy - INFO - '
+                            Grupo: 185
+
+                            ---------------------
+
+                            xmin: 45.0
+
+                            xmax: 100000.0
+
+                            Gamma: 29.824613532452627
+
+                            Eta_0: 11.996022786667158
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:58,273 - Chrimatocracy - INFO - '
+                            Grupo: 186
+
+                            ---------------------
+
+                            xmin: 10.57
+
+                            xmax: 200000.0
+
+                            Gamma: 11.048522045960132
+
+                            Eta_0: 12.176958317109005
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:58,349 - Chrimatocracy - INFO - '
+                            Grupo: 187
+
+                            ---------------------
+
+                            xmin: 27.4
+
+                            xmax: 632985.0
+
+                            Gamma: 9.936273171134822
+
+                            Eta_0: 12.22094614427845
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:58,453 - Chrimatocracy - INFO - '
+                            Grupo: 188
+
+                            ---------------------
+
+                            xmin: 13.5
+
+                            xmax: 100000.0
+
+                            Gamma: 10.390500931455362
+
+                            Eta_0: 11.96562778422727
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:58,557 - Chrimatocracy - INFO - '
+                            Grupo: 194
+
+                            ---------------------
+
+                            xmin: 37.4
+
+                            xmax: 66500.0
+
+                            Gamma: 11.790134805895274
+
+                            Eta_0: 12.349539278943615
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:58,608 - Chrimatocracy - INFO - '
+                            Grupo: 195
+
+                            ---------------------
+
+                            xmin: 22.44
+
+                            xmax: 65000.0
+
+                            Gamma: 8.893211225443386
+
+                            Eta_0: 12.182947702435024
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:58,731 - Chrimatocracy - INFO - '
+                            Grupo: 197
+
+                            ---------------------
+
+                            xmin: 14.0
+
+                            xmax: 47500.0
+
+                            Gamma: 11.263955989801538
+
+                            Eta_0: 11.462615594084287
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:58,905 - Chrimatocracy - INFO - '
+                            Grupo: 210
+
+                            ---------------------
+
+                            xmin: 9.8
+
+                            xmax: 500000.0
+
+                            Gamma: 11.320883055572514
+
+                            Eta_0: 11.342506646886592
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:58,973 - Chrimatocracy - INFO - '
+                            Grupo: 215
+
+                            ---------------------
+
+                            xmin: 7.5
+
+                            xmax: 260000.0
+
+                            Gamma: 9.130070146524167
+
+                            Eta_0: 13.517228240898927
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:59,031 - Chrimatocracy - INFO - '
+                            Grupo: 217
+
+                            ---------------------
+
+                            xmin: 12.0
+
+                            xmax: 150000.0
+
+                            Gamma: 9.010648727598058
+
+                            Eta_0: 12.72494050442297
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:59,098 - Chrimatocracy - INFO - '
+                            Grupo: 218
+
+                            ---------------------
+
+                            xmin: 13.08
+
+                            xmax: 75000.0
+
+                            Gamma: 9.755203685088372
+
+                            Eta_0: 12.77255415786922
+
+                            ---------------------
+
+                            
+2022-08-14 20:54:59,220 - Chrimatocracy - INFO - '
+                            Grupo: 221
+
+                            ---------------------
+
+                            xmin: 24.75
+
+                            xmax: 100000.0
+
+                            Gamma: 10.95783490075074
+
+                            Eta_0: 12.25150847401327
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:01,113 - Chrimatocracy - INFO - '
+                            Grupo: 226
+
+                            ---------------------
+
+                            xmin: 0.07
+
+                            xmax: 60000.0
+
+                            Gamma: 27.97716114827215
+
+                            Eta_0: 11.71622254540796
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:01,365 - Chrimatocracy - INFO - '
+                            Grupo: 229
+
+                            ---------------------
+
+                            xmin: 25.0
+
+                            xmax: 40000.0
+
+                            Gamma: 12.593428001770185
+
+                            Eta_0: 11.876188382178713
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:01,517 - Chrimatocracy - INFO - '
+                            Grupo: 250
+
+                            ---------------------
+
+                            xmin: 56.35
+
+                            xmax: 300000.0
+
+                            Gamma: 12.373448282561476
+
+                            Eta_0: 12.679350360855752
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:01,704 - Chrimatocracy - INFO - '
+                            Grupo: 251
+
+                            ---------------------
+
+                            xmin: 32.44
+
+                            xmax: 50000.0
+
+                            Gamma: 14.242104810521077
+
+                            Eta_0: 12.873292086773176
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:01,790 - Chrimatocracy - INFO - '
+                            Grupo: 258
+
+                            ---------------------
+
+                            xmin: 4.0
+
+                            xmax: 300000.0
+
+                            Gamma: 8.25431763181942
+
+                            Eta_0: 13.511950219258388
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:02,114 - Chrimatocracy - INFO - '
+                            Grupo: 264
+
+                            ---------------------
+
+                            xmin: 150.0
+
+                            xmax: 100000.0
+
+                            Gamma: 13.460800781095967
+
+                            Eta_0: 12.250858409106687
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:02,204 - Chrimatocracy - INFO - '
+                            Grupo: 265
+
+                            ---------------------
+
+                            xmin: 28.5
+
+                            xmax: 150000.0
+
+                            Gamma: 10.778411644170399
+
+                            Eta_0: 12.120999678239428
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:02,287 - Chrimatocracy - INFO - '
+                            Grupo: 285
+
+                            ---------------------
+
+                            xmin: 6.0
+
+                            xmax: 100000.0
+
+                            Gamma: 8.870856510744327
+
+                            Eta_0: 12.56172114137413
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:02,354 - Chrimatocracy - INFO - '
+                            Grupo: 288
+
+                            ---------------------
+
+                            xmin: 5.93
+
+                            xmax: 300000.0
+
+                            Gamma: 8.368967886494358
+
+                            Eta_0: 12.566969559223667
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:02,469 - Chrimatocracy - INFO - '
+                            Grupo: 298
+
+                            ---------------------
+
+                            xmin: 50.0
+
+                            xmax: 125000.0
+
+                            Gamma: 12.873909709522023
+
+                            Eta_0: 12.010005123578766
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:02,526 - Chrimatocracy - INFO - '
+                            Grupo: 302
+
+                            ---------------------
+
+                            xmin: 0.56
+
+                            xmax: 200000.0
+
+                            Gamma: 8.120942053771763
+
+                            Eta_0: 13.022777717873408
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:02,601 - Chrimatocracy - INFO - '
+                            Grupo: 305
+
+                            ---------------------
+
+                            xmin: 12.0
+
+                            xmax: 70000.0
+
+                            Gamma: 10.39414587262659
+
+                            Eta_0: 13.462544905133255
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:02,643 - Chrimatocracy - INFO - '
+                            Grupo: 309
+
+                            ---------------------
+
+                            xmin: 20.9
+
+                            xmax: 30000.0
+
+                            Gamma: 6.774702177225921
+
+                            Eta_0: 13.994772194547812
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:02,906 - Chrimatocracy - INFO - '
+                            Grupo: 317
+
+                            ---------------------
+
+                            xmin: 0.02
+
+                            xmax: 150000.0
+
+                            Gamma: 13.540492956116779
+
+                            Eta_0: 12.098114295839752
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:03,001 - Chrimatocracy - INFO - '
+                            Grupo: 346
+
+                            ---------------------
+
+                            xmin: 4.5
+
+                            xmax: 50000.0
+
+                            Gamma: 9.250596123435322
+
+                            Eta_0: 12.463175579106156
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:03,130 - Chrimatocracy - INFO - '
+                            Grupo: 348
+
+                            ---------------------
+
+                            xmin: 5.0
+
+                            xmax: 30000.0
+
+                            Gamma: 12.360763642386756
+
+                            Eta_0: 11.870518942863681
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:03,239 - Chrimatocracy - INFO - '
+                            Grupo: 349
+
+                            ---------------------
+
+                            xmin: 14.88
+
+                            xmax: 100000.0
+
+                            Gamma: 11.390350694054376
+
+                            Eta_0: 12.440467175976316
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:03,407 - Chrimatocracy - INFO - '
+                            Grupo: 366
+
+                            ---------------------
+
+                            xmin: 13.5
+
+                            xmax: 285000.0
+
+                            Gamma: 10.714080773945573
+
+                            Eta_0: 13.062711077181437
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:03,600 - Chrimatocracy - INFO - '
+                            Grupo: 372
+
+                            ---------------------
+
+                            xmin: 11.0
+
+                            xmax: 300000.0
+
+                            Gamma: 11.565404859490888
+
+                            Eta_0: 11.736422052906036
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:03,766 - Chrimatocracy - INFO - '
+                            Grupo: 373
+
+                            ---------------------
+
+                            xmin: 45.0
+
+                            xmax: 428500.0
+
+                            Gamma: 13.521452152459856
+
+                            Eta_0: 13.497589968062774
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:04,249 - Chrimatocracy - INFO - '
+                            Grupo: 374
+
+                            ---------------------
+
+                            xmin: 50.0
+
+                            xmax: 40000.0
+
+                            Gamma: 18.93432292917762
+
+                            Eta_0: 11.685768073193335
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:04,421 - Chrimatocracy - INFO - '
+                            Grupo: 414
+
+                            ---------------------
+
+                            xmin: 71.4
+
+                            xmax: 100000.0
+
+                            Gamma: 14.811899519966248
+
+                            Eta_0: 12.589895498301958
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:04,738 - Chrimatocracy - INFO - '
+                            Grupo: 450
+
+                            ---------------------
+
+                            xmin: 36.0
+
+                            xmax: 100000.0
+
+                            Gamma: 15.765472650598689
+
+                            Eta_0: 12.423980548728704
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:05,129 - Chrimatocracy - INFO - '
+                            Grupo: 456
+
+                            ---------------------
+
+                            xmin: 84.0
+
+                            xmax: 10000.0
+
+                            Gamma: 17.68340997985519
+
+                            Eta_0: 11.412007851925983
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:05,432 - Chrimatocracy - INFO - '
+                            Grupo: 464
+
+                            ---------------------
+
+                            xmin: 25.0
+
+                            xmax: 900000.0
+
+                            Gamma: 15.914130422145709
+
+                            Eta_0: 12.038358332042646
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:05,570 - Chrimatocracy - INFO - '
+                            Grupo: 465
+
+                            ---------------------
+
+                            xmin: 25.0
+
+                            xmax: 114950.0
+
+                            Gamma: 10.825058057663156
+
+                            Eta_0: 11.656926047026555
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:06,618 - Chrimatocracy - INFO - '
+                            Grupo: 469
+
+                            ---------------------
+
+                            xmin: 25.0
+
+                            xmax: 200000.0
+
+                            Gamma: 16.227718091870656
+
+                            Eta_0: 11.8930631899046
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:06,744 - Chrimatocracy - INFO - '
+                            Grupo: 472
+
+                            ---------------------
+
+                            xmin: 17.5
+
+                            xmax: 50000.0
+
+                            Gamma: 10.722889476603664
+
+                            Eta_0: 11.858043502535619
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:06,896 - Chrimatocracy - INFO - '
+                            Grupo: 476
+
+                            ---------------------
+
+                            xmin: 3.35
+
+                            xmax: 58000.0
+
+                            Gamma: 11.975385509248827
+
+                            Eta_0: 11.988078632071613
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:07,054 - Chrimatocracy - INFO - '
+                            Grupo: 477
+
+                            ---------------------
+
+                            xmin: 12.0
+
+                            xmax: 110000.0
+
+                            Gamma: 11.627490281346446
+
+                            Eta_0: 12.37932692828161
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:07,796 - Chrimatocracy - INFO - '
+                            Grupo: 486
+
+                            ---------------------
+
+                            xmin: 87.5
+
+                            xmax: 25000.0
+
+                            Gamma: 22.860254761155534
+
+                            Eta_0: 11.878517792420489
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:07,903 - Chrimatocracy - INFO - '
+                            Grupo: 487
+
+                            ---------------------
+
+                            xmin: 61.02
+
+                            xmax: 500000.0
+
+                            Gamma: 11.817888165806055
+
+                            Eta_0: 12.293699452660748
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:08,048 - Chrimatocracy - INFO - '
+                            Grupo: 491
+
+                            ---------------------
+
+                            xmin: 10.57
+
+                            xmax: 100000.0
+
+                            Gamma: 9.824951011694234
+
+                            Eta_0: 12.607581496964032
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:08,129 - Chrimatocracy - INFO - '
+                            Grupo: 494
+
+                            ---------------------
+
+                            xmin: 7.0
+
+                            xmax: 47500.0
+
+                            Gamma: 9.122114104100405
+
+                            Eta_0: 11.453779324950695
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:08,316 - Chrimatocracy - INFO - '
+                            Grupo: 549
+
+                            ---------------------
+
+                            xmin: 12.0
+
+                            xmax: 150000.0
+
+                            Gamma: 13.820586560986618
+
+                            Eta_0: 12.332000713041769
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:09,397 - Chrimatocracy - INFO - '
+                            Grupo: 625
+
+                            ---------------------
+
+                            xmin: 150.0
+
+                            xmax: 50000.0
+
+                            Gamma: 21.98752784095851
+
+                            Eta_0: 12.61960082557732
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:10,270 - Chrimatocracy - INFO - '
+                            Grupo: 0
+
+                            ---------------------
+
+                            xmin: 10.0
+
+                            xmax: 2468.48
+
+                            Gamma: 16.188928076563933
+
+                            Eta_0: 9.529761458161829
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:10,508 - Chrimatocracy - INFO - '
+                            Grupo: 626
+
+                            ---------------------
+
+                            xmin: 25.0
+
+                            xmax: 42000.0
+
+                            Gamma: 12.70702412027648
+
+                            Eta_0: 12.17130956940206
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:10,619 - Chrimatocracy - INFO - '
+                            Grupo: 718
+
+                            ---------------------
+
+                            xmin: 27.9
+
+                            xmax: 200000.0
+
+                            Gamma: 10.675429878339543
+
+                            Eta_0: 13.139569203021432
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:10,765 - Chrimatocracy - INFO - '
+                            Grupo: 765
+
+                            ---------------------
+
+                            xmin: 15.0
+
+                            xmax: 61750.0
+
+                            Gamma: 11.701237225348036
+
+                            Eta_0: 12.580024144871121
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:11,292 - Chrimatocracy - INFO - '
+                            Grupo: 778
+
+                            ---------------------
+
+                            xmin: 5.0
+
+                            xmax: 150000.0
+
+                            Gamma: 14.04137878247818
+
+                            Eta_0: 12.63033096656182
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:11,874 - Chrimatocracy - INFO - '
+                            Grupo: 1125
+
+                            ---------------------
+
+                            xmin: 60.0
+
+                            xmax: 30000.0
+
+                            Gamma: 32.413889509735654
+
+                            Eta_0: 12.80726464077763
+
+                            ---------------------
+
+                            
+2022-08-14 20:55:11,929 - Chrimatocracy - INFO - Model Parameters:     group  xmin      xmax  gamma  eta0
+0      10  0.90 187500.00  12.68 12.40
+1      11 20.00 300000.00  10.59 12.66
+2      15  5.93 300000.00  22.60 11.64
+3      16 33.75 125000.00  10.53 11.39
+4      18 62.50 300000.00  12.47 12.53
+..    ...   ...       ...    ...   ...
+88    626 25.00  42000.00  12.71 12.17
+89    718 27.90 200000.00  10.68 13.14
+90    765 15.00  61750.00  11.70 12.58
+91    778  5.00 150000.00  14.04 12.63
+92   1125 60.00  30000.00  32.41 12.81
+
+[93 rows x 5 columns]
+2022-08-14 20:55:11,942 - Chrimatocracy - DEBUG - Latex Template dir: C:/Users/flant/Dropbox/ufrgs/phd/Barbosa-Gammerman/Work/chrimatocracy/templates/tex
+2022-08-14 20:55:11,942 - Chrimatocracy - DEBUG - Latex Files dir: C:/Users/flant/Dropbox/ufrgs/phd/Barbosa-Gammerman/Work/research/network/tables/tex
+2022-08-14 20:55:11,942 - Chrimatocracy - DEBUG - Output to PDF Files dir: C:/Users/flant/Dropbox/ufrgs/phd/Barbosa-Gammerman/Work/research/network/tables/pdf
+2022-08-14 20:55:28,636 - Chrimatocracy - INFO - Figure 'brazil_2014_state_deputy_SP__generative_model_lv_community_gt_100__cdf.pgf' saved.
+2022-08-14 20:55:28,636 - Chrimatocracy - DEBUG - Latex Template dir: C:/Users/flant/Dropbox/ufrgs/phd/Barbosa-Gammerman/Work/chrimatocracy/templates/tex
+2022-08-14 20:55:28,637 - Chrimatocracy - DEBUG - Latex Files dir: C:/Users/flant/Dropbox/ufrgs/phd/Barbosa-Gammerman/Work/research/network/figures/tex
+2022-08-14 20:55:28,637 - Chrimatocracy - DEBUG - Output to PDF Files dir: C:/Users/flant/Dropbox/ufrgs/phd/Barbosa-Gammerman/Work/research/network/figures/pdf
+2022-08-14 21:14:38,147 - Chrimatocracy - INFO - Chrimatocracy Network:
+
+                 year=2014
+
+                 data_path=C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\data\prepared\2014
+
+                 table_path=C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tables
+
+                 figure_path=C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\figures
+
+                 
+2022-08-14 21:14:38,148 - Chrimatocracy - INFO - Generating Network Analysis table for state_deputy.
+
+2022-08-14 21:14:38,149 - Chrimatocracy - INFO - Loading donations to candidates DataFrame from prepared data...
+2022-08-14 21:14:39,722 - Chrimatocracy - INFO - Donations to candidates DataFrame loaded.
+2022-08-14 21:14:43,969 - Chrimatocracy - INFO - Adjacency matrix saved: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_state_deputy_SP__adj_matrix.csv
+2022-08-14 21:14:43,985 - Chrimatocracy - INFO - Creating Graph from Adjacency Matrix...
+2022-08-14 21:14:44,100 - Chrimatocracy - INFO - Graph created. Network summary:
+2022-08-14 21:14:44,100 - Chrimatocracy - INFO - Number of vertices (nodes): 1735
+2022-08-14 21:14:44,100 - Chrimatocracy - INFO - Number of edges: 182
+2022-08-14 21:14:44,101 - Chrimatocracy - INFO - Average Degree: 0.20979827089337175
+2022-08-14 21:14:44,102 - Chrimatocracy - INFO - Saved in CSV format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_state_deputy_SP__nextwork_summary.csv
+2022-08-14 21:14:44,107 - Chrimatocracy - INFO - Summary in TeX format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablestex/brazil_2014_state_deputy_SP__nextwork_summary.csv
+2022-08-14 21:14:44,108 - Chrimatocracy - INFO - Running community detection algorithm...
+2022-08-14 21:14:44,115 - Chrimatocracy - INFO - Communities identified.
+2022-08-14 21:14:44,115 - Chrimatocracy - INFO - Quality:  0.3954534476512497
+2022-08-14 21:14:44,115 - Chrimatocracy - INFO - Modularity:  0.39545344765124957
+2022-08-14 21:14:44,115 - Chrimatocracy - INFO - Partitions Summary: Clustering with 1735 elements and 1698 clusters
+2022-08-14 21:14:44,119 - Chrimatocracy - INFO - Saved in CSV format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_state_deputy_SP__partition_summary.csv
+2022-08-14 21:14:44,125 - Chrimatocracy - INFO - Saved in TeX format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablestex/brazil_2014_state_deputy_SP__partition_summary.tex
+2022-08-14 21:14:44,126 - Chrimatocracy - INFO - Adding communities to 'donations to candidates' DataFrame...
+2022-08-14 21:14:44,132 - Chrimatocracy - INFO - Candidates with communities identified saved at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_state_deputy_SP__communities.csv
+2022-08-14 21:14:44,760 - Chrimatocracy - INFO - Adding communities information to the Adjacency Matrix...
+2022-08-14 21:14:44,764 - Chrimatocracy - INFO - Drawing Adjacency Matrix figure...
+2022-08-14 21:14:48,198 - Chrimatocracy - INFO - Figure saved at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablestex/brazil_2014_state_deputy_SP__adj_matrix.pgf
+2022-08-14 21:14:48,199 - Chrimatocracy - INFO - Generating Benford Law table...
+2022-08-14 21:14:49,057 - Chrimatocracy - INFO - Saved in CSV format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_state_deputy_SP__benford_law_lv_community_gt_100.csv
+2022-08-14 21:14:49,071 - Chrimatocracy - INFO - Saved in TeX format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablestex/brazil_2014_state_deputy_SP__benford_law_lv_community_gt_100.tex
+2022-08-14 21:14:49,234 - Chrimatocracy - INFO - Number of dirty companies: 9969
+2022-08-14 21:14:49,259 - Chrimatocracy - INFO - Number cpfs/cnpjs dirty donations: 86
+2022-08-14 21:14:49,260 - Chrimatocracy - INFO - Number of cpfs/cnpjs dirty donnors: 34
+2022-08-14 21:14:49,449 - Chrimatocracy - INFO - Saved in CSV format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_state_deputy_SP__benford_law_lv_community_gt_100_dirty_stats.csv
+2022-08-14 21:14:49,470 - Chrimatocracy - INFO - Saved in TeX format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablestex/brazil_2014_state_deputy_SP__benford_law_lv_community_gt_100_dirty_stats.tex
+2022-08-14 21:14:49,987 - Chrimatocracy - INFO - '
+                            Grupo: 10
+
+                            ---------------------
+
+                            xmin: 0.9
+
+                            xmax: 187500.0
+
+                            Gamma: 12.680792491989953
+
+                            Eta_0: 12.401013701008043
+
+                            ---------------------
+
+                            
+2022-08-14 21:14:50,112 - Chrimatocracy - INFO - '
+                            Grupo: 11
+
+                            ---------------------
+
+                            xmin: 20.0
+
+                            xmax: 300000.0
+
+                            Gamma: 10.590544369243815
+
+                            Eta_0: 12.659193642383343
+
+                            ---------------------
+
+                            
+2022-08-14 21:14:51,316 - Chrimatocracy - INFO - '
+                            Grupo: 15
+
+                            ---------------------
+
+                            xmin: 5.93
+
+                            xmax: 300000.0
+
+                            Gamma: 22.602263212726935
+
+                            Eta_0: 11.638364119204553
+
+                            ---------------------
+
+                            
+2022-08-14 21:14:51,496 - Chrimatocracy - INFO - '
+                            Grupo: 16
+
+                            ---------------------
+
+                            xmin: 33.75
+
+                            xmax: 125000.0
+
+                            Gamma: 10.533944457804695
+
+                            Eta_0: 11.391097520168733
+
+                            ---------------------
+
+                            
+2022-08-14 21:14:51,698 - Chrimatocracy - INFO - '
+                            Grupo: 18
+
+                            ---------------------
+
+                            xmin: 62.5
+
+                            xmax: 300000.0
+
+                            Gamma: 12.472517625310772
+
+                            Eta_0: 12.531735636629884
+
+                            ---------------------
+
+                            
+2022-08-14 21:14:51,789 - Chrimatocracy - INFO - '
+                            Grupo: 19
+
+                            ---------------------
+
+                            xmin: 1.13
+
+                            xmax: 300000.0
+
+                            Gamma: 9.455219900491441
+
+                            Eta_0: 13.080158671996205
+
+                            ---------------------
+
+                            
+2022-08-14 21:14:53,803 - Chrimatocracy - INFO - '
+                            Grupo: 29
+
+                            ---------------------
+
+                            xmin: 30.0
+
+                            xmax: 118750.0
+
+                            Gamma: 19.089729744377426
+
+                            Eta_0: 12.389344919945437
+
+                            ---------------------
+
+                            
+2022-08-14 21:14:56,419 - Chrimatocracy - INFO - '
+                            Grupo: 63
+
+                            ---------------------
+
+                            xmin: 265.47
+
+                            xmax: 20000.0
+
+                            Gamma: 25.611003865700763
+
+                            Eta_0: 11.963067353891159
+
+                            ---------------------
+
+                            
+2022-08-14 21:14:56,597 - Chrimatocracy - INFO - '
+                            Grupo: 83
+
+                            ---------------------
+
+                            xmin: 30.61
+
+                            xmax: 80000.0
+
+                            Gamma: 11.501181808646141
+
+                            Eta_0: 12.889743970004513
+
+                            ---------------------
+
+                            
+2022-08-14 21:14:56,900 - Chrimatocracy - INFO - '
+                            Grupo: 93
+
+                            ---------------------
+
+                            xmin: 10.0
+
+                            xmax: 150000.0
+
+                            Gamma: 14.248727161463776
+
+                            Eta_0: 13.13999517011994
+
+                            ---------------------
+
+                            
+2022-08-14 21:14:57,138 - Chrimatocracy - INFO - '
+                            Grupo: 94
+
+                            ---------------------
+
+                            xmin: 27.5
+
+                            xmax: 300000.0
+
+                            Gamma: 11.868614880205314
+
+                            Eta_0: 12.611236171837781
+
+                            ---------------------
+
+                            
+2022-08-14 21:14:58,132 - Chrimatocracy - INFO - '
+                            Grupo: 95
+
+                            ---------------------
+
+                            xmin: 5.93
+
+                            xmax: 100000.0
+
+                            Gamma: 16.481411834743437
+
+                            Eta_0: 12.804432569978662
+
+                            ---------------------
+
+                            
+2022-08-14 21:14:58,687 - Chrimatocracy - INFO - '
+                            Grupo: 96
+
+                            ---------------------
+
+                            xmin: 5.93
+
+                            xmax: 30000.0
+
+                            Gamma: 18.932316014422316
+
+                            Eta_0: 12.235563113141593
+
+                            ---------------------
+
+                            
+2022-08-14 21:14:59,273 - Chrimatocracy - INFO - '
+                            Grupo: 98
+
+                            ---------------------
+
+                            xmin: 0.82
+
+                            xmax: 190000.0
+
+                            Gamma: 13.660658149620089
+
+                            Eta_0: 12.15793444247626
+
+                            ---------------------
+
+                            
+2022-08-14 21:14:59,477 - Chrimatocracy - INFO - '
+                            Grupo: 99
+
+                            ---------------------
+
+                            xmin: 28.7
+
+                            xmax: 300000.0
+
+                            Gamma: 11.569455170294079
+
+                            Eta_0: 13.511629917879114
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:00,053 - Chrimatocracy - INFO - '
+                            Grupo: 4
+
+                            ---------------------
+
+                            xmin: 10.0
+
+                            xmax: 313500.0
+
+                            Gamma: 12.652951872658688
+
+                            Eta_0: 12.664940216708338
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:00,320 - Chrimatocracy - INFO - '
+                            Grupo: 103
+
+                            ---------------------
+
+                            xmin: 11.85
+
+                            xmax: 75808.9
+
+                            Gamma: 13.994641528180567
+
+                            Eta_0: 13.726380445129687
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:00,459 - Chrimatocracy - INFO - '
+                            Grupo: 104
+
+                            ---------------------
+
+                            xmin: 50.0
+
+                            xmax: 250000.0
+
+                            Gamma: 12.745085227198292
+
+                            Eta_0: 13.868271476717435
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:00,594 - Chrimatocracy - INFO - '
+                            Grupo: 107
+
+                            ---------------------
+
+                            xmin: 1.15
+
+                            xmax: 150000.0
+
+                            Gamma: 18.747128013066288
+
+                            Eta_0: 11.956697928230952
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:00,881 - Chrimatocracy - INFO - '
+                            Grupo: 124
+
+                            ---------------------
+
+                            xmin: 9.0
+
+                            xmax: 100000.0
+
+                            Gamma: 11.094318698447369
+
+                            Eta_0: 12.38797145319517
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:01,033 - Chrimatocracy - INFO - '
+                            Grupo: 130
+
+                            ---------------------
+
+                            xmin: 8.45
+
+                            xmax: 250000.0
+
+                            Gamma: 9.947098363437306
+
+                            Eta_0: 12.953282451862215
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:01,177 - Chrimatocracy - INFO - '
+                            Grupo: 134
+
+                            ---------------------
+
+                            xmin: 18.75
+
+                            xmax: 200000.0
+
+                            Gamma: 12.450714378014117
+
+                            Eta_0: 12.904769381303892
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:01,263 - Chrimatocracy - INFO - '
+                            Grupo: 149
+
+                            ---------------------
+
+                            xmin: 32.5
+
+                            xmax: 250000.0
+
+                            Gamma: 7.596665595002284
+
+                            Eta_0: 12.047792547825004
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:01,364 - Chrimatocracy - INFO - '
+                            Grupo: 150
+
+                            ---------------------
+
+                            xmin: 12.0
+
+                            xmax: 150000.0
+
+                            Gamma: 9.777348273263724
+
+                            Eta_0: 12.495448489805554
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:01,468 - Chrimatocracy - INFO - '
+                            Grupo: 153
+
+                            ---------------------
+
+                            xmin: 37.5
+
+                            xmax: 76000.0
+
+                            Gamma: 10.211103642927705
+
+                            Eta_0: 13.163538824145338
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:01,698 - Chrimatocracy - INFO - '
+                            Grupo: 154
+
+                            ---------------------
+
+                            xmin: 1.0
+
+                            xmax: 450000.0
+
+                            Gamma: 17.155976446004825
+
+                            Eta_0: 12.262680511098903
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:01,784 - Chrimatocracy - INFO - '
+                            Grupo: 155
+
+                            ---------------------
+
+                            xmin: 10.0
+
+                            xmax: 200000.0
+
+                            Gamma: 9.089794571172726
+
+                            Eta_0: 13.11159128761929
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:01,888 - Chrimatocracy - INFO - '
+                            Grupo: 156
+
+                            ---------------------
+
+                            xmin: 10.0
+
+                            xmax: 190000.0
+
+                            Gamma: 6.5907995829698365
+
+                            Eta_0: 11.429724805838292
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:02,095 - Chrimatocracy - INFO - '
+                            Grupo: 158
+
+                            ---------------------
+
+                            xmin: 105.0
+
+                            xmax: 50000.0
+
+                            Gamma: 14.208935971708536
+
+                            Eta_0: 12.374296647408219
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:02,306 - Chrimatocracy - INFO - '
+                            Grupo: 1
+
+                            ---------------------
+
+                            xmin: 0.99
+
+                            xmax: 5000.0
+
+                            Gamma: 9.738281629983106
+
+                            Eta_0: 9.795277638099243
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:02,405 - Chrimatocracy - INFO - '
+                            Grupo: 163
+
+                            ---------------------
+
+                            xmin: 4.62
+
+                            xmax: 130000.0
+
+                            Gamma: 6.657601072731542
+
+                            Eta_0: 11.85566665195697
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:02,809 - Chrimatocracy - INFO - '
+                            Grupo: 5
+
+                            ---------------------
+
+                            xmin: 15.46
+
+                            xmax: 228000.0
+
+                            Gamma: 9.446598462091538
+
+                            Eta_0: 11.809489825193522
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:02,950 - Chrimatocracy - INFO - '
+                            Grupo: 170
+
+                            ---------------------
+
+                            xmin: 10.0
+
+                            xmax: 50000.0
+
+                            Gamma: 7.602633766444017
+
+                            Eta_0: 11.194663556119652
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:03,063 - Chrimatocracy - INFO - '
+                            Grupo: 172
+
+                            ---------------------
+
+                            xmin: 20.0
+
+                            xmax: 100000.0
+
+                            Gamma: 8.7524039324197
+
+                            Eta_0: 12.769674146729335
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:05,432 - Chrimatocracy - INFO - '
+                            Grupo: 178
+
+                            ---------------------
+
+                            xmin: 25.0
+
+                            xmax: 300000.0
+
+                            Gamma: 25.043512110915763
+
+                            Eta_0: 11.52409088265682
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:05,649 - Chrimatocracy - INFO - '
+                            Grupo: 181
+
+                            ---------------------
+
+                            xmin: 37.4
+
+                            xmax: 200000.0
+
+                            Gamma: 13.003190688805804
+
+                            Eta_0: 13.000970013147567
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:05,723 - Chrimatocracy - INFO - '
+                            Grupo: 182
+
+                            ---------------------
+
+                            xmin: 0.07
+
+                            xmax: 142500.0
+
+                            Gamma: 7.785308840936314
+
+                            Eta_0: 12.557986253746463
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:05,804 - Chrimatocracy - INFO - '
+                            Grupo: 183
+
+                            ---------------------
+
+                            xmin: 15.0
+
+                            xmax: 70000.0
+
+                            Gamma: 9.479648598442038
+
+                            Eta_0: 12.929086521400109
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:05,955 - Chrimatocracy - INFO - '
+                            Grupo: 184
+
+                            ---------------------
+
+                            xmin: 7.0
+
+                            xmax: 100000.0
+
+                            Gamma: 11.244867354613236
+
+                            Eta_0: 12.155446946090636
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:08,881 - Chrimatocracy - INFO - '
+                            Grupo: 185
+
+                            ---------------------
+
+                            xmin: 45.0
+
+                            xmax: 100000.0
+
+                            Gamma: 29.824613532452627
+
+                            Eta_0: 11.996022786667158
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:09,035 - Chrimatocracy - INFO - '
+                            Grupo: 186
+
+                            ---------------------
+
+                            xmin: 10.57
+
+                            xmax: 200000.0
+
+                            Gamma: 11.048522045960132
+
+                            Eta_0: 12.176958317109005
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:09,115 - Chrimatocracy - INFO - '
+                            Grupo: 187
+
+                            ---------------------
+
+                            xmin: 27.4
+
+                            xmax: 632985.0
+
+                            Gamma: 9.936273171134822
+
+                            Eta_0: 12.22094614427845
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:09,219 - Chrimatocracy - INFO - '
+                            Grupo: 188
+
+                            ---------------------
+
+                            xmin: 13.5
+
+                            xmax: 100000.0
+
+                            Gamma: 10.390500931455362
+
+                            Eta_0: 11.96562778422727
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:09,334 - Chrimatocracy - INFO - '
+                            Grupo: 194
+
+                            ---------------------
+
+                            xmin: 37.4
+
+                            xmax: 66500.0
+
+                            Gamma: 11.790134805895274
+
+                            Eta_0: 12.349539278943615
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:09,383 - Chrimatocracy - INFO - '
+                            Grupo: 195
+
+                            ---------------------
+
+                            xmin: 22.44
+
+                            xmax: 65000.0
+
+                            Gamma: 8.893211225443386
+
+                            Eta_0: 12.182947702435024
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:09,510 - Chrimatocracy - INFO - '
+                            Grupo: 197
+
+                            ---------------------
+
+                            xmin: 14.0
+
+                            xmax: 47500.0
+
+                            Gamma: 11.263955989801538
+
+                            Eta_0: 11.462615594084287
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:09,700 - Chrimatocracy - INFO - '
+                            Grupo: 210
+
+                            ---------------------
+
+                            xmin: 9.8
+
+                            xmax: 500000.0
+
+                            Gamma: 11.320883055572514
+
+                            Eta_0: 11.342506646886592
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:09,772 - Chrimatocracy - INFO - '
+                            Grupo: 215
+
+                            ---------------------
+
+                            xmin: 7.5
+
+                            xmax: 260000.0
+
+                            Gamma: 9.130070146524167
+
+                            Eta_0: 13.517228240898927
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:09,831 - Chrimatocracy - INFO - '
+                            Grupo: 217
+
+                            ---------------------
+
+                            xmin: 12.0
+
+                            xmax: 150000.0
+
+                            Gamma: 9.010648727598058
+
+                            Eta_0: 12.72494050442297
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:09,899 - Chrimatocracy - INFO - '
+                            Grupo: 218
+
+                            ---------------------
+
+                            xmin: 13.08
+
+                            xmax: 75000.0
+
+                            Gamma: 9.755203685088372
+
+                            Eta_0: 12.77255415786922
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:10,024 - Chrimatocracy - INFO - '
+                            Grupo: 221
+
+                            ---------------------
+
+                            xmin: 24.75
+
+                            xmax: 100000.0
+
+                            Gamma: 10.95783490075074
+
+                            Eta_0: 12.25150847401327
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:12,217 - Chrimatocracy - INFO - '
+                            Grupo: 226
+
+                            ---------------------
+
+                            xmin: 0.07
+
+                            xmax: 60000.0
+
+                            Gamma: 27.97716114827215
+
+                            Eta_0: 11.71622254540796
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:12,478 - Chrimatocracy - INFO - '
+                            Grupo: 229
+
+                            ---------------------
+
+                            xmin: 25.0
+
+                            xmax: 40000.0
+
+                            Gamma: 12.593428001770185
+
+                            Eta_0: 11.876188382178713
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:12,615 - Chrimatocracy - INFO - '
+                            Grupo: 250
+
+                            ---------------------
+
+                            xmin: 56.35
+
+                            xmax: 300000.0
+
+                            Gamma: 12.373448282561476
+
+                            Eta_0: 12.679350360855752
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:12,793 - Chrimatocracy - INFO - '
+                            Grupo: 251
+
+                            ---------------------
+
+                            xmin: 32.44
+
+                            xmax: 50000.0
+
+                            Gamma: 14.242104810521077
+
+                            Eta_0: 12.873292086773176
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:12,875 - Chrimatocracy - INFO - '
+                            Grupo: 258
+
+                            ---------------------
+
+                            xmin: 4.0
+
+                            xmax: 300000.0
+
+                            Gamma: 8.25431763181942
+
+                            Eta_0: 13.511950219258388
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:13,191 - Chrimatocracy - INFO - '
+                            Grupo: 264
+
+                            ---------------------
+
+                            xmin: 150.0
+
+                            xmax: 100000.0
+
+                            Gamma: 13.460800781095967
+
+                            Eta_0: 12.250858409106687
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:13,276 - Chrimatocracy - INFO - '
+                            Grupo: 265
+
+                            ---------------------
+
+                            xmin: 28.5
+
+                            xmax: 150000.0
+
+                            Gamma: 10.778411644170399
+
+                            Eta_0: 12.120999678239428
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:13,359 - Chrimatocracy - INFO - '
+                            Grupo: 285
+
+                            ---------------------
+
+                            xmin: 6.0
+
+                            xmax: 100000.0
+
+                            Gamma: 8.870856510744327
+
+                            Eta_0: 12.56172114137413
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:13,419 - Chrimatocracy - INFO - '
+                            Grupo: 288
+
+                            ---------------------
+
+                            xmin: 5.93
+
+                            xmax: 300000.0
+
+                            Gamma: 8.368967886494358
+
+                            Eta_0: 12.566969559223667
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:13,534 - Chrimatocracy - INFO - '
+                            Grupo: 298
+
+                            ---------------------
+
+                            xmin: 50.0
+
+                            xmax: 125000.0
+
+                            Gamma: 12.873909709522023
+
+                            Eta_0: 12.010005123578766
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:13,583 - Chrimatocracy - INFO - '
+                            Grupo: 302
+
+                            ---------------------
+
+                            xmin: 0.56
+
+                            xmax: 200000.0
+
+                            Gamma: 8.120942053771763
+
+                            Eta_0: 13.022777717873408
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:13,660 - Chrimatocracy - INFO - '
+                            Grupo: 305
+
+                            ---------------------
+
+                            xmin: 12.0
+
+                            xmax: 70000.0
+
+                            Gamma: 10.39414587262659
+
+                            Eta_0: 13.462544905133255
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:13,701 - Chrimatocracy - INFO - '
+                            Grupo: 309
+
+                            ---------------------
+
+                            xmin: 20.9
+
+                            xmax: 30000.0
+
+                            Gamma: 6.774702177225921
+
+                            Eta_0: 13.994772194547812
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:13,971 - Chrimatocracy - INFO - '
+                            Grupo: 317
+
+                            ---------------------
+
+                            xmin: 0.02
+
+                            xmax: 150000.0
+
+                            Gamma: 13.540492956116779
+
+                            Eta_0: 12.098114295839752
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:14,067 - Chrimatocracy - INFO - '
+                            Grupo: 346
+
+                            ---------------------
+
+                            xmin: 4.5
+
+                            xmax: 50000.0
+
+                            Gamma: 9.250596123435322
+
+                            Eta_0: 12.463175579106156
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:14,200 - Chrimatocracy - INFO - '
+                            Grupo: 348
+
+                            ---------------------
+
+                            xmin: 5.0
+
+                            xmax: 30000.0
+
+                            Gamma: 12.360763642386756
+
+                            Eta_0: 11.870518942863681
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:14,298 - Chrimatocracy - INFO - '
+                            Grupo: 349
+
+                            ---------------------
+
+                            xmin: 14.88
+
+                            xmax: 100000.0
+
+                            Gamma: 11.390350694054376
+
+                            Eta_0: 12.440467175976316
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:14,467 - Chrimatocracy - INFO - '
+                            Grupo: 366
+
+                            ---------------------
+
+                            xmin: 13.5
+
+                            xmax: 285000.0
+
+                            Gamma: 10.714080773945573
+
+                            Eta_0: 13.062711077181437
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:14,653 - Chrimatocracy - INFO - '
+                            Grupo: 372
+
+                            ---------------------
+
+                            xmin: 11.0
+
+                            xmax: 300000.0
+
+                            Gamma: 11.565404859490888
+
+                            Eta_0: 11.736422052906036
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:14,807 - Chrimatocracy - INFO - '
+                            Grupo: 373
+
+                            ---------------------
+
+                            xmin: 45.0
+
+                            xmax: 428500.0
+
+                            Gamma: 13.521452152459856
+
+                            Eta_0: 13.497589968062774
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:15,315 - Chrimatocracy - INFO - '
+                            Grupo: 374
+
+                            ---------------------
+
+                            xmin: 50.0
+
+                            xmax: 40000.0
+
+                            Gamma: 18.93432292917762
+
+                            Eta_0: 11.685768073193335
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:15,492 - Chrimatocracy - INFO - '
+                            Grupo: 414
+
+                            ---------------------
+
+                            xmin: 71.4
+
+                            xmax: 100000.0
+
+                            Gamma: 14.811899519966248
+
+                            Eta_0: 12.589895498301958
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:15,815 - Chrimatocracy - INFO - '
+                            Grupo: 450
+
+                            ---------------------
+
+                            xmin: 36.0
+
+                            xmax: 100000.0
+
+                            Gamma: 15.765472650598689
+
+                            Eta_0: 12.423980548728704
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:16,162 - Chrimatocracy - INFO - '
+                            Grupo: 456
+
+                            ---------------------
+
+                            xmin: 84.0
+
+                            xmax: 10000.0
+
+                            Gamma: 17.68340997985519
+
+                            Eta_0: 11.412007851925983
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:16,420 - Chrimatocracy - INFO - '
+                            Grupo: 464
+
+                            ---------------------
+
+                            xmin: 25.0
+
+                            xmax: 900000.0
+
+                            Gamma: 15.914130422145709
+
+                            Eta_0: 12.038358332042646
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:16,528 - Chrimatocracy - INFO - '
+                            Grupo: 465
+
+                            ---------------------
+
+                            xmin: 25.0
+
+                            xmax: 114950.0
+
+                            Gamma: 10.825058057663156
+
+                            Eta_0: 11.656926047026555
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:17,507 - Chrimatocracy - INFO - '
+                            Grupo: 469
+
+                            ---------------------
+
+                            xmin: 25.0
+
+                            xmax: 200000.0
+
+                            Gamma: 16.227718091870656
+
+                            Eta_0: 11.8930631899046
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:17,638 - Chrimatocracy - INFO - '
+                            Grupo: 472
+
+                            ---------------------
+
+                            xmin: 17.5
+
+                            xmax: 50000.0
+
+                            Gamma: 10.722889476603664
+
+                            Eta_0: 11.858043502535619
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:17,794 - Chrimatocracy - INFO - '
+                            Grupo: 476
+
+                            ---------------------
+
+                            xmin: 3.35
+
+                            xmax: 58000.0
+
+                            Gamma: 11.975385509248827
+
+                            Eta_0: 11.988078632071613
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:17,962 - Chrimatocracy - INFO - '
+                            Grupo: 477
+
+                            ---------------------
+
+                            xmin: 12.0
+
+                            xmax: 110000.0
+
+                            Gamma: 11.627490281346446
+
+                            Eta_0: 12.37932692828161
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:18,701 - Chrimatocracy - INFO - '
+                            Grupo: 486
+
+                            ---------------------
+
+                            xmin: 87.5
+
+                            xmax: 25000.0
+
+                            Gamma: 22.860254761155534
+
+                            Eta_0: 11.878517792420489
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:18,802 - Chrimatocracy - INFO - '
+                            Grupo: 487
+
+                            ---------------------
+
+                            xmin: 61.02
+
+                            xmax: 500000.0
+
+                            Gamma: 11.817888165806055
+
+                            Eta_0: 12.293699452660748
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:18,938 - Chrimatocracy - INFO - '
+                            Grupo: 491
+
+                            ---------------------
+
+                            xmin: 10.57
+
+                            xmax: 100000.0
+
+                            Gamma: 9.824951011694234
+
+                            Eta_0: 12.607581496964032
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:19,010 - Chrimatocracy - INFO - '
+                            Grupo: 494
+
+                            ---------------------
+
+                            xmin: 7.0
+
+                            xmax: 47500.0
+
+                            Gamma: 9.122114104100405
+
+                            Eta_0: 11.453779324950695
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:19,163 - Chrimatocracy - INFO - '
+                            Grupo: 549
+
+                            ---------------------
+
+                            xmin: 12.0
+
+                            xmax: 150000.0
+
+                            Gamma: 13.820586560986618
+
+                            Eta_0: 12.332000713041769
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:20,133 - Chrimatocracy - INFO - '
+                            Grupo: 625
+
+                            ---------------------
+
+                            xmin: 150.0
+
+                            xmax: 50000.0
+
+                            Gamma: 21.98752784095851
+
+                            Eta_0: 12.61960082557732
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:20,915 - Chrimatocracy - INFO - '
+                            Grupo: 0
+
+                            ---------------------
+
+                            xmin: 10.0
+
+                            xmax: 2468.48
+
+                            Gamma: 16.188928076563933
+
+                            Eta_0: 9.529761458161829
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:21,082 - Chrimatocracy - INFO - '
+                            Grupo: 626
+
+                            ---------------------
+
+                            xmin: 25.0
+
+                            xmax: 42000.0
+
+                            Gamma: 12.70702412027648
+
+                            Eta_0: 12.17130956940206
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:21,166 - Chrimatocracy - INFO - '
+                            Grupo: 718
+
+                            ---------------------
+
+                            xmin: 27.9
+
+                            xmax: 200000.0
+
+                            Gamma: 10.675429878339543
+
+                            Eta_0: 13.139569203021432
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:21,279 - Chrimatocracy - INFO - '
+                            Grupo: 765
+
+                            ---------------------
+
+                            xmin: 15.0
+
+                            xmax: 61750.0
+
+                            Gamma: 11.701237225348036
+
+                            Eta_0: 12.580024144871121
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:21,650 - Chrimatocracy - INFO - '
+                            Grupo: 778
+
+                            ---------------------
+
+                            xmin: 5.0
+
+                            xmax: 150000.0
+
+                            Gamma: 14.04137878247818
+
+                            Eta_0: 12.63033096656182
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:22,117 - Chrimatocracy - INFO - '
+                            Grupo: 1125
+
+                            ---------------------
+
+                            xmin: 60.0
+
+                            xmax: 30000.0
+
+                            Gamma: 32.413889509735654
+
+                            Eta_0: 12.80726464077763
+
+                            ---------------------
+
+                            
+2022-08-14 21:15:22,169 - Chrimatocracy - INFO - Model Parameters:     group  xmin      xmax  gamma  eta0
+0      10  0.90 187500.00  12.68 12.40
+1      11 20.00 300000.00  10.59 12.66
+2      15  5.93 300000.00  22.60 11.64
+3      16 33.75 125000.00  10.53 11.39
+4      18 62.50 300000.00  12.47 12.53
+..    ...   ...       ...    ...   ...
+88    626 25.00  42000.00  12.71 12.17
+89    718 27.90 200000.00  10.68 13.14
+90    765 15.00  61750.00  11.70 12.58
+91    778  5.00 150000.00  14.04 12.63
+92   1125 60.00  30000.00  32.41 12.81
+
+[93 rows x 5 columns]
+2022-08-14 21:15:22,179 - Chrimatocracy - DEBUG - Latex Template dir: C:/Users/flant/Dropbox/ufrgs/phd/Barbosa-Gammerman/Work/chrimatocracy/templates/tex
+2022-08-14 21:15:22,180 - Chrimatocracy - DEBUG - Latex Files dir: C:/Users/flant/Dropbox/ufrgs/phd/Barbosa-Gammerman/Work/research/network/tables/tex
+2022-08-14 21:15:22,180 - Chrimatocracy - DEBUG - Output to PDF Files dir: C:/Users/flant/Dropbox/ufrgs/phd/Barbosa-Gammerman/Work/research/network/tables/pdf
+2022-08-14 21:15:38,481 - Chrimatocracy - INFO - Figure 'brazil_2014_state_deputy_SP__generative_model_lv_community_gt_100__cdf.pgf' saved.
+2022-08-14 21:15:38,486 - Chrimatocracy - INFO - Saved in CSV format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_state_deputy_SP__benford_law_lv_community_gt_100_dirty_fit_params.csv
+2022-08-14 21:15:38,512 - Chrimatocracy - INFO - Saved in TeX format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablestex/brazil_2014_state_deputy_SP__benford_law_lv_community_gt_100_dirty_fit_params.tex
+2022-08-14 21:15:38,514 - Chrimatocracy - INFO - Drawing Benford Law figure...
+2022-08-14 21:15:39,578 - Chrimatocracy - INFO - Benford Law figure saved: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\figurestex/brazil_2014_state_deputy_SP__benford_distribution.pgf

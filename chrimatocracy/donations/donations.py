@@ -221,9 +221,7 @@ class Donations(GenerativeModel):
             ["Log-Likelihood", "LL-Null", "LLR", "LLR p", "KS", "KS p", "Odds ratio", "Valor (R\$)", "N", "n", "beta"]
         )
 
-        final_table.to_csv(
-            self.table_path / f"brazil_{self.year}_{self.role}_donations_logistic_regression.csv"
-        )
+        final_table.to_csv(self.table_path / f"brazil_{self.year}_{self.role}_donations_logistic_regression.csv")
 
         with open(self.table_path / f"brazil_{self.year}_{self.role}_donations_logistic_regression.tex", "w") as tf:
             tf.write(final_table.to_latex(index=True, escape=False, bold_rows=True, float_format="{:0.2f}".format))
@@ -323,8 +321,10 @@ class Donations(GenerativeModel):
             ]
         )
 
-        self.fitTab.to_csv(self.table_path / f"brazil_{self.year}_{self.role}_donations_logistic_regression_by_state.csv")
-        
+        self.fitTab.to_csv(
+            self.table_path / f"brazil_{self.year}_{self.role}_donations_logistic_regression_by_state.csv"
+        )
+
         with open(
             self.table_path / f"brazil_{self.year}_{self.role}_donations_logistic_regression_by_state.tex", "w"
         ) as tf:

@@ -46,8 +46,8 @@ if __name__ == "__main__":
     for directory in directories:
         if not os.path.exists(directory):
             os.makedirs(directory)
-    
-    roles = ["federal_deputy"] # [], "senator", "federal_deputy", "state_deputy", "district_deputy", "president"]
+
+    roles = ["federal_deputy"]  # [], "senator", "federal_deputy", "state_deputy", "district_deputy", "president"]
 
     for role in roles:
         print(f"Generating Chrimatocracy Analysis table for {role}.\n")

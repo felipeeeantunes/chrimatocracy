@@ -1,15 +1,16 @@
 import csv
 import logging
+import os
+import subprocess
 from pathlib import Path
 from shutil import ExecError
-import os
+
+import jinja2
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-import subprocess
-import jinja2
 
 mpl.use("pgf")
 pgf_with_pdflatex = {
@@ -59,7 +60,7 @@ class GenerativeModel:
         self.logger = logger
 
         self.templates_dir = Path(__file__).parent.parent.resolve() / "templates"
-        
+
         csv_path = Path(table_path) / "csv"
         if not os.path.exists(csv_path):
             os.makedirs(csv_path)
@@ -187,17 +188,15 @@ class GenerativeModel:
         return gamma, csi0, csim
 
     def fit(self, df, group_column_name, name):
-        
+
         df_gen = df[[group_column_name, "id_candidate_cpf", "num_donation_ammount"]].copy()
 
         df_gen.to_csv(
-                self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_input.csv",
-                index=False,
-            )
+            self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_input.csv",
+            index=False,
+        )
 
-        with open(
-            self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_parameters.csv", "w"
-        ) as f1:
+        with open(self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_parameters.csv", "w") as f1:
             writer = csv.writer(f1, delimiter=",", lineterminator="\n")
             header = ["group", "xmin", "xmax", "gamma", "eta0"]
             writer.writerow(header)
@@ -244,14 +243,10 @@ class GenerativeModel:
 
         # df         = pd.read_csv(self.data_path / f'brazil_{self.year}_{self.role}_{name}__input.csv')
         # df_gen     = pd.read_csv(self.data_path / f'brazil_{self.year}_{self.role}_{name}__output.csv')
-        parameters = pd.read_csv(
-            self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_parameters.csv"
-        )
+        parameters = pd.read_csv(self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_parameters.csv")
 
         self.logger.info(f"Model Parameters: {parameters}")
-        with open(
-            self.table_path / "tex" / f"brazil_{self.year}_{self.role}_{name}__fit_parameters.tex", "w"
-        ) as tf:
+        with open(self.table_path / "tex" / f"brazil_{self.year}_{self.role}_{name}__fit_parameters.tex", "w") as tf:
             tf.write(parameters.reset_index().rename(columns={"index": "Group"}).to_latex(index=False))
 
     compile
@@ -259,29 +254,29 @@ class GenerativeModel:
     def compile_latex_tables(self):
         template_dir = (self.templates_dir / "tex").as_posix()
         self.logger.debug(f"Latex Template dir: {template_dir}")
-        file_dir     = (self.table_path / "tex").as_posix()
+        file_dir = (self.table_path / "tex").as_posix()
         self.logger.debug(f"Latex Files dir: {file_dir}")
         output_path = (self.table_path / "pdf").as_posix()
         self.logger.debug(f"Output to PDF Files dir: {output_path}")
 
         latex_jinja_env = jinja2.Environment(
-            block_start_string = '\BLOCK{',
-            block_end_string = '}',
-            variable_start_string = '\VAR{',
-            variable_end_string = '}',
-            comment_start_string = '\#{',
-            comment_end_string = '}',
-            line_statement_prefix = '%-',
-            line_comment_prefix = '%#',
-            trim_blocks = True,
-            autoescape = False,
-            loader = jinja2.FileSystemLoader(template_dir)
+            block_start_string="\BLOCK{",
+            block_end_string="}",
+            variable_start_string="\VAR{",
+            variable_end_string="}",
+            comment_start_string="\#{",
+            comment_end_string="}",
+            line_statement_prefix="%-",
+            line_comment_prefix="%#",
+            trim_blocks=True,
+            autoescape=False,
+            loader=jinja2.FileSystemLoader(template_dir),
         )
 
         template = latex_jinja_env.get_template("tables.sty")
 
         # giving file extension
-        ext = ('.tex') 
+        ext = ".tex"
         files_list = []
         # iterating over all files
         for files in os.listdir(file_dir):
@@ -292,27 +287,23 @@ class GenerativeModel:
 
         # template = latex_jinja_env.get_template((file_dir / 'template.jinja').as_posix())
         for file in files_list:
-            tex_file_path = (self.table_path / "tex" / f'{file}').as_posix()
-            tmp_tex_file_path = (self.table_path / "tex" / f'{file}'.replace('tex','tmp')).as_posix()
-            document = template.render(place= tex_file_path)
-            with open(tmp_tex_file_path,'w') as output:
+            tex_file_path = (self.table_path / "tex" / f"{file}").as_posix()
+            tmp_tex_file_path = (self.table_path / "tex" / f"{file}".replace("tex", "tmp")).as_posix()
+            document = template.render(place=tex_file_path)
+            with open(tmp_tex_file_path, "w") as output:
                 output.write(document)
-            x = subprocess.call(f'pdflatex -output-directory={output_path} {tmp_tex_file_path}')
+            x = subprocess.call(f"pdflatex -output-directory={output_path} {tmp_tex_file_path}")
             if x != 0:
-                print('Exit-code not 0 for ' + file + ', check Code!')
-            
+                print("Exit-code not 0 for " + file + ", check Code!")
+
         os.system(f"del {(self.table_path / 'pdf' / '*.log')}")
         os.system(f"del {(self.table_path / 'pdf' / '*.aux')}")
         os.system(f"del {(self.table_path / 'tex' / '*.tmp')}")
 
     def save_figures(self, group_column_name, name, group_list=None, show=False):
 
-        df = pd.read_csv(
-            self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_input.csv"
-        )
-        df_gen = pd.read_csv(
-            self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_output.csv"
-        )
+        df = pd.read_csv(self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_input.csv")
+        df_gen = pd.read_csv(self.table_path / "csv" / f"brazil_{self.year}_{self.role}_{name}__fit_output.csv")
         group_list = group_list[:28] if group_list is not None else df[group_column_name].unique()[:28]
         _, axes = plt.subplots(
             nrows=7, ncols=4, sharex=True, sharey=True, figsize=(24, 32), gridspec_kw={"hspace": 0.05, "wspace": 0.05}
@@ -321,9 +312,7 @@ class GenerativeModel:
 
         for g in group_list:
             ax = axes_list.pop(0)
-            H2, X2 = np.histogram(
-                np.log(df.loc[df[group_column_name] == g, "num_donation_ammount"]), density=True
-            )
+            H2, X2 = np.histogram(np.log(df.loc[df[group_column_name] == g, "num_donation_ammount"]), density=True)
             dx2 = X2[1] - X2[0]
             F2 = np.cumsum(H2) * dx2
             ax.plot(X2[1:], F2, label=f"Data from {str(g)}")
@@ -369,29 +358,29 @@ class GenerativeModel:
     def compile_latex_figures(self):
         template_dir = (self.templates_dir / "tex").as_posix()
         self.logger.debug(f"Latex Template dir: {template_dir}")
-        file_dir     = (self.figure_path / "tex").as_posix()
+        file_dir = (self.figure_path / "tex").as_posix()
         self.logger.debug(f"Latex Files dir: {file_dir}")
         output_path = (self.figure_path / "pdf").as_posix()
         self.logger.debug(f"Output to PDF Files dir: {output_path}")
 
         latex_jinja_env = jinja2.Environment(
-            block_start_string = '\BLOCK{',
-            block_end_string = '}',
-            variable_start_string = '\VAR{',
-            variable_end_string = '}',
-            comment_start_string = '\#{',
-            comment_end_string = '}',
-            line_statement_prefix = '%-',
-            line_comment_prefix = '%#',
-            trim_blocks = True,
-            autoescape = False,
-            loader = jinja2.FileSystemLoader(template_dir)
+            block_start_string="\BLOCK{",
+            block_end_string="}",
+            variable_start_string="\VAR{",
+            variable_end_string="}",
+            comment_start_string="\#{",
+            comment_end_string="}",
+            line_statement_prefix="%-",
+            line_comment_prefix="%#",
+            trim_blocks=True,
+            autoescape=False,
+            loader=jinja2.FileSystemLoader(template_dir),
         )
 
         template = latex_jinja_env.get_template("figures.sty")
 
         # giving file extension
-        ext = ('.pgf') 
+        ext = ".pgf"
         files_list = []
         # iterating over all files
         for files in os.listdir(file_dir):
@@ -402,15 +391,15 @@ class GenerativeModel:
 
         # template = latex_jinja_env.get_template((file_dir / 'template.jinja').as_posix())
         for file in files_list:
-            tex_file_path = (self.figure_path / "tex" / f'{file}').as_posix()
-            tmp_tex_file_path = (self.figure_path / "tex" / f'{file}'.replace('tex','tmp')).as_posix()
-            document = template.render(place= tex_file_path)
-            with open(tmp_tex_file_path,'w') as output:
+            tex_file_path = (self.figure_path / "tex" / f"{file}").as_posix()
+            tmp_tex_file_path = (self.figure_path / "tex" / f"{file}".replace("tex", "tmp")).as_posix()
+            document = template.render(place=tex_file_path)
+            with open(tmp_tex_file_path, "w") as output:
                 output.write(document)
-            x = subprocess.call(f'pdflatex -output-directory={output_path} {tmp_tex_file_path}')
+            x = subprocess.call(f"pdflatex -output-directory={output_path} {tmp_tex_file_path}")
             if x != 0:
-                print('Exit-code not 0 for ' + file + ', check Code!')
-            
+                print("Exit-code not 0 for " + file + ", check Code!")
+
         os.system(f"del {(self.figure_path / 'pdf' / '*.log')}")
         os.system(f"del {(self.figure_path / 'pdf' / '*.aux')}")
         os.system(f"del {(self.figure_path / 'tex' / '*.tmp')}")

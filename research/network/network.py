@@ -1,5 +1,6 @@
 import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 import logging
 import os
@@ -31,7 +32,7 @@ if __name__ == "__main__":
 
     year = 2014
     roles = ["state_deputy"]  # [], "senator", "federal_deputy", "state_deputy", "district_deputy", "president"]
-    state = "SC"
+    state = "SP"
     community_column_name = "lv_community"
     use_previous_data = False
     min_obs = 100
@@ -56,8 +57,6 @@ if __name__ == "__main__":
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-    
-
     for role in roles:
         logger.info(f"Generating Network Analysis table for {role}.\n")
         chrimnet = Network(
@@ -78,10 +77,20 @@ if __name__ == "__main__":
         adj_df = chrimnet.create_adj_matrix(df=df, write=True)
         communities_g = chrimnet.detect_communities(adj=adj_df, read=False, write=True)
         communities_df = chrimnet.append_communities(df=df, G=communities_g, write=True)
-        communities_adj, nodes_list, comms, colors = chrimnet.graph_to_matrix(G=communities_g, adj=adj_df, read=False, draw=True)
+        communities_adj, nodes_list, comms, colors = chrimnet.graph_to_matrix(
+            G=communities_g, adj=adj_df, read=False, draw=True
+        )
         benford_table_df = chrimnet.benford_table(df=communities_df, write=True, read=False)
-        benford_dirty_stats_table_df = chrimnet.benford_dirty_stats_table(df=communities_df, benford_table=benford_table_df, write=True, read_df=False, read_benford_table=False, name="20190301")
-        benford_table_fit_parameters_df = chrimnet.generative_model(df=communities_df, should_fit=True, benford_table=benford_dirty_stats_table_df)
+        benford_dirty_stats_table_df = chrimnet.benford_dirty_stats_table(
+            df=communities_df,
+            benford_table=benford_table_df,
+            write=True,
+            read_df=False,
+            read_benford_table=False,
+            name="20190301",
+        )
+        benford_table_fit_parameters_df = chrimnet.generative_model(
+            df=communities_df, should_fit=True, benford_table=benford_dirty_stats_table_df
+        )
         ##Plots
         chrimnet.benford_plot(df=communities_df, read=False, log_scale=False)
-

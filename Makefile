@@ -25,7 +25,7 @@ update:
 	@poetry update
 
 black:
-	@black $(FOLDER_PROJECT) --config $(FOLDER_CONFIGS)/pyproject.toml $(args)
+	@black $(FOLDER_PROJECT) --config pyproject.toml $(args)
 
 lint:
 	@find $(FOLDER_PROJECT) -type f -name "*.py" | xargs pylint --rcfile=${FOLDER_CONFIGS}/.pylintrc $(args)
