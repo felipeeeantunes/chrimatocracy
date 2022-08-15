@@ -1,4 +1,4 @@
-# DataScienceBR
+# Chrimatocracy
 Data Science applied to the government sector
 
 ## Build
