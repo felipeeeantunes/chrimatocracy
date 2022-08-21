@@ -422,7 +422,7 @@ class Network(GenerativeModel):
         # contagem de doacoes sujas nas community
         benford_table_dirty_donations = (
             df.groupby(self.community_column_name)
-            .agg({"dirty": lambda x: sum(x)})
+            .agg({"dirty": lambda x: int(sum(x))})
             .sort_values(by="dirty", ascending=False)
         )
         benford_table_dirty_donations.columns = ["# Dirty Donations"]
@@ -431,7 +431,7 @@ class Network(GenerativeModel):
         )
 
         # numero de donnors na comunidade
-        donnors = df.groupby(self.community_column_name).agg({"id_donator_effective_cpf_cnpj": lambda x: x.nunique()})
+        donnors = df.groupby(self.community_column_name).agg({"id_donator_effective_cpf_cnpj": lambda x: int(x.nunique())})
         donnors.columns = ["# Donors"]
         benford_table_donnors = benford_table_dirty_donations.merge(donnors, how="left", on=self.community_column_name)
 
@@ -465,9 +465,9 @@ class Network(GenerativeModel):
         )
 
         # Soma das doacoes na comunidade:
-        donnors = df.groupby(self.community_column_name).agg({"id_donator_effective_cpf_cnpj": lambda x: x.nunique()})
+        donnors = df.groupby(self.community_column_name).agg({"id_donator_effective_cpf_cnpj": lambda x: int(x.nunique())})
         donnors.columns = ["Number of Candidates"]
-        benford_table_donnors = benford_table_total_amount.merge(donnors, how="left", on=self.community_column_name)
+        benford_table_donnors = benford_table_total_amount.merge(donnors, how="left", on=self.community_column_name).fillna(0)
 
         if write:
 

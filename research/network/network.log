@@ -11492,3 +11492,37 @@
 2022-08-14 21:22:19,824 - Chrimatocracy - INFO - Saved in TeX format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablestex/brazil_2014_state_deputy_SP__benford_law_lv_community_gt_100_dirty_fit_params.tex
 2022-08-14 21:22:19,827 - Chrimatocracy - INFO - Drawing Benford Law figure...
 2022-08-14 21:22:20,947 - Chrimatocracy - INFO - Benford Law figure saved: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\figurestex/brazil_2014_state_deputy_SP__benford_distribution.pgf
+2022-08-21 19:09:28,409 - Chrimatocracy - INFO - Chrimatocracy Network:
+
+                 year=2014
+
+                 data_path=C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\data\prepared\2014
+
+                 table_path=C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tables
+
+                 figure_path=C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\figures
+
+                 
+2022-08-21 19:09:28,410 - Chrimatocracy - INFO - Generating Network Analysis table for federal_deputy.
+
+2022-08-21 19:09:28,411 - Chrimatocracy - INFO - Loading donations to candidates DataFrame from prepared data...
+2022-08-21 19:09:29,284 - Chrimatocracy - INFO - Donations to candidates DataFrame loaded.
+2022-08-21 19:09:30,926 - Chrimatocracy - INFO - Adjacency matrix saved: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_federal_deputy_SP__adj_matrix.csv
+2022-08-21 19:09:30,939 - Chrimatocracy - INFO - Creating Graph from Adjacency Matrix...
+2022-08-21 19:09:31,027 - Chrimatocracy - INFO - Graph created. Network summary:
+2022-08-21 19:09:31,028 - Chrimatocracy - INFO - Number of vertices (nodes): 1195
+2022-08-21 19:09:31,028 - Chrimatocracy - INFO - Number of edges: 9
+2022-08-21 19:09:31,029 - Chrimatocracy - INFO - Average Degree: 0.01506276150627615
+2022-08-21 19:09:31,032 - Chrimatocracy - INFO - Saved in CSV format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_federal_deputy_SP__nextwork_summary.csv
+2022-08-21 19:09:31,039 - Chrimatocracy - INFO - Summary in TeX format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablestex/brazil_2014_federal_deputy_SP__nextwork_summary.csv
+2022-08-21 19:09:31,041 - Chrimatocracy - INFO - Running community detection algorithm...
+2022-08-21 19:09:31,045 - Chrimatocracy - INFO - Communities identified.
+2022-08-21 19:09:31,045 - Chrimatocracy - INFO - Quality:  0.8148148148148149
+2022-08-21 19:09:31,046 - Chrimatocracy - INFO - Modularity:  0.8148148148148147
+2022-08-21 19:09:31,046 - Chrimatocracy - INFO - Partitions Summary: Clustering with 1195 elements and 1187 clusters
+2022-08-21 19:09:31,049 - Chrimatocracy - INFO - Saved in CSV format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_federal_deputy_SP__partition_summary.csv
+2022-08-21 19:09:31,055 - Chrimatocracy - INFO - Saved in TeX format at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablestex/brazil_2014_federal_deputy_SP__partition_summary.tex
+2022-08-21 19:09:31,056 - Chrimatocracy - INFO - Adding communities to 'donations to candidates' DataFrame...
+2022-08-21 19:09:31,061 - Chrimatocracy - INFO - Candidates with communities identified saved at: C:\Users\flant\Dropbox\ufrgs\phd\Barbosa-Gammerman\Work\research\network\tablescsv/brazil_2014_federal_deputy_SP__communities.csv
+2022-08-21 19:09:31,796 - Chrimatocracy - INFO - Adding communities information to the Adjacency Matrix...
+2022-08-21 19:09:31,800 - Chrimatocracy - INFO - Drawing Adjacency Matrix figure...

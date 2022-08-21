@@ -31,7 +31,7 @@ if __name__ == "__main__":
     logger.addHandler(fileHandler)
 
     year = 2014
-    roles = ["state_deputy"]  # [], "senator", "federal_deputy", "state_deputy", "district_deputy", "president"]
+    roles = ["federal_deputy", "senator"]  # [], "senator", "federal_deputy", "state_deputy", "district_deputy", "president"]
     state = "SP"
     community_column_name = "lv_community"
     use_previous_data = False
@@ -92,5 +92,4 @@ if __name__ == "__main__":
         benford_table_fit_parameters_df = chrimnet.generative_model(
             df=communities_df, should_fit=True, benford_table=benford_dirty_stats_table_df
         )
-        ##Plots
         chrimnet.benford_plot(df=communities_df, read=False, log_scale=False)
