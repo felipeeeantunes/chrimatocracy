@@ -1,4 +1,5 @@
 import itertools
+import json
 import logging
 from collections import defaultdict
 from operator import itemgetter
@@ -7,7 +8,7 @@ from random import randint
 from shutil import ExecError
 
 import igraph
-import leidenalg as louvain
+import leidenalg as leiden
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,7 +18,9 @@ from matplotlib import ticker
 from chrimatocracy.model import GenerativeModel
 from chrimatocracy.utils import assignmentArray_to_lists
 from chrimatocracy.utils import benford as bf
-from chrimatocracy.utils import draw_adjacency_matrix
+from chrimatocracy.utils import (draw_adjacency_matrix, entity_subset,
+                                 load_donations_to_candidates,
+                                 save_and_log_table, sort_pagerank)
 
 mpl.use("pgf")
 
@@ -34,6 +37,8 @@ pgf_with_pdflatex = {
 mpl.rcParams.update(pgf_with_pdflatex)
 mpl.rcParams["figure.figsize"] = (4.7747, 3.5)
 
+ENTITY_DICT = {"donnors": "id_donator_effective_cpf_cnpj", "candidates": "id_candidate_cpf"}
+
 
 class Network(GenerativeModel):
     def __init__(
@@ -44,7 +49,10 @@ class Network(GenerativeModel):
         data_path: Path,
         table_path: Path,
         figure_path: Path,
-        community_column_name: str,
+        json_path: Path,
+        main_entity="donnors",
+        relationship_entity="candidates",
+        main_entity_subset="companies",
         min_obs: int = 100,
         should_fit: bool = True,
         benford_log_scale: bool = True,
@@ -59,80 +67,60 @@ class Network(GenerativeModel):
         self.min_obs = min_obs
         self.logger = logger
         self.path_prefix = f"brazil_{self.year}_{self.role}_{self.state}"
-        self.community_column_name = community_column_name
+        self.main_entity = main_entity
+        self.relationship_entity = relationship_entity
+        self.main_entity_subset = main_entity_subset
+        self.community_column_name = 'comm'
 
-    def load_donations_to_candidates(self) -> pd.DataFrame:
-        self.logger.info("Loading donations to candidates DataFrame from prepared data...")
-        data_types = {
-            "id_accountant_cnpj": str,
-            "id_candidate_cpf": str,
-            "id_donator_cpf_cnpj": str,
-            "id_original_donator_cpf_cnpj": str,
-            "id_donator_effective_cpf_cnpj": str,
-        }
+        if main_entity not in ENTITY_DICT.keys():
+            raise ValueError(f"Main entity should be one of {ENTITY_DICT.keys()}")
 
-        candidatos = pd.read_csv(
-            self.data_path / f"brazil_{self.year}_{self.role}_candidates_donations.csv",
-            low_memory=False,
-            dtype=data_types,
-        )
+    def projected_matrix(
+        self,
+        df: pd.DataFrame = None,
+        write: bool = True,
+    ) -> pd.DataFrame:
+        self.logger.info(f"Creating Adjacency matrix...")
 
-        df = candidatos[
-            (candidatos["id_donator_effective_cpf_cnpj"].isnull() == False)
-            & (candidatos["cat_federative_unity"] == self.state)
-        ]
+        main_entity_col = ENTITY_DICT.get(self.main_entity)
+        relationship_entity_col = ENTITY_DICT.get(self.relationship_entity)
 
-        self.logger.info("Donations to candidates DataFrame loaded.")
-        return df
+        df_subset = entity_subset(df, column=main_entity_col, entity=self.main_entity_subset)[[
+            main_entity_col, relationship_entity_col
+        ]]
 
-    def create_adj_matrix(self, df: pd.DataFrame = None, write: bool = True) -> pd.DataFrame:
+        df_merge = df_subset.merge(df_subset, on=relationship_entity_col)
 
-        idx = df.id_candidate_cpf.unique()
-        adj = pd.DataFrame(0, index=idx, columns=idx)
+        adj = pd.crosstab(df_merge[f"{main_entity_col}_x"], df_merge[f"{main_entity_col}_y"], dropna=False)
 
-        for donator in idx:
-            rec = df.loc[df.id_donator_effective_cpf_cnpj == donator, "id_candidate_cpf"].unique()
-            cpf_pairs = list(itertools.combinations(rec, 2))
-            for cpf1, cpf2 in cpf_pairs:
-                adj.loc[cpf1, cpf2] += 1.0
-
+        idx = adj.columns.union(adj.index)
+        adj = adj.reindex(index=idx, columns=idx, fill_value=0)
         adj.reset_index(inplace=True)
+
         if write:
-            adj.to_csv(self.table_path / "csv" / f"{self.path_prefix}__adj_matrix.csv", index=False)
-            self.logger.info(f"Adjacency matrix saved: {self.table_path}csv/{self.path_prefix}__adj_matrix.csv")
+            file_name = f"{self.path_prefix}__adj_matrix.csv"
+            save_and_log_table(
+                df=adj, file_name=file_name, file_path=self.table_path, formats=["csv"], logger=self.logger
+            )
 
         return adj.set_index("index")
 
-    def detect_communities(self, adj: pd.DataFrame = None, write=True, read: bool = False):
-
+    def _graph_from_matrix(self, adj: pd.DataFrame = None, read: bool = False):
         if read:
-            self.logger.info(
-                f"Loading previous created adjacency matrix from {self.table_path}csv/{self.path_prefix}__adj_matrix.csv"
-            )
-            adj = pd.read_csv(
-                self.table_path / "csv" / f"{self.path_prefix}__adj_matrix.csv",
-                converters={"index": lambda x: str(x).zfill(11)},
-            ).set_index("index")
-            self.logger.info(f"Adjacency matrix loaded.")
+            raise NotImplementedError
         elif adj is None:
             raise ValueError("You should read a previous created adjacency matrix or provide a DataFrame.")
 
         self.logger.info("Creating Graph from Adjacency Matrix...")
-        # Get the values as np.array, it's more convenenient.
         A = adj.values
-        # Create graph, A.astype(bool).tolist() or (A / A).tolist() can also be used.
         G = igraph.Graph.Adjacency((A > 0).tolist())
-        # Add edge weights and node labels.
         G.es["weight"] = A[A.nonzero()]
-        G.vs["label"] = adj.index  # or a.index/a.columns
+        G.vs["label"] = adj.index
 
-        self.logger.info("Graph created. Network summary:")
+        self.logger.info("Graph created")
         g_n_vertices = G.vcount()
-        self.logger.info(f"Number of vertices (nodes): {g_n_vertices}")
         g_n_edges = G.ecount()
-        self.logger.info(f"Number of edges: {g_n_edges}")
         g_avg_degree = np.mean(G.degree())
-        self.logger.info(f"Average Degree: {g_avg_degree}")
         network_summary = pd.DataFrame.from_dict(
             {
                 "Number of vertices (nodes)": [g_n_vertices],
@@ -140,149 +128,140 @@ class Network(GenerativeModel):
                 "Average Degree": [g_avg_degree],
             }
         )
-        network_summary.to_csv(self.table_path / "csv" / f"{self.path_prefix}__network_summary.csv")
-        self.logger.info(f"Saved in CSV format at: {self.table_path}csv/{self.path_prefix}__nextwork_summary.csv")
-        with open(self.table_path / "tex" / f"{self.path_prefix}_network_summary.tex", "w") as tf:
-            tf.write(network_summary.to_latex(index=False))
-        self.logger.info(f"Summary in TeX format at: {self.table_path}tex/{self.path_prefix}__nextwork_summary.csv")
-
-        self.logger.info(f"Running community detection algorithm...")
-        part = louvain.find_partition(G, louvain.ModularityVertexPartition, weights="weight")
-        G.vs["community"] = part.membership
-        self.logger.info(f"Communities identified.")
-        p_quality = part.quality()
-        self.logger.info(f"Quality:  {p_quality}")
-        p_modularity = part.modularity
-        self.logger.info(f"Modularity:  {p_modularity}")
-        p_summary = part.summary()
-        self.logger.info(f"Partitions Summary: {p_summary}")
-        partitions_summary = pd.DataFrame.from_dict(
-            {"Partitions Summary": [p_summary], "Quality": [p_quality], "Modularity": [p_modularity]}
+        self.logger.info("Network summary ready.")
+        file_name = f"{self.path_prefix}__network_summary"
+        save_and_log_table(
+            df=network_summary, file_name=file_name, file_path=self.table_path, formats=["csv"], logger=self.logger
         )
-        partitions_summary.to_csv(self.table_path / "csv" / f"{self.path_prefix}__partition_summary.csv")
-        self.logger.info(f"Saved in CSV format at: {self.table_path}csv/{self.path_prefix}__partition_summary.csv")
-        with open(self.table_path / "tex" / f"{self.path_prefix}_partitions_summary.tex", "w") as tf:
-            tf.write(partitions_summary.to_latex(index=False))
-        self.logger.info(f"Saved in TeX format at: {self.table_path}tex/{self.path_prefix}__partition_summary.tex")
 
         return G
 
-    def append_communities(self, G, df: pd.DataFrame = None, write=True, read=False):
-        if read:
-            self.logger.info(
-                f"Loading 'donations to candidates' DataFrame from {self.table_path}csv/{self.path_prefix}__communities.csv"
-            )
-            df = pd.read_csv(
-                self.table_path / "csv" / f"{self.path_prefix}__communities.csv",
-                converters={"index": lambda x: str(x).zfill(11)},
-            ).set_index("index")
-            self.logger.info(f"Adjacency matrix loaded.")
-        elif df is None:
-            raise ValueError("You should read a previous created 'donations to candidates' or provide a DataFrame.")
+    def detect_communities(
+        self,
+        adj: pd.DataFrame = None,
+        read: bool = False,
+        write: bool = True,
+        quality_fn: str = "modularity",
+        n_iterations: int = 10,
+        max_comm_size: int = 120,
+        seed: int = 42,
+        **kwargs,
+    ) -> dict:
 
-        if G is None:
-            raise ValueError("A Graph should be provided.")
+        G = self._graph_from_matrix(adj, read=read)
 
-        self.logger.info(f"Adding communities to 'donations to candidates' DataFrame...")
-        community_dict = dict(zip(G.vs["label"], G.vs["community"]))
-        df.loc[:, self.community_column_name] = df.loc[:, "id_candidate_cpf"].map(community_dict)
+        _quality = dict(
+            modularity=leiden.ModularityVertexPartition,
+            surprise=leiden.SurpriseVertexPartition,
+            potts=leiden.CPMVertexPartition,
+        )
+
+        quality_method = _quality.get(quality_fn)
+
+        self.logger.info(f"Running community detection algorithm using {quality_fn}")
+        part = leiden.find_partition(
+            G,
+            partition_type=quality_method,
+            weights="weight",
+            n_iterations=n_iterations,
+            seed=seed,
+            max_comm_size=max_comm_size,
+            **kwargs,
+        )
+        G.vs["community"] = part.membership
+
+        p_quality = part.quality()
+        p_modularity = part.modularity
+        p_summary = part.summary()
+
+        partitions_summary = pd.DataFrame.from_dict(
+            {"Partitions Summary": [p_summary], "Quality": [p_quality], "Modularity": [p_modularity]}
+        )
+
+        self.logger.info("Partitions summary ready.")
+        file_name = f"{self.path_prefix}__partition_summary"
+        save_and_log_table(
+            df=partitions_summary,
+            file_name=file_name,
+            file_path=self.table_path,
+            formats=["csv", "tex"],
+            logger=self.logger,
+        )
+        community_map = dict(zip(G.vs["label"], G.vs["community"]))
         if write:
-            self.logger.info(
-                f"Candidates with communities identified saved at: {self.table_path}csv/{self.path_prefix}__communities.csv"
+            file_name = f"{self.path_prefix}__community_map"
+            file = self.json_path / f"{file_name}.json"
+            json.dump(community_map, open(file, "w"))
+
+        return community_map
+
+    def map_entities_to_communities(self, community_map: dict = None, df: pd.DataFrame = None, write=True, read=False):
+        if read or not community_map:
+            file_name = f"{self.path_prefix}__community_map"
+            file = self.json_path / f"{file_name}.json"
+            with open(file) as json_file:
+                community_map = json.load(json_file)
+        elif community_map is None:
+            raise ValueError("You should read a previous created 'community_map' or provide a dictionary.")
+
+        if df is None:
+            entity_col = ENTITY_DICT.get(self.main_entity)
+            df = load_donations_to_candidates(self.data_path, self.year, self.state, self.role, logger=self.logger)
+
+        df = entity_subset(df, column=entity_col, entity=self.main_entity_subset)
+        self.logger.info(f"Adding communities to 'donations to candidates' DataFrame...")
+        df.loc[:, self.community_column_name] = df.loc[:, entity_col].map(community_map)
+        if write:
+            file_name = f"{self.path_prefix}_{self.main_entity}_{self.main_entity_subset}__communities"
+            save_and_log_table(
+                df=df, file_name=file_name, file_path=self.table_path, formats=["csv"], logger=self.logger
             )
-            df.to_csv(self.table_path / "csv" / f"{self.path_prefix}__communities.csv", index=False)
 
         return df
 
-    def graph_to_matrix(self, G, adj: pd.DataFrame = None, read=True, draw=True):
-
+    def _graph_to_matrix(self, G, adj: pd.DataFrame = None, sort_by: str = None, read=True, draw=True):
         if read:
-            self.logger.info(
-                f"Loading previous created adjacency matrix from {self.table_path}csv/{self.path_prefix}__adj_matrix.csv"
-            )
-            adj = pd.read_csv(
-                self.table_path / "csv" / f"{self.path_prefix}__adj_matrix.csv",
-                converters={"index": lambda x: str(x).zfill(11)},
-            ).set_index("index")
-            self.logger.info(f"Adjacency matrix loaded.")
+            raise NotImplementedError
         elif adj is None:
             raise ValueError("You should read a previous created adjacency matrix or provide a DataFrame.")
 
         if G is None:
             raise ValueError("A Graph should be provided.")
             # check the possibility to save and load G igraph.Graph.load(self.data_path / f'{self.path_prefix}__network.net')
-
-        self.logger.info(f"Adding communities information to the Adjacency Matrix...")
-        pr = dict(zip(G.vs["label"], G.pagerank(weights="weight")))
-        maxPR = max(pr.values())
-
-        flip_PR = dict(
-            zip(
-                sorted(dict(zip(G.vs["label"], G.pagerank(weights="weight"))), key=lambda node: pr[node], reverse=True),
-                range(0, G.vcount()),
-            )
-        )
-
-        pr_seq = sorted(pr, reverse=True)  # degree sequence
-
-        ## VERIFICAR A LEI DE BENFORD PARA CANDIDATOS A ESQUERDA DO A DIREITA
-
         community_dict = dict(zip(G.vs["label"], G.vs["community"]))
-
-        # Convert community assignmet dict into list of communities
         comms = defaultdict(list)
-        for node_index, comm_id in community_dict.items():
-            comms[comm_id].append(node_index)
-        comms = comms.values()
+        for x, y in community_dict.items():
+            comms[y].append(x)
+        comms_values = comms.values()
+        if not sort_by:
+            nodes_list = [node for comm in comms for node in comm]
+        elif sort_by == "pr":
+            nodes_list = sort_pagerank(G, comms_values=comms_values)
+        else:
+            NotImplemented(f'The method {sort_by} was not implemented. Only pagerank ("pr") is available.')
 
-        nodes_ordered = [node for comm in comms for node in comm]
-
-        nodes_ordered = []
-        for comm in comms:
-            nodePR = []
-            for node in comm:
-                nodePR.append((node, pr[node]))
-
-            nodePR = sorted(nodePR, key=itemgetter(1))
-            nodes_ordered.append(nodePR)
-
-        nodes_list = []
-        for sublist in nodes_ordered:
-            for item in sublist:
-                nodes_list.append(item[0])
-
-        colors = []
-
-        for i in range(len(comms)):
-            colors.append("%06X" % randint(0, 0xFFFFFF))
+        A = adj.loc[nodes_list, nodes_list]
+        A = np.asarray(A)
 
         if draw:
             self.logger.info(f"Drawing Adjacency Matrix figure...")
             draw_adjacency_matrix(
-                adj,
-                nodes_list,
-                comms,
-                colors=colors,
+                A,
+                comms_values,
                 output_file=self.figure_path / "tex" / f"{self.path_prefix}__adj_matrix.pgf",
+                logger=self.logger,
             )
-            self.logger.info(f"Figure saved at: {self.table_path}tex/{self.path_prefix}__adj_matrix.pgf")
 
-        return adj, nodes_list, comms, colors
+        return A
 
     def benford_plot(self, df: pd.DataFrame = None, read=False, log_scale=False):
-
         if read:
-            self.logger.info(
-                f"Loading 'donations to candidates' DataFrame from {self.table_path}csv/{self.path_prefix}__communities.csv"
-            )
-            df = pd.read_csv(
-                self.table_path / "csv" / f"{self.path_prefix}__communities.csv",
-                converters={"index": lambda x: str(x).zfill(11)},
-            ).set_index("index")
-            self.logger.info(f"'donations to candidates' loaded.")
+            entity_col = ENTITY_DICT.get(self.main_entity)
+            df = load_donations_to_candidates(self.data_path, self.year, self.state, self.role, logger=self.logger)
         elif df is None:
             raise ValueError("You should read a previous created 'donations to candidates' or provide a DataFrame.")
 
+        df = entity_subset(df, column=entity_col, entity=self.main_entity_subset)
         self.logger.info(f"Drawing Benford Law figure...")
         donations = df["num_donation_ammount"]
 
@@ -322,20 +301,12 @@ class Network(GenerativeModel):
 
         plt.savefig(self.figure_path / "tex" / f"{self.path_prefix}_benford_distribution.pgf", bbox_inches="tight")
         self.logger.info(
-            f"Benford Law figure saved: {self.figure_path}tex/{self.path_prefix}__benford_distribution.pgf"
+            f"Benford Law figure saved: {self.figure_path}/tex/{self.path_prefix}__benford_distribution.pgf"
         )
 
     def benford_table(self, df=None, write=True, read=False):
-
         if read:
-            self.logger.info(
-                f"Loading 'donations to candidates' DataFrame from {self.table_path}csv/{self.path_prefix}__communities.csv"
-            )
-            df = pd.read_csv(
-                self.table_path / "csv" / f"{self.path_prefix}__communities.csv",
-                converters={"index": lambda x: str(x).zfill(11)},
-            ).set_index("index")
-            self.logger.info(f"'donations to candidates' loaded.")
+            raise NotImplementedError
         elif df is None:
             raise ValueError("You should read a previous created 'donations to candidates' or provide a DataFrame.")
 
@@ -347,25 +318,9 @@ class Network(GenerativeModel):
         benford_table = benford_table.loc[benford_table["N"] >= self.min_obs]
 
         if write:
-            benford_table.to_csv(
-                self.table_path
-                / "csv"
-                / f"{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}.csv",
-                index=False,
-            )
-            self.logger.info(
-                f"Saved in CSV format at: {self.table_path}csv/{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}.csv"
-            )
-
-            with open(
-                self.table_path
-                / "tex"
-                / f"{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}.tex",
-                "w",
-            ) as tf:
-                tf.write(benford_table.to_latex(index=False))
-            self.logger.info(
-                f"Saved in TeX format at: {self.table_path}tex/{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}.tex"
+            file_name = f"{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}"
+            save_and_log_table(
+                df=benford_table, file_name=file_name, file_path=self.table_path, formats=["csv"], logger=self.logger
             )
 
         return benford_table
@@ -377,29 +332,13 @@ class Network(GenerativeModel):
         CEIS = pd.read_csv(self.data_path / f"{name}_CEIS.csv")
 
         if read_df:
-            self.logger.info(
-                f"Loading 'donations to candidates' DataFrame from {self.table_path}csv/{self.path_prefix}__communities.csv"
-            )
-            df = pd.read_csv(
-                self.table_path / "csv" / f"{self.path_prefix}__communities.csv",
-                converters={"index": lambda x: str(x).zfill(11)},
-            ).set_index("index")
-            self.logger.info(f"'donations to candidates' loaded.")
+            raise NotImplementedError
         elif df is None:
             raise ValueError("You should read a previous created 'donations to candidates' or provide a DataFrame.")
 
         if read_benford_table:
-            self.logger.info(
-                f"Loading 'benford table' DataFrame from {self.table_path}csv/{self.path_prefix}__{name}_{self.community_column_name}_gt_{self.min_obs}.csv"
-            )
-            benford_table = pd.read_csv(
-                self.table_path
-                / "csv"
-                / f"{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}.csv",
-                converters={"index": lambda x: str(x).zfill(11)},
-            ).set_index("index")
-            self.logger.info(f"'benford table' loaded.")
-        elif read_benford_table is None:
+            raise NotImplementedError
+        elif benford_table is None:
             raise ValueError("You should read a previous created 'benford table' or provide a DataFrame.")
 
         cnpjs_dirty = pd.concat([CNEP["CPF OU CNPJ DO SANCIONADO"], CEIS["CPF OU CNPJ DO SANCIONADO"]]).apply(
@@ -412,12 +351,11 @@ class Network(GenerativeModel):
         )
 
         df.loc[:, "dirty"] = df["id_donator_effective_cpf_cnpj_str"].isin(cnpjs_dirty)
+        dirty_df = df.loc[df["dirty"]]
+        self.logger.info(f"Number dirty donations: {dirty_df.shape[0]}")
 
-        donnors_dirty_list = df.loc[df["dirty"], "id_donator_effective_cpf_cnpj_str"].unique()
-        self.logger.info(f'Number cpfs/cnpjs dirty donations: {df["dirty"].sum()}')
-
-        n_donnors_dirty = df.loc[df["dirty"], "id_donator_effective_cpf_cnpj_str"].nunique()
-        self.logger.info(f"Number of cpfs/cnpjs dirty donnors: {n_donnors_dirty}")
+        n_donnors_dirty = dirty_df.loc[:, "id_donator_effective_cpf_cnpj_str"].nunique()
+        self.logger.info(f"Number of dirty donnors: {n_donnors_dirty}")
 
         # contagem de doacoes sujas nas community
         benford_table_dirty_donations = (
@@ -431,15 +369,15 @@ class Network(GenerativeModel):
         )
 
         # numero de donnors na comunidade
-        donnors = df.groupby(self.community_column_name).agg({"id_donator_effective_cpf_cnpj": lambda x: int(x.nunique())})
+        donnors = df.groupby(self.community_column_name).agg(
+            {"id_donator_effective_cpf_cnpj": lambda x: int(x.nunique())}
+        )
         donnors.columns = ["# Donors"]
         benford_table_donnors = benford_table_dirty_donations.merge(donnors, how="left", on=self.community_column_name)
 
         # numero de doares dirty na comunidade
-        donnors_dirty = (
-            df.loc[df.id_donator_effective_cpf_cnpj.isin(donnors_dirty_list)]
-            .groupby(self.community_column_name)
-            .agg({"id_donator_effective_cpf_cnpj": lambda x: int(x.nunique())})
+        donnors_dirty = dirty_df.groupby(self.community_column_name).agg(
+            {"id_donator_effective_cpf_cnpj": lambda x: int(x.nunique())}
         )
         donnors_dirty.columns = ["# Dirty Donors"]
         benford_table_donnors_dirty = benford_table_donnors.merge(
@@ -447,10 +385,8 @@ class Network(GenerativeModel):
         )
 
         # total dirty doado na comunidade
-        total_dirty_amount = (
-            df.loc[df.id_donator_effective_cpf_cnpj.isin(donnors_dirty_list)]
-            .groupby(self.community_column_name)
-            .agg({"num_donation_ammount": lambda x: sum(x)})
+        total_dirty_amount = dirty_df.groupby(self.community_column_name).agg(
+            {"num_donation_ammount": lambda x: sum(x)}
         )
         total_dirty_amount.columns = ["Total Dirty Amount"]
         benford_table_total_dirty_amount = benford_table_donnors_dirty.merge(
@@ -465,31 +401,20 @@ class Network(GenerativeModel):
         )
 
         # Soma das doacoes na comunidade:
-        donnors = df.groupby(self.community_column_name).agg({"id_donator_effective_cpf_cnpj": lambda x: int(x.nunique())})
+        donnors = df.groupby(self.community_column_name).agg({"id_candidate_cpf": lambda x: int(x.nunique())})
         donnors.columns = ["Number of Candidates"]
-        benford_table_donnors = benford_table_total_amount.merge(donnors, how="left", on=self.community_column_name).fillna(0)
+        benford_table_donnors = benford_table_total_amount.merge(
+            donnors, how="left", on=self.community_column_name
+        ).fillna(0)
 
         if write:
-
-            benford_table_donnors.to_csv(
-                self.table_path
-                / "csv"
-                / f"{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}.csv",
-                index=False,
-            )
-            self.logger.info(
-                f"Saved in CSV format at: {self.table_path}csv/{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}_dirty_stats.csv"
-            )
-
-            with open(
-                self.table_path
-                / "tex"
-                / f"{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}_dirty_stats.tex",
-                "w",
-            ) as tf:
-                tf.write(benford_table_donnors.to_latex(index=False))
-            self.logger.info(
-                f"Saved in TeX format at: {self.table_path}tex/{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}_dirty_stats.tex"
+            file_name = f"{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}_dirty_stats"
+            save_and_log_table(
+                df=benford_table_donnors,
+                file_name=file_name,
+                file_path=self.table_path,
+                formats=["csv", "tex"],
+                logger=self.logger,
             )
 
         return benford_table_donnors
@@ -512,25 +437,16 @@ class Network(GenerativeModel):
 
         benford_table_fit_parameters = benford_table.join(parameters)
 
-        benford_table_fit_parameters.to_csv(
-            self.table_path
-            / "csv"
-            / f"{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}_dirty_fit_params.csv",
-            index=False,
-        )
-        self.logger.info(
-            f"Saved in CSV format at: {self.table_path}csv/{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}_dirty_fit_params.csv"
-        )
+        file_name = f"{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}_dirty_fit_params"
 
-        with open(
-            self.table_path
-            / "tex"
-            / f"{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}_dirty_fit_params.tex",
-            "w",
-        ) as tf:
-            tf.write(benford_table_fit_parameters.to_latex(index=False))
-        self.logger.info(
-            f"Saved in TeX format at: {self.table_path}tex/{self.path_prefix}__benford_law_{self.community_column_name}_gt_{self.min_obs}_dirty_fit_params.tex"
+        save_and_log_table(
+            df=benford_table_fit_parameters,
+            file_name=file_name,
+            file_path=self.table_path,
+            formats=["csv", "tex"],
+            logger=self.logger,
         )
 
         return benford_table_fit_parameters
+
+    

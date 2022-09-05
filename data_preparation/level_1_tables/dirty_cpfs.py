@@ -7,10 +7,10 @@ from pathlib import Path
 import pandas as pd
 import unidecode
 
-parent_dir = Path().cwd()
-# %%
-raw_data_path = Path(parent_dir) / "raw_data/2014/"
-data_path = Path(parent_dir) / "data/"
+cwd = Path().absolute()
+
+year = 2014
+data_path = Path(cwd) / "data" / "prepared" / f"{year}/"
 
 if not os.path.exists(data_path):
     os.makedirs(data_path)
@@ -26,18 +26,18 @@ print("Getting info about dirty CPF/CNPJ...")
 
 # %%
 CNEP = pd.read_csv(
-    "http://www.portaltransparencia.gov.br/download-de-dados/cnep/20201029",
+    "https://www.portaltransparencia.gov.br/download-de-dados/cnep/20220826",
     compression="zip",
     sep=";",
     encoding="iso-8859-1",
 )
 CEIS = pd.read_csv(
-    "http://www.portaltransparencia.gov.br/download-de-dados/ceis/20201029",
+    "http://www.portaltransparencia.gov.br/download-de-dados/ceis/20220826",
     compression="zip",
     sep=";",
     encoding="iso-8859-1",
 )
-CNEP.to_csv(data_path / "20201029_CNEP.csv", index=False)
-CEIS.to_csv(data_path / "20201029_CEIS.csv", index=False)
+CNEP.to_csv(data_path / "20220826_CNEP.csv", index=False)
+CEIS.to_csv(data_path / "20220826_CEIS.csv", index=False)
 
 print("Done.")

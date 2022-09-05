@@ -32,15 +32,37 @@ def find_probabilities(listOfoccurrances):
     return probabilities
 
 
+def find_leemis(listOfoccurrances):
+    leemisList = []
+    probs = find_probabilities(listOfoccurrances)
+    N = listOfoccurrances.sum()
+    for i in range(0, 9):
+        benford = np.log10(1 + (1.0 / (i + 1)))
+        abs_diff = np.abs(probs[i] - benford)
+        leemisList.append(abs_diff)
+    return np.sqrt(N) * max(leemisList)
+
+
 def find_Cho(listOfoccurrances):
     choList = []
     probs = find_probabilities(listOfoccurrances)
     N = listOfoccurrances.sum()
     for i in range(0, 9):
         benford = np.log10(1 + (1.0 / (i + 1)))
-        d = np.square(benford - probs[i])
+        d = np.square(probs[i] - benford)
         choList.append(d)
     return np.sqrt(N * sum(choList))
+
+
+def find_wmax(listOfoccurrances):
+    wmaxList = []
+    probs = find_probabilities(listOfoccurrances)
+    N = listOfoccurrances.sum()
+    for i in range(0, 9):
+        benford = np.log10(1 + (1.0 / (i + 1)))
+        wmax_diff = np.square(probs[i] - benford) / benford
+        wmaxList.append(wmax_diff)
+    return N * max(wmaxList)
 
 
 def find_x2(listOfoccurrances):
@@ -49,15 +71,14 @@ def find_x2(listOfoccurrances):
     N = listOfoccurrances.sum()
     for i in range(0, 9):
         benford = np.log10(1 + (1.0 / (i + 1)))
-        x2 = np.square(benford - probs[i]) / benford
+        x2 = np.square(probs[i] - benford) / benford
         x2List.append(x2)
     return N * sum(x2List), x2List
 
 
 def benford_digits_table(donations, by):
     lista = donations.groupby(by).size()
-
-    df = pd.DataFrame(index=lista.keys(), columns=("prob", "d", "N"))
+    df = pd.DataFrame(index=lista.keys(), columns=("prob", "d", "x2", "m", "wm", "N"))
     for ele in lista.keys():
         digits_all = read_numbers(donations[(donations[by] == ele)]["num_donation_ammount"])
         digits_all = pd.Series(digits_all)
@@ -66,7 +87,10 @@ def benford_digits_table(donations, by):
         benford = [np.log10(1 + (1.0 / d)) for d in indx]
         N = digits_all.sum()
         d = find_Cho(digits_all)
-        df.loc[ele] = [probs, d, N]
+        x2 = find_x2(digits_all)[0]
+        m = find_leemis(digits_all)
+        wm = find_wmax(digits_all)
+        df.loc[ele] = [probs, d, x2, m, wm, N]
 
     df[["1", "2", "3", "4", "5", "6", "7", "8", "9"]] = df["prob"].apply(pd.Series)
     df_repass_legal = (

@@ -4,6 +4,7 @@ __pycache__*
 data/**/*.csv
 data/**/*.txt
 dist/*
+research/network/tables/**/**/**/csv/.*csv
 
 .vscode
 .dropbox

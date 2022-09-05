@@ -4,7 +4,6 @@
 
 import gc
 import os
-
 #%%
 import sys
 from pathlib import Path
@@ -33,7 +32,6 @@ for directory in directories:
 
 
 import matplotlib as mpl
-
 #%%
 import matplotlib.pyplot as plt
 

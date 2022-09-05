@@ -6,8 +6,8 @@ FOLDER_CONFIGS = scripts/configs/
 
 .PHONY: clean
 clean:
-	@find . -type f -name '*.pyc' -delete
-	@find . -type f -name '*.coverage.*' -delete
+	@find . -type d -name '*.pyc' | xargs rm -rf
+	@find . -type d -name '*.coverage.*' | xargs rm -rf
 	@find . -type d -name '__pycache__' | xargs rm -rf
 	@find . -type d -name 'build' | xargs rm -rf
 	@find . -type d -name 'dist' | xargs rm -rf

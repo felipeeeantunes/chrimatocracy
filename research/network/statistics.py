@@ -6,7 +6,8 @@ import logging
 import os
 from pathlib import Path
 
-from chrimatocracy.utils import load_donations, donations_made_stats, donations_received_stats
+from chrimatocracy.utils import (donations_made_stats,
+                                 donations_received_stats, load_donations)
 
 cwd = Path().absolute()
 file_dir = Path(__file__).parent.resolve()
@@ -48,6 +49,5 @@ if __name__ == "__main__":
         logger.info(f"Generating Statistics table for {role}.\n")
         df = load_donations(role=role, year=year, data_path=data_path)
         stats_donations = donations_received_stats(df, year=2014, role=role, table_path=table_path)
-        stats_companies = donations_made_stats(by='companies', df=df, year=2014, role=role, table_path=table_path)
-        stats_sector    = donations_made_stats(by='sector', df=df, year=2014, role=role, table_path=table_path)
-
+        stats_companies = donations_made_stats(by="companies", df=df, year=2014, role=role, table_path=table_path)
+        stats_sector = donations_made_stats(by="sector", df=df, year=2014, role=role, table_path=table_path)
